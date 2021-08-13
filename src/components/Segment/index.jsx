@@ -1,0 +1,165 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import './Segment.css';
+import TextHighlighter from 'texthighlighter';
+
+const Segment = (props) => {
+  const {
+    segment,
+    isSelected,
+    metadataColumns,
+    updateSegmentNumber,
+    highlightEnabled,
+    deleteSegmentError,
+    setTargetType,
+    setShowAddIssueModal,
+    setHighlightInstance,
+    setFocusedIssue,
+    focusedIssue,
+    setFocusedIssueNote
+  } = props;
+
+  const [sourceHighlightInstance, setSourceHighlightInstance] = useState(null);
+  const [targetHighlightInstance, setTargetHighlightInstance] = useState(null);
+  const highlightedContextSelector = 'scorecard__segment-table__highlight-context';
+
+  const sourceRef = useCallback((node) => {
+    if (node !== null && !sourceHighlightInstance) {
+      const highlightInstance = new TextHighlighter(node,
+        {
+          onBeforeHighlight(range) {
+            const selectionContainer = range.commonAncestorContainer;
+            const isNodeHighlighted = selectionContainer.classList ? selectionContainer.classList.contains(highlightedContextSelector) : false;
+            const isParentHighlighted = selectionContainer.parentNode && selectionContainer.parentNode.classList ? selectionContainer.parentNode.classList.contains(highlightedContextSelector) : false;
+            return isNodeHighlighted || isParentHighlighted;
+          },
+          onAfterHighlight() {
+            setTargetType('source');
+            setHighlightInstance(highlightInstance);
+            setShowAddIssueModal(true);
+          },
+        });
+
+      setSourceHighlightInstance(highlightInstance);
+    }
+
+    if (node !== null && isSelected) {
+      node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [isSelected]);
+
+  const targetRef = useCallback((node) => {
+    if (node !== null && !targetHighlightInstance) {
+      const highlightInstance = new TextHighlighter(node,
+        {
+          onBeforeHighlight(range) {
+            const selectionContainer = range.commonAncestorContainer;
+            const isNodeHighlighted = selectionContainer.classList ? selectionContainer.classList.contains(highlightedContextSelector) : false;
+            const isParentHighlighted = selectionContainer.parentNode && selectionContainer.parentNode.classList ? selectionContainer.parentNode.classList.contains(highlightedContextSelector) : false;
+            return isNodeHighlighted || isParentHighlighted;
+          },
+          onAfterHighlight() {
+            setTargetType('target');
+            setHighlightInstance(highlightInstance);
+            setShowAddIssueModal(true);
+          },
+        });
+
+      setTargetHighlightInstance(highlightInstance);
+    }
+  }, []);
+
+  useEffect(() => {
+    const focusedSourceIssue = segment.sourceErrors.filter((error) => error.id === focusedIssue)[0];
+    const focusedTargetIssue = segment.targetErrors.filter((error) => error.id === focusedIssue)[0];
+
+    if (!focusedIssue && sourceHighlightInstance && targetHighlightInstance) {
+      sourceHighlightInstance.removeHighlights();
+      targetHighlightInstance.removeHighlights();
+    }
+
+    if (focusedSourceIssue && sourceHighlightInstance) {
+      sourceHighlightInstance.deserializeHighlights(focusedSourceIssue.highlighting);
+    }
+
+    if (focusedTargetIssue && targetHighlightInstance) {
+      targetHighlightInstance.deserializeHighlights(focusedTargetIssue.highlighting);
+    }
+  }, [focusedIssue]);
+
+  return (
+    <>
+      <tr className={`scorecard__segment-table__row--segment ${isSelected ? 'scorecard__segment-table__row--selected-top' : ''}`} onDoubleClick={() => updateSegmentNumber(segment.segment_num)}>
+        <td width="36" rowSpan="3" className={`scorecard__segment-table__cell scorecard__segment-table__cell--highlighter ${isSelected ? 'scorecard__segment-table__cell-selected' : ''}`}>{ segment.segment_num }</td>
+        <td width="400" className="scorecard__segment-table__cell scorecard__segment-table__cell--source">
+          <div style={{ width: '400px', wordWrap: 'break-word' }} className={`${isSelected && highlightEnabled ? highlightedContextSelector : ''}`} ref={sourceRef}>
+            { segment.segment_data.Source }
+          </div>
+        </td>
+        <td width="400" className="scorecard__segment-table__cell scorecard__segment-table__cell--target">
+          <div style={{ width: '400px', wordWrap: 'break-word' }} className={`${isSelected && highlightEnabled ? highlightedContextSelector : ''}`} ref={targetRef}>
+            {segment.segment_data.Target}
+          </div>
+        </td>
+      </tr>
+      <tr className="scorecard__segment-table__row--segment-types" onDoubleClick={() => updateSegmentNumber(segment.segment_num)}>
+        <td colSpan="3" className="scorecard__segment-table__cell" style={metadataColumns.length === 0 ? { borderTop: 'none', padding: '0px' } : {}}>
+          {
+            metadataColumns.map((type) => (
+              <div>
+                <span className="scorecard__segment-table__category">
+                  { type }
+                </span>
+                :
+                {' '}
+                { segment.segment_data[type] }
+                <br />
+              </div>
+            ))
+          }
+        </td>
+      </tr>
+      <tr segment-id="100" className={`scorecard__segment-table__row--issues ${isSelected ? 'scorecard__segment-table__row--selected-bottom' : ''}`} style={{ backgroundColor: '#cccccc' }} onDoubleClick={() => updateSegmentNumber(segment.segment_num)}>
+        <td className="scorecard__segment-table__cell scorecard__segment-table__cell--issue">
+          {
+            segment.sourceErrors.length === 0
+              ? <span>&nbsp;</span>
+              : segment.sourceErrors.map((err) => (
+                <button
+                  type="button"
+                  className={`scorecard__segment-table__issue--${err.level}`}
+                  onClick={(e) => { e.target.focus(); setFocusedIssue(err.id); setFocusedIssueNote(err.note); }}
+                  onBlur={() => { setFocusedIssue(''); setFocusedIssueNote(''); }}
+                >
+                  { err.issue }
+                  <a href="#" index="0" issue-report-id="5" className="scorecard__segment-table__close-button" onClick={(e) => { e.stopPropagation(); deleteSegmentError(err.id); setFocusedIssue(''); setFocusedIssueNote(''); }}>
+                    [x]
+                  </a>
+                </button>
+              ))
+          }
+        </td>
+        <td className="scorecard__segment-table__cell scorecard__segment-table__cell--issue">
+          {
+            segment.targetErrors.length === 0
+              ? <span>&nbsp;</span>
+              : segment.targetErrors.map((err) => (
+                <button
+                  type="button"
+                  className={`scorecard__segment-table__issue--${err.level}`}
+                  onClick={(e) => { e.target.focus(); setFocusedIssue(err.id); setFocusedIssueNote(err.note); }}
+                  onBlur={() => { setFocusedIssue(''); setFocusedIssueNote(''); }}
+                >
+                  { err.issue_name }
+                  <a href="#" index="0" issue-report-id="5" className="scorecard__segment-table__close-button" onClick={(e) => { e.stopPropagation(); deleteSegmentError(err.id); setFocusedIssue(''); setFocusedIssueNote(''); }}>
+                    [x]
+                  </a>
+                </button>
+              ))
+          }
+        </td>
+      </tr>
+    </>
+  );
+};
+
+export default Segment;
