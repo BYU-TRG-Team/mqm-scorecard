@@ -13,7 +13,7 @@ const Footer = () => (
     .
     Scorecard is published under
     {' '}
-    <a href="https://github.com/BYU-TRG-Team/js-qt21-scorecard/blob/main/LICENSE.txt" target="_blank" rel="noreferrer">Apache 2.0 License</a>
+    <a href="https://github.com/BYU-TRG-Team/js-qt21-scorecard/blob/main/LICENSE" target="_blank" rel="noreferrer">Apache 2.0 License</a>
     {' '}
     on
     {' '}
