@@ -56,6 +56,7 @@ Assuming you have a PostgreSQL database setup and the *DATABASE_URL* is set to t
 node server/seed.js
 
 ```
+NOTE: This script will destory and re-create all tables. 
 
 ## Local Development
 

@@ -1,6 +1,5 @@
 require('dotenv').config({ path: `${__dirname}/../.env` });
 
-console.log(`${__dirname}/../.env`);
 const db = require('./db');
 
 const dropUserTable = `
@@ -195,6 +194,6 @@ INSERT INTO roles (role_name) VALUES
   await db.query(createNotesTable);
   await db.query(createSegmentIssuesTable);
   await db.query(seedRoles);
-
+  await db.end();
   console.log('Successfully seeded database');
 }());
