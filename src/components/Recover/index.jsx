@@ -55,7 +55,7 @@ const Recover = () => {
 
   return (
     <div>
-      <h2 className="recover__heading">Recover Password</h2>
+      <h2 className="recover__heading">Create New Password</h2>
       { error && <span className="recover__error">{ error }</span> }
       <form className="recover__form" onSubmit={onSubmit}>
         {
