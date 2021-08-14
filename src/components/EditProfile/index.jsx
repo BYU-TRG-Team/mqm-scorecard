@@ -37,7 +37,7 @@ const EditProfile = () => {
       body = { ...body, password };
     }
 
-    API.patch('/api/user', body)
+    API.patch(`/api/user/${state.token.id}`, body)
       .then((response) => {
         const { newToken } = response.data;
         setError('');
@@ -49,7 +49,7 @@ const EditProfile = () => {
         history.push('/edit-profile/success');
       })
       .catch((err) => {
-        if (err.response && err.response.message) {
+        if (err.response && err.response.data) {
           setError(err.response.data.message);
         }
       });
@@ -63,7 +63,7 @@ const EditProfile = () => {
         setName(response.data.name);
       })
       .catch((err) => {
-        if (err.response.data) {
+        if (err.response && err.response.data) {
           setError(err.response.data.message);
         }
       });

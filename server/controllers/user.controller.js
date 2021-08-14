@@ -9,64 +9,68 @@ class UserController {
   }
 
   /*
-  * PATCH /api/user
+  * PATCH /api/user/:id
   * @username (optional)
   * @email (optional)
   * @name (optional)
   * @password (optional)
+  * roleId (optional)
   */
-  async updateProfile(req, res) {
+  async updateUser(req, res) {
     try {
-      let password;
-      const attributes = [];
-      const values = [];
+      const isClientUser = Number(req.userId) === Number(req.params.id);
       const newAttributes = {};
+      const superadminNewAttributes = {};
+
+      if (!isClientUser && !(req.role === 'superadmin')) {
+        res.status(403).json({ message: errorMessages.accessForbidden });
+        return;
+      }
 
       Object.keys(req.body).forEach((attr) => {
-        if (attr === 'password') {
-          password = req.body[attr];
+        if (['username', 'email', 'name', 'password'].includes(attr)) {
+          newAttributes[attr] = req.body[attr];
         }
 
-        if (['username', 'email', 'name'].includes(attr)) {
-          if (attr === 'username') newAttributes[attr] = req.body[attr];
-          attributes.push(attr);
-          values.push(req.body[attr]);
+        if (['roleId'].includes(attr)) {
+          superadminNewAttributes[attr] = req.body[attr];
         }
       });
 
-      if (password !== undefined) {
-        password = await bcrypt.hash(password, 10);
-        attributes.push('password');
-        values.push(password);
+      if (newAttributes.password !== undefined) {
+        newAttributes.password = await bcrypt.hash(newAttributes.password, 10);
       }
 
-      await this.userService.setAttributes(attributes, values, req.userId);
+      if (
+        isClientUser
+        && Object.keys(newAttributes).length > 0
+      ) {
+        const attributes = [];
+        const values = [];
+        Object.keys(newAttributes).forEach((attr) => { attributes.push(attr); values.push(newAttributes[attr]); });
+        await this.userService.setAttributes(attributes, values, req.userId);
+      }
 
-      const { newToken, cookieOptions } = await this.tokenHandler.generateUpdatedUserAuthToken(req, newAttributes);
-      res.cookie('scorecard_authtoken', newToken, cookieOptions);
-      res.send({ newToken });
-      return;
+      // Update these attributes regardless of whether the param id is equal to the client's id
+      if (
+        req.role === 'superadmin'
+        && Object.keys(superadminNewAttributes).length > 0
+      ) {
+        const attributes = ['role_id'];
+        const values = [superadminNewAttributes.roleId];
+        await this.userService.setAttributes(attributes, values, req.params.id);
+      }
+
+      if (newAttributes.username) {
+        const { newToken, cookieOptions } = await this.tokenHandler.generateUpdatedUserAuthToken(req, newAttributes);
+        res.cookie('scorecard_authtoken', newToken, cookieOptions);
+        res.send({ newToken });
+        return;
+      }
+
+      res.status(204).send();
     } catch (err) {
       res.status(500).send({ message: errorMessages.generic });
-    }
-  }
-
-  /*
-  * PATCH /api/user/:id
-  * @roleId
-  */
-  async updateUserAdmin(req, res) {
-    try {
-      const { roleId } = req.body;
-
-      if (roleId === undefined) {
-        return res.status(400).send({ message: 'Body must include the attribute roleId' });
-      }
-
-      await this.userService.setAttributes(['role_id'], [roleId], req.params.id);
-      return res.status(204).send();
-    } catch (err) {
-      return res.status(500).send({ message: errorMessages.generic });
     }
   }
 

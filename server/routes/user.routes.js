@@ -17,18 +17,10 @@ module.exports = (app, di) => {
   );
 
   app.patch(
-    '/api/user',
-    authJwt.verifyToken,
-    authJwt.checkVerification,
-    di.UserController.updateProfile.bind(di.UserController),
-  );
-
-  app.patch(
     '/api/user/:id',
     authJwt.verifyToken,
     authJwt.checkVerification,
-    authJwt.checkRole(['superadmin']),
-    di.UserController.updateUserAdmin.bind(di.UserController),
+    di.UserController.updateUser.bind(di.UserController),
   );
 
   app.delete(

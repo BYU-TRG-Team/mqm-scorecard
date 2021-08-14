@@ -31,8 +31,8 @@ class SegmentController {
       const segmentResponse = await this.segmentService.getSegmentById(req.params.segmentId);
       const segment = segmentResponse.rows[0];
 
-      if (segment.project_id === undefined) {
-        res.status(400).send({ message: 'No project found' });
+      if (segment === undefined) {
+        res.status(400).send({ message: 'No segment found' });
         return;
       }
 
