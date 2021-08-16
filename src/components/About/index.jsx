@@ -25,7 +25,8 @@ const About = () => (
     <h3>Contact</h3>
     <p>
       Bugs and feature requests should be made via the MQM Scorecard project’s
-      <a href="https://github.com/multidimensionalquality/qt21-scorecard/issues" target="_blank" rel="noreferrer">bug tracker</a>
+      {' '}
+      <a href="https://github.com/BYU-TRG-Team/js-qt21-scorecard/issues" target="_blank" rel="noreferrer">bug tracker</a>
       . General inquiries can be sent to
       <a href="mailto:info@tranquality.info">info@tranquality.info</a>
       .
