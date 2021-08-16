@@ -159,7 +159,11 @@ class ProjectController {
           target: projectSegmentsResponse.rows.map((seg) => seg.segment_data.Target),
         },
       });
+
+      return;
     }
+
+    res.status(403).json({ message: errorMessages.accessForbidden });
   }
 
   /*

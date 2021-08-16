@@ -19,6 +19,31 @@ git clone https://github.com/BYU-TRG-Team/js-qt21-scorecard.git
 
 ```
 
+### 3. Setup environment variables and SendGrid API Support
+
+The following environment variables need to be set in order to deploy the scorecard application: 
+
+```
+AUTH_SECRET=<Random Secret for generating JWT tokens>
+DATABASE_URL=<URL for the corresponding PostgreSQL db>
+SENDGRID_API_KEY=<API Key retrieved from SendGrid>
+APP_ENV=production
+SENDGRID_EMAIL_ADDRESS=<Email address to send requests from>
+
+```
+
+SendGrid is used for account verification and password reset emails. In order to enable this, you will need to create an account with SendGrid and retrieve an API key. Additionally, a legitimate email will need to be specified with the *SENDGRID_EMAIL_ADDRESS* variable that will serve as the sender address. 
+
+### 2. Seed Database
+
+Assuming you have all environment variables setup, the following command can be run to create the neccessary schemas for the scorecard app: 
+
+```
+node server/seed.js
+
+```
+NOTE: This script will destory and re-create all tables. 
+
 ### 3. Setup environment variables
 
 The following environment variables need to be set in order to deploy the scorecard application: 
@@ -28,16 +53,24 @@ AUTH_SECRET=<Random Secret for generating JWT tokens>
 DATABASE_URL=<URL for the corresponding PostgreSQL db>
 SENDGRID_API_KEY=<API Key retrieved from SendGrid>
 APP_ENV=production
+SENDGRID_EMAIL_ADDRESS=<Email address to send requests from>
 
 ```
 
 
-### 2. Deploy Express/React Application
+### 4. Deploy Express/React Application
 
 The QT21 Scorecard exists as an Express and React monorepo. In order to deploy the app, you will first want to run a production build of the React portion like so: 
 
 ```
 npm run build
+
+```
+
+Next, all NPM dependencies will need to be installed. This is usually done automatically by hosting providers, but the following command is available to do so manually if need be: 
+
+```
+npm ci
 
 ```
 
@@ -47,16 +80,6 @@ From there, the following command will need to be run in order to start the expr
 npm run start
 
 ```
-
-### 4. Seed Database
-
-Assuming you have a PostgreSQL database setup and the *DATABASE_URL* is set to the corresponsding url, the following command can be run to create the neccessary schemas for the scorecard app: 
-
-```
-node server/seed.js
-
-```
-NOTE: This script will destory and re-create all tables. 
 
 ## Local Development
 

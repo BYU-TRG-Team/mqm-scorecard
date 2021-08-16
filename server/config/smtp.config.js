@@ -1,4 +1,4 @@
 module.exports = {
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
-  email: 'scorecardtrg@gmail.com',
+  email: process.env.SENDGRID_EMAIL_ADDRESS,
 };
