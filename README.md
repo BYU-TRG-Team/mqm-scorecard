@@ -44,21 +44,7 @@ node server/seed.js
 ```
 NOTE: This script will destory and re-create all tables. 
 
-### 4. Setup environment variables
-
-The following environment variables need to be set in order to deploy the scorecard application: 
-
-```
-AUTH_SECRET=<Random Secret for generating JWT tokens>
-DATABASE_URL=<URL for the corresponding PostgreSQL db>
-SENDGRID_API_KEY=<API Key retrieved from SendGrid>
-APP_ENV=production
-SENDGRID_EMAIL_ADDRESS=<Email address to send requests from>
-
-```
-
-
-### 5. Deploy Express/React Application
+### 4. Deploy Express/React Application
 
 The QT21 Scorecard exists as an Express and React monorepo. In order to deploy the app, you will first want to run a production build of the React portion like so: 
 
