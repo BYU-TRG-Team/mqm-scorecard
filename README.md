@@ -19,7 +19,7 @@ git clone https://github.com/BYU-TRG-Team/js-qt21-scorecard.git
 
 ```
 
-### 3. Setup environment variables and SendGrid API Support
+### 2. Setup environment variables and SendGrid API Support
 
 The following environment variables need to be set in order to deploy the scorecard application: 
 
@@ -34,7 +34,7 @@ SENDGRID_EMAIL_ADDRESS=<Email address to send requests from>
 
 SendGrid is used for account verification and password reset emails. In order to enable this, you will need to create an account with SendGrid and retrieve an API key. Additionally, a legitimate email will need to be specified with the *SENDGRID_EMAIL_ADDRESS* variable that will serve as the sender address. 
 
-### 2. Seed Database
+### 3. Seed Database
 
 Assuming you have all environment variables setup, the following command can be run to create the neccessary schemas for the scorecard app: 
 
@@ -44,7 +44,7 @@ node server/seed.js
 ```
 NOTE: This script will destory and re-create all tables. 
 
-### 3. Setup environment variables
+### 4. Setup environment variables
 
 The following environment variables need to be set in order to deploy the scorecard application: 
 
@@ -58,7 +58,7 @@ SENDGRID_EMAIL_ADDRESS=<Email address to send requests from>
 ```
 
 
-### 4. Deploy Express/React Application
+### 5. Deploy Express/React Application
 
 The QT21 Scorecard exists as an Express and React monorepo. In order to deploy the app, you will first want to run a production build of the React portion like so: 
 
