@@ -10,6 +10,7 @@ const verifyToken = (req, res, next) => {
     res.status(401).send({
       message: errorMessages.requestUnauthorized,
     });
+    return;
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
@@ -28,7 +29,7 @@ const verifyToken = (req, res, next) => {
 const checkVerification = (req, res, next) => {
   const token = jwtDecode(req.cookies.scorecard_authtoken);
 
-  if (token.verified) {
+  if (token && token.verified) {
     next();
     return;
   }
@@ -41,7 +42,7 @@ const checkVerification = (req, res, next) => {
 const checkRole = (roles) => (req, res, next) => {
   const token = jwtDecode(req.cookies.scorecard_authtoken);
 
-  if (roles.includes(token.role)) {
+  if (token && roles.includes(token.role)) {
     next();
     return;
   }

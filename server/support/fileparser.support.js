@@ -9,12 +9,12 @@ class FileParser {
     }
 
     if (level > -1) {
-      if (!node.$.type) {
+      if (!node.$ || !node.$.type) {
         error = 'Error reading metric file: issue must have a type attribute';
         return [error, issues];
       }
 
-      if (!node.$.display || !['yes', 'no'].includes(node.$.display.toLowerCase())) {
+      if (!node.$ || !node.$.display || !['yes', 'no'].includes(node.$.display.toLowerCase())) {
         error = 'Error reading metric file: issue must have a display attribute';
         return [error, issues];
       }
@@ -138,7 +138,7 @@ class FileParser {
     const fileHeaders = ['Source', 'Target'];
     const lines = file.split('\n');
 
-    if (lines.length === 0) {
+    if (lines.length === 1) {
       error = 'Error reading bitext file: File is blank';
       return [error, response];
     }

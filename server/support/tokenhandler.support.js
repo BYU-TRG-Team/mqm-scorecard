@@ -33,8 +33,7 @@ class TokenHandler {
   isPasswordTokenExpired(user) {
     const tokenDate = new Date(user.reset_password_token_created_at);
     const currentDate = new Date();
-
-    return tokenDate.getTime() < (currentDate.getTime() - 1800000);
+    return tokenDate.getTime() < (currentDate.getTime() - 1800000); // Password reset token is considered expired after 30 minutes
   }
 
   generateEmailVerificationToken() {
@@ -55,9 +54,8 @@ class TokenHandler {
     } = user;
 
     const role = roles[String(role_id)];
-
     const token = jwt.sign({
-      id: user_id, role, verified, username, rememberMe: req.body.rememberMe,
+      id: user_id, role, verified, username, rememberMe: !!req.body.rememberMe,
     }, authConfig.secret, {
       expiresIn: 604800, //  1 week
     });

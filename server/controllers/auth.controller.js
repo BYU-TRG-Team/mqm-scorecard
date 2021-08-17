@@ -59,7 +59,7 @@ class AuthController {
       const userResponse = await this.userService.findUsers(['username'], [username]);
 
       if (userResponse.rows.length === 0) {
-        res.status(400).send({ message: errorMessages.generic });
+        res.status(400).send({ message: errorMessages.loginError });
         return;
       }
 
@@ -72,7 +72,7 @@ class AuthController {
 
       if (!passwordIsValid) {
         res.status(400).send({
-          message: errorMessages.generic,
+          message: errorMessages.loginError,
         });
         return;
       }
