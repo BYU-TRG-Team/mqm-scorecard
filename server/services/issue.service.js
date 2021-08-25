@@ -72,25 +72,6 @@ class IssueService {
     return client.query(query, values);
   }
 
-  deleteProjectIssues(attributes, values, client) {
-    let filters = '';
-
-    for (let i = 0; i < attributes.length; ++i) {
-      if (i > 0) {
-        filters += `AND ${attributes[i]}=$${i + 1}`;
-        continue;
-      }
-
-      filters += `WHERE ${attributes[i]}=$${i + 1}`;
-    }
-
-    const query = `
-      DELETE FROM project_issues ${filters};
-    `;
-
-    return client.query(query, values);
-  }
-
   getAllIssues() {
     const query = `
       SELECT * FROM issues;

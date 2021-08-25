@@ -402,11 +402,6 @@ class ProjectController {
       }
 
       if (metricFile !== undefined && isAdmin) {
-        if (isUpdate) {
-          await this.issueService.deleteIssues(['project_id'], [projectId], client);
-          await this.issueService.deleteProjectIssues(['project_id'], [projectId], client);
-        }
-
         // Save issues from metric file
         for (let i = 0; i < metric.length; ++i) {
           const selectedIssue = metric[i];
