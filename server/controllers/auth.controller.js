@@ -108,7 +108,7 @@ class AuthController {
       const verifyTokenResponse = await this.tokenService.findTokens(['token'], [req.params.token]);
 
       if (verifyTokenResponse.rows.length === 0) {
-        res.status(400).send({ message: errorMessages.generic });
+        res.redirect('/login');
         return;
       }
 
