@@ -22,11 +22,6 @@ class UserController {
       const newAttributes = {};
       const superadminNewAttributes = {};
 
-      if (!isClientUser && !(req.role === 'superadmin')) {
-        res.status(403).json({ message: errorMessages.accessForbidden });
-        return;
-      }
-
       Object.keys(req.body).forEach((attr) => {
         if (['username', 'email', 'name', 'password'].includes(attr)) {
           newAttributes[attr] = req.body[attr];

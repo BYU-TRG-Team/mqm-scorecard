@@ -30,7 +30,7 @@ class ProjectController {
         return;
       }
 
-      this.upsertProject(req, res);
+      await this.upsertProject(req, res);
     } catch (err) {
       res.status(500).json({ message: errorMessages.generic });
     }
@@ -176,7 +176,7 @@ class ProjectController {
         const { projectId, userId } = req.params;
 
         await this.projectService.deleteUserFromProject(userId, projectId);
-        res.status(204).send();
+        return res.status(204).send();
       }
 
       return res.status(403).json({ message: errorMessages.accessForbidden });
@@ -231,7 +231,10 @@ class ProjectController {
             return res.status(500).json({ message: errorMessages.generic });
           });
 
+        if (res.headersSent) return;
+
         res.status(204).send();
+        return;
       }
 
       res.status(403).json({ message: errorMessages.accessForbidden });
@@ -289,6 +292,7 @@ class ProjectController {
       metricFile = req.files.metricFile;
       specificationsFile = req.files.specificationsFile;
     }
+
     try {
       const hasSegmentErrors = projectId && await this.hasSegmentErrors(projectId);
 
@@ -329,7 +333,7 @@ class ProjectController {
 
         if (res.headersSent) return;
 
-        if (!parsedMetricFile.issues || !parsedMetricFile.issues.issue) {
+        if (!parsedMetricFile || !parsedMetricFile.issues || !parsedMetricFile.issues.issue) {
           res.status(400).json({ message: 'No issues found in metric file.' });
           return;
         }
@@ -434,28 +438,21 @@ class ProjectController {
       }
 
       await client.query('COMMIT');
+      transactionInProgress = false;
 
       const message = isUpdate ? 'Project updated successfully.' : 'Project created successfully.';
       res.json({ message });
     } catch (err) {
+      res.status(500).json({ message: errorMessages.generic });
+    } finally {
       if (transactionInProgress) {
         await client.query('ROLLBACK');
       }
-
-      res.status(500).json({ message: errorMessages.generic });
-    } finally {
       client.release();
     }
   }
 
   async isUserAssignedToProject(req, projectId) {
-    const projectResponse = await this.projectService.getProjectById(projectId);
-
-    // Check if project exists
-    if (projectResponse.rows === 0) {
-      return false;
-    }
-
     const userProjectsResponse = await this.projectService.getProjectsByUserId(req.userId);
     return (
       (userProjectsResponse.rows.filter((proj) => Number(proj.project_id) === Number(projectId)).length > 0)

@@ -32,7 +32,7 @@ class SegmentController {
       const segment = segmentResponse.rows[0];
 
       if (segment === undefined) {
-        res.status(400).send({ message: 'No segment found' });
+        res.status(404).send({ message: 'No segment found' });
         return;
       }
 
@@ -56,7 +56,7 @@ class SegmentController {
       const segmentResponse = await this.segmentService.getSegmentByErrorId(req.params.errorId);
       const segment = segmentResponse.rows[0];
 
-      if (segment.project_id === undefined) {
+      if (segment === undefined) {
         res.status(400).send({ message: 'No project found' });
         return;
       }
@@ -74,13 +74,6 @@ class SegmentController {
   }
 
   async isUserAssignedToProject(req, projectId) {
-    const projectResponse = await this.projectService.getProjectById(projectId);
-
-    // Check if project exists
-    if (projectResponse.rows === 0) {
-      return false;
-    }
-
     const userProjectsResponse = await this.projectService.getProjectsByUserId(req.userId);
 
     return (

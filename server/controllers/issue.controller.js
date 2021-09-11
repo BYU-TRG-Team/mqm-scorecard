@@ -31,6 +31,7 @@ class IssueController {
 
     if (projectResponse.rows.length !== 0) {
       res.status(400).json({ message: 'All projects must be deleted before importing a new typology' });
+      return;
     }
 
     const parsedTypologyFile = await parseXML(typologyFile.data.toString())
@@ -39,6 +40,11 @@ class IssueController {
       });
 
     if (res.headersSent) return;
+
+    if (!parsedTypologyFile || !parsedTypologyFile.typology) {
+      res.status(400).json({ message: 'Problem parsing typology file: No typology element found' });
+      return;
+    }
 
     const [typologyFileResponseErr, typologyFileResponse] = this.fileParser.parseTypologyFile(parsedTypologyFile.typology);
 
