@@ -34,10 +34,6 @@ const dropUserProjectsTable = `
 DROP TABLE IF EXISTS user_projects CASCADE;
 `;
 
-const dropNotesTable = `
-DROP TABLE IF EXISTS notes CASCADE;
-`;
-
 const dropSegmentIssuesTable = `
 DROP TABLE IF EXISTS segment_issues CASCADE;
 `;
@@ -137,16 +133,6 @@ UNIQUE(project_id, segment_num)
 );
 `;
 
-const createNotesTable = `
-CREATE TABLE IF NOT EXISTS notes(
-id serial PRIMARY KEY,
-context text NOT NULL,
-segment_id integer NOT NULL,
-FOREIGN KEY (segment_id)
-REFERENCES segments (id) ON DELETE CASCADE
-);
-`;
-
 const createSegmentIssuesTable = `
 CREATE TABLE IF NOT EXISTS segment_issues(
 id serial PRIMARY KEY,
@@ -181,7 +167,6 @@ INSERT INTO roles (role_name) VALUES
   await db.query(dropProjectIssuesTable);
   await db.query(dropUserProjectsTable);
   await db.query(dropSegmentsTable);
-  await db.query(dropNotesTable);
   await db.query(dropSegmentIssuesTable);
   await db.query(createRolesTable);
   await db.query(createUsersTable);
@@ -191,7 +176,6 @@ INSERT INTO roles (role_name) VALUES
   await db.query(createProjectIssuesTable);
   await db.query(createSegmentsTable);
   await db.query(createUsersProjects);
-  await db.query(createNotesTable);
   await db.query(createSegmentIssuesTable);
   await db.query(seedRoles);
   await db.end();
