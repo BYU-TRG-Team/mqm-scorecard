@@ -9,7 +9,7 @@ const tokenService = require('../../__mocks__/tokenService');
 const roleService = require('../../__mocks__/roleService');
 
 describe('tests verify method', () => {
-  it('should redirect to /login for invalid verify token', async () => {
+  it('should throw a 400 error for invalid verify token', async () => {
     const mockedSmtpService = smtpService();
     const mockedUserService = userService();
     const mockedTokenService = tokenService({ findTokens: jest.fn(() => ({ rows: [] })) });
@@ -31,7 +31,8 @@ describe('tests verify method', () => {
     });
 
     const res = response();
-    jest.spyOn(res, 'redirect');
+    jest.spyOn(res, 'status');
+    jest.spyOn(res, 'send');
     await authController.verify(req, res);
 
     expect(mockedTokenService.findTokens).toBeCalledTimes(1);
@@ -39,8 +40,11 @@ describe('tests verify method', () => {
     expect(mockFindTokensCall[0]).toStrictEqual(['token']);
     expect(mockFindTokensCall[1]).toStrictEqual(['test']);
 
-    expect(res.redirect).toHaveBeenCalledTimes(1);
-    expect(res.redirect).toHaveBeenCalledWith('/login');
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.status).toHaveBeenCalledWith(400);
+
+    expect(res.send).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledWith({ message: 'Something went wrong on our end. Please try again.' });
   });
 
   it('should throw a 500 error token with no associated user', async () => {
