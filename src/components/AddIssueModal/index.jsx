@@ -163,7 +163,6 @@ const AddIssueModal = (props) => {
       <div className="add-issue-modal__buttons">
         <select className="add-issue-modal__button" onChange={handleSelect}>
           <option disabled selected value="">-- Error Severity --</option>
-          <option value="neutral">Neutral</option>
           <option value="minor">Minor</option>
           <option value="major">Major</option>
           <option value="critical">Critical</option>
