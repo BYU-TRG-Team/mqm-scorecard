@@ -68,6 +68,10 @@
   text-align: right;
 }
 
+.reports__header-cell--neutral, .reports__cell--neutral {
+  background-color: rgb(211,211,211, 0.5);
+}
+
 .reports__header-cell--minor, .reports__cell--minor {
   background-color: #feffdb;
 }
