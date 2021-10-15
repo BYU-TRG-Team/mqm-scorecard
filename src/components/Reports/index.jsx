@@ -6,7 +6,7 @@ const Reports = (props) => {
     issues, report, projectId, projectName
   } = props;
   const parseValue = (val) => (val > 0 ? <span className="reports__error">{ val }</span> : val);
-  const total = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const total = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   const constructRows = (issue) => {
     const rows = [];
@@ -20,32 +20,38 @@ const Reports = (props) => {
             { issue.name }
           </b>
         </td>
-        <td className="reports__cell--minor reports__cell">
+        <td className="reports__cell--neutral reports__cell">
           { parseValue(results[0]) }
         </td>
-        <td className="reports__cell--major reports__cell">
+        <td className="reports__cell--minor reports__cell">
           { parseValue(results[1]) }
         </td>
-        <td className="reports__cell--critical reports__cell">
+        <td className="reports__cell--major reports__cell">
           { parseValue(results[2]) }
         </td>
-        <td className="reports__cell--white reports__cell">
+        <td className="reports__cell--critical reports__cell">
           { parseValue(results[3]) }
         </td>
-        <td className="reports__cell--minor reports__cell">
+        <td className="reports__cell--white reports__cell">
           { parseValue(results[4]) }
         </td>
-        <td className="reports__cell--major reports__cell">
+        <td className="reports__cell--neutral reports__cell">
           { parseValue(results[5]) }
         </td>
-        <td className="reports__cell--critical reports__cell">
+        <td className="reports__cell--minor reports__cell">
           { parseValue(results[6]) }
         </td>
-        <td className="reports__cell--white reports__cell">
+        <td className="reports__cell--major reports__cell">
           { parseValue(results[7]) }
         </td>
-        <td className="reports__cell--white reports__cell">
+        <td className="reports__cell--critical reports__cell">
           { parseValue(results[8]) }
+        </td>
+        <td className="reports__cell--white reports__cell">
+          { parseValue(results[9]) }
+        </td>
+        <td className="reports__cell--white reports__cell">
+          { parseValue(results[10]) }
         </td>
       </tr>
     );
@@ -74,7 +80,7 @@ const Reports = (props) => {
     return (
       <>
         <tr>
-          <td colSpan="10" className="reports__cell reports__cell--subheading">
+          <td colSpan="12" className="reports__cell reports__cell--subheading">
             { parentIssue.name }
           </td>
         </tr>
@@ -107,16 +113,18 @@ const Reports = (props) => {
           <tbody>
             <tr>
               <th rowSpan="2" className="reports__header-cell">Issue</th>
-              <th colSpan="4" className="reports__header-cell">Source</th>
-              <th colSpan="4" className="reports__header-cell">Target</th>
+              <th colSpan="5" className="reports__header-cell">Source</th>
+              <th colSpan="5" className="reports__header-cell">Target</th>
               <th rowSpan="2" className="reports__header-cell">Total</th>
             </tr>
 
             <tr>
+              <th className="reports__header-cell--neutral reports__header-cell">Neutral</th>
               <th className="reports__header-cell--minor reports__header-cell">Minor</th>
               <th className="reports__header-cell--major reports__header-cell">Major</th>
               <th className="reports__header-cell--critical reports__header-cell">Critical</th>
               <th className="reports__header-cell--total reports__header-cell">Subtotal</th>
+              <th className="reports__header-cell--neutral reports__header-cell">Neutral</th>
               <th className="reports__header-cell--minor reports__header-cell">Minor</th>
               <th className="reports__header-cell--major reports__header-cell">Major</th>
               <th className="reports__header-cell--critical reports__header-cell">Critical</th>

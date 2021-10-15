@@ -86,8 +86,8 @@ describe('tests getProject method', () => {
       project: { project_id: 1, source_word_count: 200, target_word_count: 300 },
       score: '82.67',
       report: {
-        custom: [0, 0, 1, 1, 1, 0, 0, 1, 2],
-        fluency: [0, 0, 1, 1, 1, 0, 0, 1, 2],
+        custom: [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 2],
+        fluency: [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 2],
       },
       users: [{ testUser: 'test' }],
       segments: [{
@@ -280,8 +280,8 @@ describe('tests getProject method', () => {
       project: { project_id: 1, source_word_count: 200, target_word_count: 300 },
       score: '82.67',
       report: {
-        custom: [0, 0, 1, 1, 1, 0, 0, 1, 2],
-        fluency: [0, 0, 1, 1, 1, 0, 0, 1, 2],
+        custom: [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 2],
+        fluency: [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 2],
       },
       users: [{ testUser: 'test' }],
       segments: [{

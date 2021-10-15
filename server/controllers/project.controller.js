@@ -487,26 +487,30 @@ class ProjectController {
     const report = {};
 
     reportResponse.rows.forEach((issue) => {
+      const sourceNetural = issue.level.filter((level, index) => level === 'neutral' && issue.type[index] === 'source').length;
       const sourceMinor = issue.level.filter((level, index) => level === 'minor' && issue.type[index] === 'source').length;
       const sourceMajor = issue.level.filter((level, index) => level === 'major' && issue.type[index] === 'source').length;
       const sourceCritical = issue.level.filter((level, index) => level === 'critical' && issue.type[index] === 'source').length;
 
+      const targetNetural = issue.level.filter((level, index) => level === 'neutral' && issue.type[index] === 'target').length;
       const targetMinor = issue.level.filter((level, index) => level === 'minor' && issue.type[index] === 'target').length;
       const targetMajor = issue.level.filter((level, index) => level === 'major' && issue.type[index] === 'target').length;
       const targetCritical = issue.level.filter((level, index) => level === 'critical' && issue.type[index] === 'target').length;
 
       report[issue.issue] = [
         // Source errors
+        sourceNetural,
         sourceMinor,
         sourceMajor,
         sourceCritical,
-        sourceMinor + sourceMajor + sourceCritical,
+        sourceNetural + sourceMinor + sourceMajor + sourceCritical,
         // Target errors
+        targetNetural,
         targetMinor,
         targetMajor,
         targetCritical,
-        targetMinor + targetMajor + targetCritical,
-        sourceMinor + sourceMajor + sourceCritical + targetMinor + targetMajor + targetCritical,
+        targetNetural + targetMinor + targetMajor + targetCritical,
+        sourceNetural + sourceMinor + sourceMajor + sourceCritical + targetNetural + targetMinor + targetMajor + targetCritical,
       ];
     });
 
@@ -526,6 +530,7 @@ class ProjectController {
     }
 
     const SEVERITY_WEIGHTS = {
+      neutral: 0,
       minor: 1,
       major: 5,
       critical: 25,
