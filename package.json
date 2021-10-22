@@ -52,7 +52,8 @@
     "texthighlighter": "^1.2.4",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "xmlbuilder": "^11.0.1"
   },
   "browserslist": {
     "production": [

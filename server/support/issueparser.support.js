@@ -14,6 +14,7 @@ class IssueParser {
       const issue = issues[i];
       const mappedIssue = this.getIssueFromMap(issue.issue, map);
       const issueExists = !!mappedIssue;
+
       if (!issueExists && !issue.parent) {
         this.setIssue({
           ...issue,
@@ -38,8 +39,8 @@ class IssueParser {
       if (issueExists && issue.parent) {
         const issueCopy = cloneDeep(mappedIssue);
 
-        // Isssue should be at top level if it already exists
-        delete map[issueCopy.id];
+        // Issue should be at top level if it already exists
+        delete map[issueCopy.issue];
         this.setIssue({
           ...issue,
           ...issueCopy,

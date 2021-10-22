@@ -247,10 +247,7 @@ const validTypologyFile = `
       <errorType name="transliteration" id="transliteration" level="2">
         <description>A word or phrase is translitered into the script of the target language using the wrong transliteration system or using the preferred transliteration system but applying it incorrectly.</description>
         <notes>If transliteration is standardized for a language pair (mainly for place names, also possibly for important person names), annotate it as a transliteration error, but manage it like an official terminology standard or a usage guide style glossary.</notes>
-        <examples>
-          The capital of China is translated as Peking, following the now-dated Wade-Giles romanization sysem, rather than Beijing, following the ISO and PRC standard pinyin.
-          The name of the last president of the Soviet Union, Михаи́л Горбачёв, is transliterated into English as Mikhail Gorbachev. It is transliterated into Spanish as Mijaíl Gorbachov. Though English and Spanish are both written in the Latin script, using ​Mijaíl in English transliterations or Mikhail in Spanish transliterations is an error.
-        </examples>
+        <examples>The capital of China is translated as Peking, following the now-dated Wade-Giles romanization sysem, rather than Beijing, following the ISO and PRC standard pinyin. The name of the last president of the Soviet Union, Михаи́л Горбачёв, is transliterated into English as Mikhail Gorbachev. It is transliterated into Spanish as Mijaíl Gorbachov. Though English and Spanish are both written in the Latin script, using ​Mijaíl in English transliterations or Mikhail in Spanish transliterations is an error.</examples>
       </errorType>
       <errorType name="capitalization" id="capitalization" level="2">
         <description>One or more letters in a word are written with nonstandard upper- and lowercase letter forms, considering the textual setting and applicable locale conventions.</description>

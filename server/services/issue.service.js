@@ -74,7 +74,14 @@ class IssueService {
 
   getAllIssues() {
     const query = `
-      SELECT * FROM issues;
+      SELECT 
+      id as issue, 
+      parent as parent, 
+      name as name, 
+      description as description, 
+      notes as notes, 
+      examples as examples 
+      FROM issues;
     `;
 
     return this.db.query(query);

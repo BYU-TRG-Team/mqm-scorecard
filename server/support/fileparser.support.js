@@ -86,7 +86,7 @@ class FileParser {
           error = 'Error reading typology file: "examples" element cannot have any attributes.';
           return [error, errorTypes];
         }
-        [examples] = node.description;
+        [examples] = node.examples;
       }
 
       if (node.notes) {
