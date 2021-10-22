@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
     return;
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+  jwt.verify(token, config.secret, { ignoreExpiration: true }, (err, decoded) => {
     if (err) {
       res.status(403).send({
         message: errorMessages.accessForbidden,
