@@ -151,7 +151,7 @@ const Reports = (props) => {
         </table>
 
         <div className="reports__buttons">
-          <a className="reports__button" type="button" href={`/api/project/${projectId}/report`} download={`${projectName}_report`}>
+          <a className="reports__button" role="button" href={`/api/project/${projectId}/report`} download={`${projectName}_report`}>
             Export Scorecard data (JSON)
           </a>
         </div>

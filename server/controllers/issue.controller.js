@@ -1,12 +1,14 @@
 const parseXML = require('xml2js').parseStringPromise;
+const xmlBuilder = require('xmlbuilder');
 const errorMessages = require('../messages/errors.messages');
 
 class IssueController {
-  constructor(issueService, projectService, db, fileParser) {
+  constructor(issueService, projectService, db, fileParser, issueParser) {
     this.issueService = issueService;
     this.projectService = projectService;
     this.db = db;
     this.fileParser = fileParser;
+    this.issueParser = issueParser;
   }
 
   /*
@@ -88,6 +90,35 @@ class IssueController {
     } finally {
       client.release();
     }
+  }
+
+  /*
+  * GET /api/issues
+  * @typologyFile
+  */
+
+  async getTypology(req, res) {
+    const issueResponse = await this.issueService.getAllIssues();
+    const parsedIssues = this.issueParser.parseIssues(issueResponse.rows);
+    const baseXml = xmlBuilder.create('typology');
+    const recursiveIssueBuilder = ({
+      issue, name, description, notes, examples, children,
+    }, xml, level) => {
+      const issueElement = xml.ele('errorType');
+      issueElement.att('name', name);
+      issueElement.att('id', issue);
+      issueElement.att('level', level);
+      issueElement.ele('description', {}, description);
+      issueElement.ele('notes', {}, notes);
+      issueElement.ele('examples', {}, examples);
+
+      Object.keys(children).forEach((c) => recursiveIssueBuilder(children[c], issueElement, level + 1));
+    };
+
+    Object.keys(parsedIssues).forEach((ele) => recursiveIssueBuilder(parsedIssues[ele], baseXml, 0));
+
+    res.set('Content-Type', 'text/xml');
+    res.send(baseXml.end({ pretty: true }));
   }
 }
 

@@ -108,6 +108,14 @@ const ViewProjects = () => {
     <div>
       <ConfirmationModal confirmCallback={confirmCallback} rejectCallback={rejectCallback} message={confirmationModalMessage} className={`${showConfirmationModal ? '' : 'confirmation-modal--hide'}`} />
       <h2 className="view-projects__heading">View projects</h2>
+      {
+        state.token.role !== 'user'
+        && (
+        <a className="view-projects__download-button" role="button" href="/api/issues" download="typology">
+          Export Typology (XML)
+        </a>
+        )
+      }
       { error && <span className="view-projects__error">{ error }</span> }
       <div className="view-projects__table-container">
         <table className="view-projects__table">

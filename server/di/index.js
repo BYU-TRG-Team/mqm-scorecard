@@ -69,7 +69,7 @@ const segmentController = new SegmentController(segmentService, projectService, 
 
 const IssueController = require('../controllers/issue.controller');
 
-const issueController = new IssueController(issueService, projectService, db, fileParser);
+const issueController = new IssueController(issueService, projectService, db, fileParser, issueParser);
 
 module.exports = {
   AuthController: authController,
