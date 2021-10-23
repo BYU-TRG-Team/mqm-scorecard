@@ -13,9 +13,7 @@ class TokenHandler {
 
     const newToken = jwt.sign({
       id, role, verified, username, rememberMe, ...newAttributes,
-    }, authConfig.secret, {
-      expiresIn: 604800, //  1 week
-    });
+    }, authConfig.secret);
 
     const cookieOptions = {
       expires: rememberMe ? new Date(604800000 + Date.now()) : 0,
@@ -56,9 +54,7 @@ class TokenHandler {
     const role = roles[String(role_id)];
     const token = jwt.sign({
       id: user_id, role, verified, username, rememberMe: !!req.body.rememberMe,
-    }, authConfig.secret, {
-      expiresIn: 604800, //  1 week
-    });
+    }, authConfig.secret);
 
     const cookieOptions = {
       expires: req.body.rememberMe ? new Date(604800000 + Date.now()) : 0,
