@@ -46,17 +46,17 @@ NOTE: This script will destory and re-create all tables.
 
 ### 4. Deploy Express/React Application
 
-The QT21 Scorecard exists as an Express and React monorepo. In order to deploy the app, you will first want to run a production build of the React portion like so: 
-
-```
-npm run build
-
-```
-
-Next, all NPM dependencies will need to be installed. This is usually done automatically by hosting providers, but the following command is available to do so manually if need be: 
+The QT21 Scorecard exists as an Express and React monorepo. In order to deploy the app, you will need to first install NPM dependencies. This is usually done automatically by hosting providers, but the following command is available to do so manually if need be:
 
 ```
 npm ci
+
+```
+
+Next, a production build of the React portion will need to be created like so: 
+
+```
+npm run build
 
 ```
 
@@ -96,6 +96,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-
-This project uses 3rd party tools. You can find the list of 3rd party tools including their authors and licenses [here](https://github.com/BYU-TRG-Team/js-qt21-scorecard/blob/main/LICENSE-3RD-PARTY.txt)
 
