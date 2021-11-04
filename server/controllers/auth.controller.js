@@ -3,12 +3,13 @@ const smtpConfig = require('../config/smtp.config');
 const errorMessages = require('../messages/errors.messages');
 
 class AuthController {
-  constructor(smtpService, userService, tokenService, roleService, tokenHandler) {
+  constructor(smtpService, userService, tokenService, roleService, tokenHandler, db) {
     this.smtpService = smtpService;
     this.userService = userService;
     this.tokenService = tokenService;
     this.roleService = roleService;
     this.tokenHandler = tokenHandler;
+    this.db = db;
   }
 
   /*
@@ -19,6 +20,9 @@ class AuthController {
   * @name
   */
   async signup(req, res) {
+    let transactionInProgress = false;
+    const client = await this.db.connect();
+
     try {
       const {
         username, email, password, name,
@@ -30,15 +34,30 @@ class AuthController {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      const userResponse = await this.userService.create(username, email, hashedPassword, 1, name);
+
+      await client.query('BEGIN');
+      transactionInProgress = true;
+
+      const userResponse = await this.userService.create(username, email, hashedPassword, 1, name, client);
       const newUser = userResponse.rows[0];
 
-      await this.sendVerificationEmail(req, newUser);
+      const emailVerificationToken = this.tokenHandler.generateEmailVerificationToken();
+      await this.tokenService.create(newUser.user_id, emailVerificationToken, client);
+
+      await this.sendVerificationEmail(req, newUser, emailVerificationToken);
+
+      await client.query('COMMIT');
+      transactionInProgress = false;
 
       res.status(204).send();
       return;
     } catch (err) {
       res.status(500).send({ message: errorMessages.generic });
+    } finally {
+      if (transactionInProgress) {
+        await client.query('ROLLBACK');
+      }
+      client.release();
     }
   }
 
@@ -220,30 +239,17 @@ class AuthController {
     }
   }
 
-  sendVerificationEmail(req, user) {
-    return new Promise((resolve, reject) => {
-      try {
-        const token = this.tokenHandler.generateEmailVerificationToken();
+  sendVerificationEmail(req, user, token) {
+    const link = `http://${req.headers.host}/api/auth/verify/${token}`;
+    const emailOptions = {
+      subject: 'Account Verification Request',
+      to: user.email,
+      from: smtpConfig.email,
+      html: `<p>Hi ${user.username}<p><br><p>Please click on the following <a href="${link}">link</a> to verify your account.</p> 
+                            <br><p>If you did not request this, please ignore this email.</p>`,
+    };
 
-        // Save the verification token
-        return this.tokenService.create(user.user_id, token)
-          .then(() => {
-            const link = `http://${req.headers.host}/api/auth/verify/${token}`;
-            const emailOptions = {
-              subject: 'Account Verification Request',
-              to: user.email,
-              from: smtpConfig.email,
-              html: `<p>Hi ${user.username}<p><br><p>Please click on the following <a href="${link}">link</a> to verify your account.</p> 
-                                    <br><p>If you did not request this, please ignore this email.</p>`,
-            };
-
-            return this.smtpService.sendEmail(emailOptions).then(resolve);
-          })
-          .catch((err) => reject(err));
-      } catch (err) {
-        return reject(err);
-      }
-    });
+    return this.smtpService.sendEmail(emailOptions);
   }
 
   sendPasswordResetEmail(req, user) {

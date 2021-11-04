@@ -4,7 +4,7 @@ class IssueService {
     this.db = db;
   }
 
-  getIssueById(id, client) {
+  getIssueById(id, client = this.db) {
     const getIssueQuery = `
       SELECT 
       *
@@ -15,7 +15,7 @@ class IssueService {
     return client.query(getIssueQuery, [id]);
   }
 
-  createIssue(id, parent, name, description, notes, examples, client) {
+  createIssue(id, parent, name, description, notes, examples, client = this.db) {
     const query = `
       INSERT 
       INTO issues(id, parent, name, description, notes, examples)
@@ -26,7 +26,7 @@ class IssueService {
     return client.query(query, [id, parent, name, description, notes, examples]);
   }
 
-  createProjectIssue(projectId, issue, display, client) {
+  createProjectIssue(projectId, issue, display, client = this.db) {
     const createProjectIssueQuery = `
       INSERT
       INTO project_issues(project_id, issue, display)
@@ -53,7 +53,7 @@ class IssueService {
     return this.db.query(query, [projectId]);
   }
 
-  deleteIssues(attributes, values, client) {
+  deleteIssues(attributes, values, client = this.db) {
     let filters = '';
 
     for (let i = 0; i < attributes.length; ++i) {

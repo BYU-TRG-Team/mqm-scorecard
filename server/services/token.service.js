@@ -3,13 +3,13 @@ class TokenService {
     this.db = db;
   }
 
-  create(userId, token) {
+  create(userId, token, client = this.db) {
     const query = `
       INSERT INTO tokens (user_id, token) VALUES
       ($1, $2) RETURNING *;
     `;
 
-    return this.db.query(query, [userId, token]);
+    return client.query(query, [userId, token]);
   }
 
   deleteToken(token) {
