@@ -26,13 +26,14 @@ The following environment variables need to be set in order to deploy the scorec
 ```
 AUTH_SECRET=<Random Secret for generating JWT tokens>
 DATABASE_URL=<URL for the corresponding PostgreSQL db>
-SENDGRID_API_KEY=<API Key retrieved from SendGrid>
 APP_ENV=production
-SENDGRID_EMAIL_ADDRESS=<Email address to send requests from>
+EMAIL_PROVIDER<Provider associated with email account>
+EMAIL_ADDRESS=<Address associated with email account>
+EMAIL_PASSWORD=<Password associated with email account>
 
 ```
 
-SendGrid is used for account verification and password reset emails. In order to enable this, you will need to create an account with SendGrid and retrieve an API key. Additionally, a legitimate email will need to be specified with the *SENDGRID_EMAIL_ADDRESS* variable that will serve as the sender address. 
+Nodemailer is used to proxy requests to the associated email account for email verification and password reset emails. If you are using Gmail as the email provider, you will need to configure your account to "Allow less secure apps".
 
 ### 3. Seed Database
 

@@ -8,6 +8,7 @@ const userService = require('../../__mocks__/userService');
 const smtpService = require('../../__mocks__/smtpService');
 const tokenService = require('../../__mocks__/tokenService');
 const roleService = require('../../__mocks__/roleService');
+const db = require('../../__mocks__/db');
 
 describe('tests signup method', () => {
   it('should throw a 400 error', async () => {
@@ -16,6 +17,7 @@ describe('tests signup method', () => {
     const mockedTokenService = tokenService();
     const mockedRoleService = roleService();
     const tokenHandler = new TokenHandler();
+    const pgClient = db();
 
     const authController = new AuthController(
       mockedSmtpService,
@@ -23,6 +25,7 @@ describe('tests signup method', () => {
       mockedTokenService,
       mockedRoleService,
       tokenHandler,
+      pgClient,
     );
 
     const req = request({
@@ -44,10 +47,11 @@ describe('tests signup method', () => {
 
   it('should create a new user and send a verification email', async () => {
     const mockedSmtpService = smtpService();
-    const mockedUserService = userService({ create: jest.fn(() => ({ rows: [{ test: 'test' }] })) });
+    const mockedUserService = userService({ create: jest.fn(() => ({ rows: [{ user_id: 1 }] })) });
     const mockedTokenService = tokenService();
     const mockedRoleService = roleService();
     const tokenHandler = new TokenHandler();
+    const pgClient = db();
 
     const authController = new AuthController(
       mockedSmtpService,
@@ -55,6 +59,7 @@ describe('tests signup method', () => {
       mockedTokenService,
       mockedRoleService,
       tokenHandler,
+      pgClient,
     );
 
     const req = request({
@@ -83,7 +88,7 @@ describe('tests signup method', () => {
     expect(authController.sendVerificationEmail).toHaveBeenCalledTimes(1);
     const verificationEmailCall = authController.sendVerificationEmail.mock.calls[0];
     expect(verificationEmailCall[0]).toStrictEqual(req);
-    expect(verificationEmailCall[1]).toStrictEqual({ test: 'test' });
+    expect(verificationEmailCall[1]).toStrictEqual({ user_id: 1 });
 
     expect(mockedUserService.create).toHaveBeenCalledTimes(1);
     const createUserCall = mockedUserService.create.mock.calls[0];
@@ -91,11 +96,23 @@ describe('tests signup method', () => {
     expect(createUserCall[1]).toBe(req.body.email);
     expect(createUserCall[3]).toBe(1);
     expect(createUserCall[4]).toBe(req.body.name);
-
+    expect(createUserCall[5]).not.toBeUndefined();
     const passwordIsValid = bcrypt.compareSync(
       'test',
       createUserCall[2],
     );
     expect(passwordIsValid).toBeTruthy();
+
+    expect(pgClient.query).toHaveBeenCalledTimes(2);
+    const mockFirstQueryCall = pgClient.query.mock.calls[0];
+    const mockSecondQueryCall = pgClient.query.mock.calls[1];
+    expect(mockFirstQueryCall[0]).toBe('BEGIN');
+    expect(mockSecondQueryCall[0]).toBe('COMMIT');
+
+    expect(mockedTokenService.create).toHaveBeenCalledTimes(1);
+    const createTokenCall = mockedTokenService.create.mock.calls[0];
+    expect(createTokenCall[0]).toBe(1);
+    expect(createTokenCall[1]).not.toBeUndefined();
+    expect(createTokenCall[2]).not.toBeUndefined();
   });
 });

@@ -1,5 +1,15 @@
-// Libraries
-const sgMail = require('@sendgrid/mail');
+// SMTP Transporter
+
+const nodemailer = require('nodemailer');
+const smtpConfig = require('../config/smtp.config');
+
+const transporter = nodemailer.createTransport({
+  service: smtpConfig.provider,
+  auth: {
+    user: smtpConfig.email,
+    pass: smtpConfig.password, // naturally, replace both with your real credentials or an application-specific password
+  },
+});
 
 // DB
 
@@ -27,7 +37,7 @@ const roleService = new RoleService(db);
 
 const SmtpService = require('../services/smtp.service');
 
-const smtpService = new SmtpService(sgMail);
+const smtpService = new SmtpService(transporter);
 
 const TokenService = require('../services/token.service');
 
@@ -53,7 +63,7 @@ const segmentService = new SegmentService(db);
 
 const AuthController = require('../controllers/auth.controller');
 
-const authController = new AuthController(smtpService, userService, tokenService, roleService, tokenHandler);
+const authController = new AuthController(smtpService, userService, tokenService, roleService, tokenHandler, db);
 
 const UserController = require('../controllers/user.controller');
 

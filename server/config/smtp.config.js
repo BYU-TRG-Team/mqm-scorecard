@@ -1,4 +1,5 @@
 module.exports = {
-  SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
-  email: process.env.SENDGRID_EMAIL_ADDRESS,
+  password: process.env.EMAIL_PASSWORD,
+  email: process.env.EMAIL_ADDRESS,
+  provider: process.env.EMAIL_PROVIDER,
 };

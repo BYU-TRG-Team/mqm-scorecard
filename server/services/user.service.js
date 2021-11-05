@@ -3,13 +3,13 @@ class UserService {
     this.db = db;
   }
 
-  create(username, email, password, roleId, name) {
+  create(username, email, password, roleId, name, client = this.db) {
     const query = `
       INSERT INTO users (username, email, password, role_id, name) VALUES
       ($1, $2, $3, $4, $5) RETURNING *;
     `;
 
-    return this.db.query(query, [username, email, password, roleId, name]);
+    return client.query(query, [username, email, password, roleId, name]);
   }
 
   setAttributes(attributes, values, userId) {

@@ -4,7 +4,7 @@ class SegmentService {
     this.db = db;
   }
 
-  createSegments(segments, projectId, client) {
+  createSegments(segments, projectId, client = this.db) {
     const values = [];
     let paramNum = 1;
     let initialized = false;
@@ -29,7 +29,7 @@ class SegmentService {
     return client.query(query, values);
   }
 
-  deleteSegments(attributes, values, client) {
+  deleteSegments(attributes, values, client = this.db) {
     let filters = '';
 
     for (let i = 0; i < attributes.length; ++i) {

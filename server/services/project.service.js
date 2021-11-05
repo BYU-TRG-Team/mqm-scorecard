@@ -4,7 +4,7 @@ class ProjectService {
     this.db = db;
   }
 
-  createProject(projectName, specificationsFileName, specifications, metricFileName, bitextFileName, sourceWordCount, targetWordCount, client) {
+  createProject(projectName, specificationsFileName, specifications, metricFileName, bitextFileName, sourceWordCount, targetWordCount, client = this.db) {
     const createProjectQuery = `
       INSERT
       INTO projects(name, specifications_file, specifications, metric_file, bitext_file, source_word_count, target_word_count)
@@ -17,7 +17,7 @@ class ProjectService {
     return client.query(createProjectQuery, [projectName, specificationsFileName, specifications, metricFileName, bitextFileName, sourceWordCount, targetWordCount]);
   }
 
-  mapUsertoProject(projectId, userId, client) {
+  mapUsertoProject(projectId, userId, client = this.db) {
     const mapUserToProjectQuery = `
       INSERT
       INTO user_projects(project_id, user_id)
@@ -25,11 +25,7 @@ class ProjectService {
       ($1, $2);
     `;
 
-    if (client) {
-      return client.query(mapUserToProjectQuery, [projectId, userId]);
-    }
-
-    return this.db.query(mapUserToProjectQuery, [projectId, userId]);
+    return client.query(mapUserToProjectQuery, [projectId, userId]);
   }
 
   getAllProjects() {
