@@ -6,8 +6,8 @@ You can use the live demo: https://mqm-scorecard.herokuapp.com
 
 The installation instructions are targeted to users who know how to install a Node application on a webserver. We assume that you have already installed
 
-* A webserver with Node and PostgreSQL support
-* A PostgreSQL server with one database
+* A webserver with Node (v16.x) and PostgreSQL(v9.x)
+* A PostgreSQL server configured with a database
 * Git
 
 The example command line calls are written for Linux / Mac users. The process can be easily adapted to Windows systems.
