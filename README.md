@@ -80,6 +80,35 @@ npm run dev:react
 
 Seeding a local database should follow the same steps for seeding in production.
 
+## MQM Scoring Model
+
+The following formula is used within the express server to compute the OQS: 
+
+_APT: absolute penality total_<br/>
+_ONPT: overall normed penalty score_<br/>
+_OQF: overall quality fraction_<br/>
+_MSV: maximum score value, which is set to 100_<br/>
+_OQS: overall quality score_<br/>
+_sourceWordCount: total count of words in the source, where the text is parsed into words by using a **single whitespace as a delimiter**_<br/>
+_targetWordCount: total count of words in the target, where the text is parsed into words by using a **single whitespace as a delimiter**_<br/>
+
+**Severity Weights** 
+- Netural: 0
+- Minor: 1
+- Major: 5
+- Critical: 25
+
+```
+MSV = 100
+APT = Total severity weights of all errors (both target and source)
+ONPT = (APT * sourceWordCount) / targetWordCount
+OQF = 1 - (ONPT / sourceWordCount)
+OQS = (OQF * MSV)
+
+```
+
+NOTE: The final value of OQS is rounded to two decimals before being returned from the server.
+
 ## License
 
 ```
