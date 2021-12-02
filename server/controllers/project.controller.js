@@ -518,23 +518,38 @@ class ProjectController {
   }
 
   async generateProjectScore(projectId) {
-    const reportResponse = await this.issueService.getProjectReportById(projectId);
-    const projectResponse = await this.projectService.getProjectById(projectId);
+    /*
+    * Definitions
+    * APT: absolute penality total
+    * ONPT: overall normed penalty score
+    * OQF: overall quality fraction
+    * MSV: maximum score value
+    * OQS: overall quality score
+    */
+
     let sourceWordCount = 0;
     let targetWordCount = 0;
     let APT = 0;
-
-    if (projectResponse.rows.length > 0) {
-      sourceWordCount = projectResponse.rows[0].source_word_count;
-      targetWordCount = projectResponse.rows[0].target_word_count;
-    }
-
+    const MSV = 100;
     const SEVERITY_WEIGHTS = {
       neutral: 0,
       minor: 1,
       major: 5,
       critical: 25,
     };
+
+    const reportResponse = await this.issueService.getProjectReportById(projectId);
+    const projectResponse = await this.projectService.getProjectById(projectId);
+
+    if (projectResponse.rows.length > 0) {
+      /*
+      * Word count is parsed during the creation of a project.
+      * For both source and target, the count is retrieved by taking the text for each line, splitting the text into words by using a single whitespace character as a delimitter, and then adding the total numbers of words to the total count
+      * See the parseBiColumnBitext method in the FileParser support class for more details
+      */
+      sourceWordCount = projectResponse.rows[0].source_word_count;
+      targetWordCount = projectResponse.rows[0].target_word_count;
+    }
 
     reportResponse.rows.forEach((issue) => {
       issue.level.forEach((level) => {
@@ -546,11 +561,9 @@ class ProjectController {
 
     const ONPT = (APT * sourceWordCount) / targetWordCount;
     const OQF = 1 - (ONPT / sourceWordCount);
+    const OQS = (OQF * MSV).toFixed(2);
 
-    const MSV = 100;
-    const finalScore = (OQF * MSV).toFixed(2);
-
-    return finalScore;
+    return OQS;
   }
 }
 
