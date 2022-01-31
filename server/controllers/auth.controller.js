@@ -3,13 +3,14 @@ const smtpConfig = require('../config/smtp.config');
 const errorMessages = require('../messages/errors.messages');
 
 class AuthController {
-  constructor(smtpService, userService, tokenService, roleService, tokenHandler, db) {
+  constructor(smtpService, userService, tokenService, roleService, tokenHandler, db, logger) {
     this.smtpService = smtpService;
     this.userService = userService;
     this.tokenService = tokenService;
     this.roleService = roleService;
     this.tokenHandler = tokenHandler;
     this.db = db;
+    this.logger = logger;
   }
 
   /*
@@ -52,6 +53,10 @@ class AuthController {
       res.status(204).send();
       return;
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     } finally {
       if (transactionInProgress) {
@@ -100,6 +105,10 @@ class AuthController {
       res.cookie('scorecard_authtoken', token, cookieOptions);
       res.json({ token });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -114,6 +123,10 @@ class AuthController {
       res.clearCookie('scorecard_authtoken', { path: '/' }).send();
       return;
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -148,6 +161,10 @@ class AuthController {
 
       res.redirect('/login');
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -176,6 +193,10 @@ class AuthController {
       await this.sendPasswordResetEmail(req, user);
       res.redirect('/recover/sent');
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -201,6 +222,10 @@ class AuthController {
 
       res.redirect(`/recover/${req.params.token}`);
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -234,7 +259,11 @@ class AuthController {
       const { token, cookieOptions } = this.tokenHandler.generateUserAuthToken(user, req);
       res.cookie('scorecard_authtoken', token, cookieOptions);
       res.send({ token });
-    } catch (error) {
+    } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }

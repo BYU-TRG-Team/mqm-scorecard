@@ -2,10 +2,11 @@ const bcrypt = require('bcrypt');
 const errorMessages = require('../messages/errors.messages');
 
 class UserController {
-  constructor(userService, roleService, tokenHandler) {
+  constructor(userService, roleService, tokenHandler, logger) {
     this.userService = userService;
     this.roleService = roleService;
     this.tokenHandler = tokenHandler;
+    this.logger = logger;
   }
 
   /*
@@ -65,6 +66,10 @@ class UserController {
 
       res.status(204).send();
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -90,6 +95,10 @@ class UserController {
         email, username, name,
       });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       return res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -102,6 +111,10 @@ class UserController {
       const usersQuery = await this.userService.getAllUsers();
       return res.json({ users: usersQuery.rows });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       return res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -114,6 +127,10 @@ class UserController {
       await this.userService.deleteUser(req.params.id);
       res.status(204).send();
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }

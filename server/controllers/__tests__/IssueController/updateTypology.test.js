@@ -1,9 +1,11 @@
 /* eslint-disable no-undef */
 const IssueController = require('../../issue.controller');
 const FileParser = require('../../../support/fileparser.support');
+const IssueParser = require('../../../support/issueparser.support');
 const request = require('../../__mocks__/request');
 const response = require('../../__mocks__/response');
 const db = require('../../__mocks__/db');
+const logger = require('../../__mocks__/logger');
 const projectService = require('../../__mocks__/projectService');
 const issueService = require('../../__mocks__/issueService');
 const typologyFile = require('../../__mocks__/typologyFile');
@@ -727,12 +729,15 @@ describe('tests updateTypology method', () => {
     const fileParser = new FileParser();
     const pgClient = db();
     const mockedTypologyFile = typologyFile();
+    const mockedLogger = logger();
 
     const issueController = new IssueController(
       mockedIssueService,
       mockedProjectService,
       pgClient,
       fileParser,
+      IssueParser,
+      mockedLogger,
     );
 
     const req = request({
