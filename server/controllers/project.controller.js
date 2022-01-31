@@ -2,7 +2,7 @@ const parseXML = require('xml2js').parseStringPromise;
 const errorMessages = require('../messages/errors.messages');
 
 class ProjectController {
-  constructor(db, userService, roleService, fileParser, projectService, issueService, segmentService, issueParser) {
+  constructor(db, userService, roleService, fileParser, projectService, issueService, segmentService, issueParser, logger) {
     this.userService = userService;
     this.roleService = roleService;
     this.db = db;
@@ -11,6 +11,7 @@ class ProjectController {
     this.issueService = issueService;
     this.segmentService = segmentService;
     this.issueParser = issueParser;
+    this.logger = logger;
   }
 
   /*
@@ -32,6 +33,10 @@ class ProjectController {
 
       await this.upsertProject(req, res);
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).json({ message: errorMessages.generic });
     }
   }
@@ -52,6 +57,10 @@ class ProjectController {
       res.json({ projects: projectResponse.rows });
       return;
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).json({ message: errorMessages.generic });
     }
   }
@@ -69,6 +78,10 @@ class ProjectController {
 
       res.status(403).json({ message: errorMessages.accessForbidden });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).json({ message: errorMessages.generic });
     }
   }
@@ -113,6 +126,10 @@ class ProjectController {
 
       res.status(403).json({ message: errorMessages.accessForbidden });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).json({ message: errorMessages.generic });
     }
   }
@@ -121,49 +138,56 @@ class ProjectController {
   * GET /api/project/:projectId/report
   */
   async getProjectReport(req, res) {
-    if (await this.isUserAssignedToProject(req, req.params.projectId)) {
-      const projectResponse = await this.projectService.getProjectById(req.params.projectId);
-      const projectSegmentsResponse = await this.segmentService.getSegmentsByProjectId(req.params.projectId);
-      const projectSegmentErrorsResponse = await this.issueService.getSegmentErrorsByProjectId(req.params.projectId);
-      const compositeScore = await this.generateProjectScore(req.params.projectId);
-      const { name } = projectResponse.rows[0];
-      const key = {};
+    try {
+      if (await this.isUserAssignedToProject(req, req.params.projectId)) {
+        const projectResponse = await this.projectService.getProjectById(req.params.projectId);
+        const projectSegmentsResponse = await this.segmentService.getSegmentsByProjectId(req.params.projectId);
+        const projectSegmentErrorsResponse = await this.issueService.getSegmentErrorsByProjectId(req.params.projectId);
+        const compositeScore = await this.generateProjectScore(req.params.projectId);
+        const { name } = projectResponse.rows[0];
+        const key = {};
 
-      projectSegmentsResponse.rows.forEach((seg) => {
-        key[seg.id] = String(seg.segment_num);
+        projectSegmentsResponse.rows.forEach((seg) => {
+          key[seg.id] = String(seg.segment_num);
+        });
+
+        res.json({
+          projectName: name,
+          key,
+          errors: projectSegmentErrorsResponse.rows.map((segmentError) => (
+            {
+              segment: String(segmentError.segment_id),
+              target: segmentError.type,
+              name: segmentError.issue_name,
+              severity: segmentError.level,
+              issueReportId: String(segmentError.id),
+              issueId: segmentError.issue,
+              note: segmentError.note,
+              highlighting: {
+                startIndex: segmentError.highlight_start_index,
+                endIndex: segmentError.highlight_end_index,
+              },
+            }
+          )),
+          scores: {
+            compositeScore,
+          },
+          segments: {
+            source: projectSegmentsResponse.rows.map((seg) => seg.segment_data.Source),
+            target: projectSegmentsResponse.rows.map((seg) => seg.segment_data.Target),
+          },
+        });
+
+        return;
+      }
+      res.status(403).json({ message: errorMessages.accessForbidden });
+    } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
       });
-
-      res.json({
-        projectName: name,
-        key,
-        errors: projectSegmentErrorsResponse.rows.map((segmentError) => (
-          {
-            segment: String(segmentError.segment_id),
-            target: segmentError.type,
-            name: segmentError.issue_name,
-            severity: segmentError.level,
-            issueReportId: String(segmentError.id),
-            issueId: segmentError.issue,
-            note: segmentError.note,
-            highlighting: {
-              startIndex: segmentError.highlight_start_index,
-              endIndex: segmentError.highlight_end_index,
-            },
-          }
-        )),
-        scores: {
-          compositeScore,
-        },
-        segments: {
-          source: projectSegmentsResponse.rows.map((seg) => seg.segment_data.Source),
-          target: projectSegmentsResponse.rows.map((seg) => seg.segment_data.Target),
-        },
-      });
-
-      return;
+      res.status(500).send({ message: errorMessages.generic });
     }
-
-    res.status(403).json({ message: errorMessages.accessForbidden });
   }
 
   /*
@@ -181,6 +205,10 @@ class ProjectController {
 
       return res.status(403).json({ message: errorMessages.accessForbidden });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       return res.status(500).json({ message: errorMessages.generic });
     }
   }
@@ -196,6 +224,10 @@ class ProjectController {
       res.status(204).send();
       return;
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).json({ message: errorMessages.generic });
     }
   }
@@ -240,6 +272,10 @@ class ProjectController {
       res.status(403).json({ message: errorMessages.accessForbidden });
       return;
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).json({ message: errorMessages.generic });
     }
   }
@@ -261,6 +297,10 @@ class ProjectController {
 
       return res.status(403).json({ message: errorMessages.accessForbidden });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       return res.status(500).json({ message: errorMessages.generic });
     }
   }
@@ -443,6 +483,10 @@ class ProjectController {
       const message = isUpdate ? 'Project updated successfully.' : 'Project created successfully.';
       res.json({ message });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).json({ message: errorMessages.generic });
     } finally {
       if (transactionInProgress) {

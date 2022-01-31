@@ -1,7 +1,8 @@
-// SMTP Transporter
-
 const nodemailer = require('nodemailer');
+const winston = require('winston');
 const smtpConfig = require('../config/smtp.config');
+
+// SMTP Transporter
 
 const transporter = nodemailer.createTransport({
   service: smtpConfig.provider,
@@ -9,6 +10,14 @@ const transporter = nodemailer.createTransport({
     user: smtpConfig.email,
     pass: smtpConfig.password, // naturally, replace both with your real credentials or an application-specific password
   },
+});
+
+// Logger
+
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console(),
+  ],
 });
 
 // DB
@@ -63,23 +72,23 @@ const segmentService = new SegmentService(db);
 
 const AuthController = require('../controllers/auth.controller');
 
-const authController = new AuthController(smtpService, userService, tokenService, roleService, tokenHandler, db);
+const authController = new AuthController(smtpService, userService, tokenService, roleService, tokenHandler, db, logger);
 
 const UserController = require('../controllers/user.controller');
 
-const userController = new UserController(userService, roleService, tokenHandler);
+const userController = new UserController(userService, roleService, tokenHandler, logger);
 
 const ProjectController = require('../controllers/project.controller');
 
-const projectController = new ProjectController(db, userService, roleService, fileParser, projectService, issueService, segmentService, issueParser);
+const projectController = new ProjectController(db, userService, roleService, fileParser, projectService, issueService, segmentService, issueParser, logger);
 
 const SegmentController = require('../controllers/segment.controller');
 
-const segmentController = new SegmentController(segmentService, projectService, issueService);
+const segmentController = new SegmentController(segmentService, projectService, issueService, logger);
 
 const IssueController = require('../controllers/issue.controller');
 
-const issueController = new IssueController(issueService, projectService, db, fileParser, issueParser);
+const issueController = new IssueController(issueService, projectService, db, fileParser, issueParser, logger);
 
 module.exports = {
   AuthController: authController,
@@ -87,4 +96,5 @@ module.exports = {
   ProjectController: projectController,
   SegmentController: segmentController,
   IssueController: issueController,
+  logger,
 };

@@ -7,6 +7,7 @@ const tokenHandler = require('../../../support/tokenhandler.support');
 const UserController = require('../../user.controller');
 const request = require('../../__mocks__/request');
 const response = require('../../__mocks__/response');
+const logger = require('../../__mocks__/logger');
 
 expect.extend({
   toBeArrayWithElements(received, comparedArray) {
@@ -23,11 +24,13 @@ describe('tests updateUser method', () => {
   it('should update the user profile once with username, email, name, and password', async () => {
     const mockedUserService = userService();
     const mockedRoleService = roleService();
+    const mockedLogger = logger();
 
     const userController = new UserController(
       mockedUserService,
       mockedRoleService,
       tokenHandler,
+      mockedLogger,
     );
 
     const req = request({
@@ -62,11 +65,13 @@ describe('tests updateUser method', () => {
   it('should update the user profile once with username, email, name, and password, and then a second time with roleId', async () => {
     const mockedUserService = userService();
     const mockedRoleService = roleService();
+    const mockedLogger = logger();
 
     const userController = new UserController(
       mockedUserService,
       mockedRoleService,
       tokenHandler,
+      mockedLogger,
     );
 
     const req = request({

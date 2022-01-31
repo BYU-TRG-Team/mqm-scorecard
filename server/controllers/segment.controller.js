@@ -1,10 +1,11 @@
 const errorMessages = require('../messages/errors.messages');
 
 class SegmentController {
-  constructor(segmentService, projectService, issueService) {
+  constructor(segmentService, projectService, issueService, logger) {
     this.segmentService = segmentService;
     this.projectService = projectService;
     this.issueService = issueService;
+    this.logger = logger;
   }
 
   /*
@@ -44,6 +45,10 @@ class SegmentController {
 
       res.status(403).json({ message: errorMessages.accessForbidden });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
@@ -69,6 +74,10 @@ class SegmentController {
 
       res.status(403).json({ message: errorMessages.accessForbidden });
     } catch (err) {
+      this.logger.log({
+        level: 'error',
+        mesage: err,
+      });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
