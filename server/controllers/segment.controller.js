@@ -18,7 +18,7 @@ class SegmentController {
   * @highlightStartIndex
   * @highlightEndIndex
   */
-  async createSegmentError(req, res) {
+  async createSegmentIssue(req, res) {
     try {
       const {
         note, highlighting, issue, level, type, highlightStartIndex, highlightEndIndex,
@@ -38,7 +38,7 @@ class SegmentController {
       }
 
       if (await this.isUserAssignedToProject(req, segment.project_id)) {
-        await this.issueService.addSegmentError(req.params.segmentId, note, highlighting, issue, level, type, highlightStartIndex, highlightEndIndex);
+        await this.issueService.addSegmentIssue(req.params.segmentId, note, highlighting, issue, level, type, highlightStartIndex, highlightEndIndex);
         res.status(204).send();
         return;
       }
@@ -47,18 +47,18 @@ class SegmentController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }
   }
 
   /*
-  * DELETE /api/segment/error/:errorId
+  * DELETE /api/segment/error/:issueId
   */
-  async deleteSegmentError(req, res) {
+  async deleteSegmentIssue(req, res) {
     try {
-      const segmentResponse = await this.segmentService.getSegmentByErrorId(req.params.errorId);
+      const segmentResponse = await this.segmentService.getSegmentByIssueId(req.params.issueId);
       const segment = segmentResponse.rows[0];
 
       if (segment === undefined) {
@@ -67,7 +67,7 @@ class SegmentController {
       }
 
       if (await this.isUserAssignedToProject(req, segment.project_id)) {
-        await this.issueService.deleteSegmentErrorById(req.params.errorId);
+        await this.issueService.deleteSegmentIssueById(req.params.issueId);
         res.status(204).send();
         return;
       }
@@ -76,7 +76,7 @@ class SegmentController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }

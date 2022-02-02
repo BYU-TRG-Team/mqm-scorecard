@@ -4,7 +4,7 @@ module.exports = (methods) => ({
   deleteSegments: jest.fn(),
   getSegmentsByProjectId: jest.fn(),
   getSegmentById: jest.fn(),
-  getSegmentByErrorId: jest.fn(),
+  getSegmentByIssueId: jest.fn(),
   setSegmentAttributes: jest.fn(),
   ...methods,
 });

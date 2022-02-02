@@ -51,11 +51,11 @@ class FileParser {
 
   parseTypologyFile(node, parent, level = -1) {
     let error = '';
-    const errorTypes = [];
+    const issueTypes = [];
 
     if (level > 3) {
       error = 'Error reading typology file: error types can not be more than three levels deep';
-      return [error, errorTypes];
+      return [error, issueTypes];
     }
 
     if (level > -1) {
@@ -65,18 +65,18 @@ class FileParser {
 
       if (!node.$.name) {
         error = 'Error reading typology file: error type must have a name attribute';
-        return [error, errorTypes];
+        return [error, issueTypes];
       }
 
       if (!node.$.id) {
         error = 'Error reading typology file: error type must have an id attribute';
-        return [error, errorTypes];
+        return [error, issueTypes];
       }
 
       if (node.description) {
         if (!Array.isArray(node.description)) {
           error = 'Error reading typology file: "description" element cannot have any attributes.';
-          return [error, errorTypes];
+          return [error, issueTypes];
         }
         [description] = node.description;
       }
@@ -84,7 +84,7 @@ class FileParser {
       if (node.examples) {
         if ((!Array.isArray(node.examples))) {
           error = 'Error reading typology file: "examples" element cannot have any attributes.';
-          return [error, errorTypes];
+          return [error, issueTypes];
         }
         [examples] = node.examples;
       }
@@ -92,12 +92,12 @@ class FileParser {
       if (node.notes) {
         if ((!Array.isArray(node.notes))) {
           error = 'Error reading typology file: "notes" element cannot have any attributes.';
-          return [error, errorTypes];
+          return [error, issueTypes];
         }
         [notes] = node.notes;
       }
 
-      errorTypes.push({
+      issueTypes.push({
         id: node.$.id,
         name: node.$.name,
         description,
@@ -116,18 +116,18 @@ class FileParser {
           childNodeParent = node.$.id;
         }
 
-        const [err, childErrorTypes] = this.parseTypologyFile(childNode, childNodeParent, level + 1);
+        const [err, childIssueTypes] = this.parseTypologyFile(childNode, childNodeParent, level + 1);
 
         if (err) {
           error = err;
           break;
         }
 
-        errorTypes.push(...childErrorTypes);
+        issueTypes.push(...childIssueTypes);
       }
     }
 
-    return [error, errorTypes];
+    return [error, issueTypes];
   }
 
   parseBiColumnBitext(file) {

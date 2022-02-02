@@ -35,7 +35,7 @@ describe('tests getProject method', () => {
           { issue: 'fluency', level: ['critical', 'minor'], type: ['source', 'target'] },
         ],
       })),
-      getSegmentErrorsBySegmentId: jest.fn(() => ({
+      getSegmentIssuesBySegmentId: jest.fn(() => ({
         rows: [
           {
             type: 'source',
@@ -153,7 +153,7 @@ describe('tests getProject method', () => {
           { issue: 'fluency', level: ['critical', 'minor'], type: ['source', 'target'] },
         ],
       })),
-      getSegmentErrorsBySegmentId: jest.fn(() => ({
+      getSegmentIssuesBySegmentId: jest.fn(() => ({
         rows: [
           {
             type: 'source',
@@ -229,7 +229,7 @@ describe('tests getProject method', () => {
           { issue: 'fluency', level: ['critical', 'minor'], type: ['source', 'target'] },
         ],
       })),
-      getSegmentErrorsBySegmentId: jest.fn(() => ({
+      getSegmentIssuesBySegmentId: jest.fn(() => ({
         rows: [
           {
             type: 'source',
