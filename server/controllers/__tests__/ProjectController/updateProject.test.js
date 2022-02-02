@@ -754,7 +754,7 @@ describe('tests updateProject method', () => {
     });
     const mockedIssueService = issueService({
       getAllIssues: () => ({ rows: ['test'] }),
-      getSegmentErrorsBySegmentId: () => ({ rows: [{}] }),
+      getSegmentIssuesBySegmentId: () => ({ rows: [{}] }),
     });
     const mockedSegmentService = segmentService({
       getSegmentsByProjectId: jest.fn(() => ({ rows: [{}] })),

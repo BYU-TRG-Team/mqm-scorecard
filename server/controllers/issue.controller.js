@@ -19,7 +19,7 @@ class IssueController {
   async updateTypology(req, res) {
     const client = await this.db.connect();
     let typologyFile;
-    const newErrorTypes = [];
+    const newIssueTypes = [];
 
     if (req.files) {
       typologyFile = req.files.typologyFile;
@@ -61,34 +61,34 @@ class IssueController {
       await this.issueService.deleteIssues([], [], client);
 
       for (let i = 0; i < typologyFileResponse.length; ++i) {
-        const selectedErrorType = typologyFileResponse[i];
+        const selectedIssueType = typologyFileResponse[i];
         const {
           id, parent, name, description, notes, examples,
-        } = selectedErrorType;
+        } = selectedIssueType;
 
-        newErrorTypes.push(name);
+        newIssueTypes.push(name);
         await this.issueService.createIssue(id, parent, name, description, notes, examples, client);
       }
 
       await client.query('COMMIT');
 
-      let message = 'The following error types have been created: ';
-      newErrorTypes.forEach((errorType, index) => {
+      let message = 'The following issue types have been created: ';
+      newIssueTypes.forEach((issueType, index) => {
         if (
           index > 0
         ) {
-          message += `, ${errorType}`;
+          message += `, ${issueType}`;
           return;
         }
 
-        message += `${errorType}`;
+        message += `${issueType}`;
       });
 
       res.json({ message });
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       await client.query('ROLLBACK');
       res.status(500).json({ message: errorMessages.generic });
@@ -102,7 +102,7 @@ class IssueController {
   * @typologyFile
   */
 
-  async getTypology(req, res) {
+  async getTypology(_req, res) {
     try {
       const issueResponse = await this.issueService.getAllIssues();
       const parsedIssues = this.issueParser.parseIssues(issueResponse.rows);
@@ -128,7 +128,7 @@ class IssueController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).json({ message: errorMessages.generic });
     }

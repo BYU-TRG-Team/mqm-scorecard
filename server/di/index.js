@@ -1,14 +1,19 @@
 const nodemailer = require('nodemailer');
 const winston = require('winston');
+
+const {
+  combine, errors, colorize, timestamp, prettyPrint,
+} = winston.format;
 const smtpConfig = require('../config/smtp.config');
 
 // SMTP Transporter
 
 const transporter = nodemailer.createTransport({
   service: smtpConfig.provider,
+  secure: true,
   auth: {
     user: smtpConfig.email,
-    pass: smtpConfig.password, // naturally, replace both with your real credentials or an application-specific password
+    pass: smtpConfig.password,
   },
 });
 
@@ -18,9 +23,13 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
   ],
+  format: combine(
+    errors({ stack: true }), // <-- use errors format
+    colorize(),
+    timestamp(),
+    prettyPrint(),
+  ),
 });
-
-// DB
 
 const db = require('../db');
 

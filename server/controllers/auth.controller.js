@@ -55,7 +55,7 @@ class AuthController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     } finally {
@@ -107,7 +107,7 @@ class AuthController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }
@@ -125,7 +125,7 @@ class AuthController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }
@@ -163,7 +163,7 @@ class AuthController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }
@@ -195,7 +195,7 @@ class AuthController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }
@@ -224,7 +224,7 @@ class AuthController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }
@@ -262,7 +262,7 @@ class AuthController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }

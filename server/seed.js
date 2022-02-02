@@ -6,10 +6,6 @@ const dropUserTable = `
 DROP TABLE IF EXISTS users CASCADE;
 `;
 
-const dropRolesTable = `
-DROP TABLE IF EXISTS roles CASCADE;
-`;
-
 const dropTokensTable = `
 DROP TABLE IF EXISTS tokens CASCADE;
 `;
@@ -36,13 +32,6 @@ DROP TABLE IF EXISTS user_projects CASCADE;
 
 const dropSegmentIssuesTable = `
 DROP TABLE IF EXISTS segment_issues CASCADE;
-`;
-
-const createRolesTable = `
-CREATE TABLE IF NOT EXISTS roles(
-role_id serial PRIMARY KEY,
-role_name text UNIQUE NOT NULL
-);
 `;
 
 const createUsersTable = `
@@ -161,14 +150,12 @@ INSERT INTO roles (role_name) VALUES
 (async function seedDatabase() {
   await db.query(dropTokensTable);
   await db.query(dropUserTable);
-  await db.query(dropRolesTable);
   await db.query(dropIssuesTable);
   await db.query(dropProjectsTable);
   await db.query(dropProjectIssuesTable);
   await db.query(dropUserProjectsTable);
   await db.query(dropSegmentsTable);
   await db.query(dropSegmentIssuesTable);
-  await db.query(createRolesTable);
   await db.query(createUsersTable);
   await db.query(createTokensTable);
   await db.query(createProjectsTable);

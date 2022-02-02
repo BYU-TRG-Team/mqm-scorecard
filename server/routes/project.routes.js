@@ -13,7 +13,7 @@ module.exports = (app, di) => {
     '/api/project/:projectId/report',
     authJwt.verifyToken,
     authJwt.checkVerification,
-    di.ProjectController.getProjectReport.bind(di.ProjectController),
+    di.ProjectController.getProjectJSONReport.bind(di.ProjectController),
   );
 
   app.get(

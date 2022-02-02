@@ -5,13 +5,13 @@ module.exports = (app, di) => {
     '/api/segment/:segmentId/error',
     authJwt.verifyToken,
     authJwt.checkVerification,
-    di.SegmentController.createSegmentError.bind(di.SegmentController),
+    di.SegmentController.createSegmentIssue.bind(di.SegmentController),
   );
 
   app.delete(
-    '/api/segment/error/:errorId',
+    '/api/segment/error/:issueId',
     authJwt.verifyToken,
     authJwt.checkVerification,
-    di.SegmentController.deleteSegmentError.bind(di.SegmentController),
+    di.SegmentController.deleteSegmentIssue.bind(di.SegmentController),
   );
 };

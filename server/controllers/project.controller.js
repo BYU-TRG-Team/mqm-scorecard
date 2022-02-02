@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const parseXML = require('xml2js').parseStringPromise;
 const errorMessages = require('../messages/errors.messages');
 
@@ -35,7 +36,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).json({ message: errorMessages.generic });
     }
@@ -59,7 +60,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).json({ message: errorMessages.generic });
     }
@@ -80,7 +81,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).json({ message: errorMessages.generic });
     }
@@ -92,43 +93,39 @@ class ProjectController {
   async getProject(req, res) {
     try {
       if (await this.isUserAssignedToProject(req, req.params.projectId)) {
-        try {
-          const projectResponse = await this.projectService.getProjectById(req.params.projectId);
-          const project = projectResponse.rows[0];
-          const projectUserResponse = await this.projectService.getProjectUsersById(project.project_id);
-          const projectSegmentsResponse = await this.segmentService.getSegmentsByProjectId(project.project_id);
-          const issueResponse = await this.issueService.getProjectIssuesById(project.project_id);
-          const report = await this.createReport(project.project_id);
+        const projectResponse = await this.projectService.getProjectById(req.params.projectId);
+        const project = projectResponse.rows[0];
+        const projectUserResponse = await this.projectService.getProjectUsersById(project.project_id);
+        const projectSegmentsResponse = await this.segmentService.getSegmentsByProjectId(project.project_id);
+        const issueResponse = await this.issueService.getProjectIssuesById(project.project_id);
+        const report = await this.createReport(project.project_id);
 
-          // Organize segment errors by source and target
-          for (let i = 0; i < projectSegmentsResponse.rows.length; ++i) {
-            const { id } = projectSegmentsResponse.rows[i];
-            const segmentErrors = await this.issueService.getSegmentErrorsBySegmentId(id);
-            const sourceErrors = segmentErrors.rows.filter((segmentError) => segmentError.type === 'source');
-            const targetErrors = segmentErrors.rows.filter((segmentError) => segmentError.type === 'target');
-            projectSegmentsResponse.rows[i].sourceErrors = sourceErrors;
-            projectSegmentsResponse.rows[i].targetErrors = targetErrors;
-          }
-
-          res.json({
-            project,
-            report,
-            users: projectUserResponse.rows,
-            segments: projectSegmentsResponse.rows,
-            issues: this.issueParser.parseIssues(issueResponse.rows),
-            score: await this.generateProjectScore(req.params.projectId),
-          });
-          return;
-        } catch (err) {
-          res.status(500).json({ message: errorMessages.generic });
+        // Organize segment errors by source and target
+        for (let i = 0; i < projectSegmentsResponse.rows.length; ++i) {
+          const { id } = projectSegmentsResponse.rows[i];
+          const segmentIssues = await this.issueService.getSegmentIssuesBySegmentId(id);
+          const sourceIssues = segmentIssues.rows.filter((issue) => issue.type === 'source');
+          const targetIssues = segmentIssues.rows.filter((issue) => issue.type === 'target');
+          projectSegmentsResponse.rows[i].sourceErrors = sourceIssues;
+          projectSegmentsResponse.rows[i].targetErrors = targetIssues;
         }
+
+        res.json({
+          project,
+          report,
+          users: projectUserResponse.rows,
+          segments: projectSegmentsResponse.rows,
+          issues: this.issueParser.parseIssues(issueResponse.rows),
+          score: await this.generateProjectScore(req.params.projectId),
+        });
+        return;
       }
 
       res.status(403).json({ message: errorMessages.accessForbidden });
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).json({ message: errorMessages.generic });
     }
@@ -137,12 +134,33 @@ class ProjectController {
   /*
   * GET /api/project/:projectId/report
   */
-  async getProjectReport(req, res) {
+  async getProjectJSONReport(req, res) {
     try {
       if (await this.isUserAssignedToProject(req, req.params.projectId)) {
+        const metric = (await this.issueService.getProjectIssuesById(req.params.projectId)).rows;
+
+        // Maps metric to JSON format required by Python app
+        const metricJSONTranslator = (rawMetric) => {
+          const translator = {
+            to: 'issueId',
+            from: 'issue',
+          };
+
+          const translateIssue = (issue) => {
+            if (issue[translator.from]) {
+              issue[translator.to] = issue[translator.from];
+              delete issue[translator.from];
+            }
+          };
+
+          rawMetric.forEach((issue) => translateIssue(issue));
+        };
+
+        metricJSONTranslator(metric);
+
         const projectResponse = await this.projectService.getProjectById(req.params.projectId);
         const projectSegmentsResponse = await this.segmentService.getSegmentsByProjectId(req.params.projectId);
-        const projectSegmentErrorsResponse = await this.issueService.getSegmentErrorsByProjectId(req.params.projectId);
+        const projectSegmentIssuesResponse = await this.issueService.getSegmentIssuesByProjectId(req.params.projectId);
         const compositeScore = await this.generateProjectScore(req.params.projectId);
         const { name } = projectResponse.rows[0];
         const key = {};
@@ -154,21 +172,22 @@ class ProjectController {
         res.json({
           projectName: name,
           key,
-          errors: projectSegmentErrorsResponse.rows.map((segmentError) => (
+          errors: projectSegmentIssuesResponse.rows.map((segmentIssue) => (
             {
-              segment: String(segmentError.segment_id),
-              target: segmentError.type,
-              name: segmentError.issue_name,
-              severity: segmentError.level,
-              issueReportId: String(segmentError.id),
-              issueId: segmentError.issue,
-              note: segmentError.note,
+              segment: String(segmentIssue.segment_id),
+              target: segmentIssue.type,
+              name: segmentIssue.issue_name,
+              severity: segmentIssue.level,
+              issueReportId: String(segmentIssue.id),
+              issueId: segmentIssue.issue,
+              note: segmentIssue.note,
               highlighting: {
-                startIndex: segmentError.highlight_start_index,
-                endIndex: segmentError.highlight_end_index,
+                startIndex: segmentIssue.highlight_start_index,
+                endIndex: segmentIssue.highlight_end_index,
               },
             }
           )),
+          metric,
           scores: {
             compositeScore,
           },
@@ -184,7 +203,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }
@@ -207,7 +226,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       return res.status(500).json({ message: errorMessages.generic });
     }
@@ -226,7 +245,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).json({ message: errorMessages.generic });
     }
@@ -274,7 +293,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).json({ message: errorMessages.generic });
     }
@@ -299,7 +318,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       return res.status(500).json({ message: errorMessages.generic });
     }
@@ -321,7 +340,7 @@ class ProjectController {
     let targetWordCount = 0;
     let projectId;
     let transactionInProgress = false;
-    const isAdmin = req.role === 'superadmin' || req.role === 'admin';
+    const isAdmin = ['superadmin', 'admin'].includes(req.role);
 
     if (req.params && req.params.projectId) {
       projectId = req.params.projectId;
@@ -334,14 +353,14 @@ class ProjectController {
     }
 
     try {
-      const hasSegmentErrors = projectId && await this.hasSegmentErrors(projectId);
+      const hasSegmentIssues = projectId && await this.hasSegmentIssues(projectId);
 
       if (!await this.isTypologyImported()) {
         res.status(400).json({ message: 'Typology not yet imported. Please contact an administrator for help.' });
         return;
       }
 
-      if ((metricFile !== undefined || bitextFile !== undefined) && hasSegmentErrors) {
+      if ((metricFile !== undefined || bitextFile !== undefined) && hasSegmentIssues) {
         res.status(400).json({ message: 'Changing the bi-text or metric files is not possible until all reported issues are removed.' });
         return;
       }
@@ -453,12 +472,12 @@ class ProjectController {
           const issueResponse = await this.issueService.getIssueById(selectedIssue.issue, client);
 
           if (issueResponse.rows.length === 0) {
-            res.status(400).json({ message: `Error type "${selectedIssue.issue}" does not exist in the typology` });
+            res.status(400).json({ message: `Issue type "${selectedIssue.issue}" does not exist in the typology` });
             return;
           }
 
           if (issueResponse.rows[0].parent !== selectedIssue.parent) {
-            res.status(400).json({ message: `Error type "${selectedIssue.issue}" does not have the parent error type "${selectedIssue.parent}"` });
+            res.status(400).json({ message: `Issue type "${selectedIssue.issue}" does not have the parent issue type "${selectedIssue.parent}"` });
             return;
           }
 
@@ -485,7 +504,7 @@ class ProjectController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).json({ message: errorMessages.generic });
     } finally {
@@ -509,21 +528,21 @@ class ProjectController {
     return issueResponse.rows.length > 0;
   }
 
-  async hasSegmentErrors(projectId) {
+  async hasSegmentIssues(projectId) {
     const projectSegmentsResponse = await this.segmentService.getSegmentsByProjectId(projectId);
-    let hasSegmentErrors = false;
+    let hasSegmentIssues = false;
 
     for (let i = 0; i < projectSegmentsResponse.rows.length; ++i) {
       const { id } = projectSegmentsResponse.rows[i];
-      const segmentErrors = await this.issueService.getSegmentErrorsBySegmentId(id);
+      const segmentIssues = await this.issueService.getSegmentIssuesBySegmentId(id);
 
-      if (segmentErrors.rows.length > 0) {
-        hasSegmentErrors = true;
+      if (segmentIssues.rows.length > 0) {
+        hasSegmentIssues = true;
         break;
       }
     }
 
-    return hasSegmentErrors;
+    return hasSegmentIssues;
   }
 
   async createReport(projectId) {
@@ -542,13 +561,13 @@ class ProjectController {
       const targetCritical = issue.level.filter((level, index) => level === 'critical' && issue.type[index] === 'target').length;
 
       report[issue.issue] = [
-        // Source errors
+        // Source issues
         sourceNetural,
         sourceMinor,
         sourceMajor,
         sourceCritical,
         sourceNetural + sourceMinor + sourceMajor + sourceCritical,
-        // Target errors
+        // Target issues
         targetNetural,
         targetMinor,
         targetMajor,

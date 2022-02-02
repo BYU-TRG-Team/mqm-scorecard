@@ -64,7 +64,7 @@ class SegmentService {
     return this.db.query(query, [segmentId]);
   }
 
-  getSegmentByErrorId(errorId) {
+  getSegmentByIssueId(errorId) {
     const query = `
       SELECT segments.project_id as project_id from segments join segment_issues ON segments.id = segment_issues.segment_id WHERE segment_issues.id=$1
     `;

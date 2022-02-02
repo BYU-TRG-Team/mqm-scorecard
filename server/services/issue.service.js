@@ -87,7 +87,7 @@ class IssueService {
     return this.db.query(query);
   }
 
-  addSegmentError(segmentId, note, highlighting, issue, level, type, highlightStartindex, highlightEndIndex) {
+  addSegmentIssue(segmentId, note, highlighting, issue, level, type, highlightStartindex, highlightEndIndex) {
     const query = `
       INSERT 
       INTO segment_issues(segment_id, note, highlighting, issue, level, type, highlight_start_index, highlight_end_index)
@@ -98,7 +98,7 @@ class IssueService {
     return this.db.query(query, [segmentId, note, highlighting, issue, level, type, highlightStartindex, highlightEndIndex]);
   }
 
-  getSegmentErrorsBySegmentId(segmentId) {
+  getSegmentIssuesBySegmentId(segmentId) {
     const query = `
       SELECT 
       segment_issues.id as id, 
@@ -116,7 +116,7 @@ class IssueService {
     return this.db.query(query, [segmentId]);
   }
 
-  getSegmentErrorsByProjectId(projectId) {
+  getSegmentIssuesByProjectId(projectId) {
     const query = `
       SELECT 
       table1.id as id, 
@@ -152,12 +152,12 @@ class IssueService {
     return this.db.query(query, [projectId]);
   }
 
-  deleteSegmentErrorById(errorId) {
+  deleteSegmentIssueById(issueId) {
     const query = `
       DELETE FROM segment_issues WHERE id=$1;
     `;
 
-    return this.db.query(query, [errorId]);
+    return this.db.query(query, [issueId]);
   }
 
   getProjectReportById(projectId) {

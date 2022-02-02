@@ -6,9 +6,9 @@ const segmentService = require('../../__mocks__/segmentService');
 const projectService = require('../../__mocks__/projectService');
 const issueService = require('../../__mocks__/issueService');
 
-describe('tests deleteSegmentError method', () => {
+describe('tests deleteSegmentIssue method', () => {
   it('should throw a 400 error', async () => {
-    const mockedSegmentService = segmentService({ getSegmentByErrorId: () => ({ rows: [] }) });
+    const mockedSegmentService = segmentService({ getSegmentByIssueId: () => ({ rows: [] }) });
     const mockedProjectService = projectService();
     const mockedIssueService = issueService();
 
@@ -27,14 +27,14 @@ describe('tests deleteSegmentError method', () => {
 
     const res = response();
     jest.spyOn(res, 'status');
-    await segmentController.deleteSegmentError(req, res);
+    await segmentController.deleteSegmentIssue(req, res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
   it('should throw a 403 error', async () => {
-    const mockedSegmentService = segmentService({ getSegmentByErrorId: () => ({ rows: [{ project_id: 10 }] }) });
+    const mockedSegmentService = segmentService({ getSegmentByIssueId: () => ({ rows: [{ project_id: 10 }] }) });
     const mockedProjectService = projectService({ getProjectsByUserId: jest.fn(() => ({ rows: [{ project_id: 11 }] })) });
     const mockedIssueService = issueService();
 
@@ -53,14 +53,14 @@ describe('tests deleteSegmentError method', () => {
 
     const res = response();
     jest.spyOn(res, 'status');
-    await segmentController.deleteSegmentError(req, res);
+    await segmentController.deleteSegmentIssue(req, res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(403);
   });
 
-  it('should call deleteSegmentErrorById with errorId', async () => {
-    const mockedSegmentService = segmentService({ getSegmentByErrorId: () => ({ rows: [{ project_id: 10 }] }) });
+  it('should call deleteSegmentIssueById with errorId', async () => {
+    const mockedSegmentService = segmentService({ getSegmentByIssueId: () => ({ rows: [{ project_id: 10 }] }) });
     const mockedProjectService = projectService({ getProjectsByUserId: jest.fn(() => ({ rows: [{ project_id: 10 }] })) });
     const mockedIssueService = issueService();
 
@@ -79,12 +79,12 @@ describe('tests deleteSegmentError method', () => {
 
     const res = response();
     jest.spyOn(res, 'status');
-    await segmentController.deleteSegmentError(req, res);
+    await segmentController.deleteSegmentIssue(req, res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(204);
 
-    expect(mockedIssueService.deleteSegmentErrorById).toHaveBeenCalledTimes(1);
-    expect(mockedIssueService.deleteSegmentErrorById).toHaveBeenCalledWith(req.params.errorId);
+    expect(mockedIssueService.deleteSegmentIssueById).toHaveBeenCalledTimes(1);
+    expect(mockedIssueService.deleteSegmentIssueById).toHaveBeenCalledWith(req.params.issueId);
   });
 });

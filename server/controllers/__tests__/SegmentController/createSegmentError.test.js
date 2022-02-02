@@ -6,7 +6,7 @@ const segmentService = require('../../__mocks__/segmentService');
 const projectService = require('../../__mocks__/projectService');
 const issueService = require('../../__mocks__/issueService');
 
-describe('tests createSegmentError method', () => {
+describe('tests createSegmentIssue method', () => {
   it('should throw a 400 error', async () => {
     const mockedSegmentService = segmentService();
     const mockedProjectService = projectService();
@@ -35,7 +35,7 @@ describe('tests createSegmentError method', () => {
 
     const res = response();
     jest.spyOn(res, 'status');
-    await segmentController.createSegmentError(req, res);
+    await segmentController.createSegmentIssue(req, res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(400);
@@ -70,7 +70,7 @@ describe('tests createSegmentError method', () => {
 
     const res = response();
     jest.spyOn(res, 'status');
-    await segmentController.createSegmentError(req, res);
+    await segmentController.createSegmentIssue(req, res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(404);
@@ -105,13 +105,13 @@ describe('tests createSegmentError method', () => {
 
     const res = response();
     jest.spyOn(res, 'status');
-    await segmentController.createSegmentError(req, res);
+    await segmentController.createSegmentIssue(req, res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(403);
   });
 
-  it('should call addSegmentError with segmentId, note, highlighting, issue, level, type, highlightStartIndex, highlightEndIndex', async () => {
+  it('should call addSegmentIssue with segmentId, note, highlighting, issue, level, type, highlightStartIndex, highlightEndIndex', async () => {
     const mockedSegmentService = segmentService({ getSegmentById: jest.fn(() => ({ rows: [{ project_id: 10 }] })) });
     const mockedProjectService = projectService({ getProjectsByUserId: jest.fn(() => ({ rows: [{ project_id: 10 }] })) });
     const mockedIssueService = issueService();
@@ -140,12 +140,12 @@ describe('tests createSegmentError method', () => {
 
     const res = response();
     jest.spyOn(res, 'status');
-    await segmentController.createSegmentError(req, res);
+    await segmentController.createSegmentIssue(req, res);
 
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(204);
 
-    expect(mockedIssueService.addSegmentError).toHaveBeenCalledTimes(1);
-    expect(mockedIssueService.addSegmentError).toHaveBeenCalledWith(10, req.body.note, req.body.highlighting, req.body.issue, req.body.level, req.body.type, req.body.highlightStartIndex, req.body.highlightEndIndex);
+    expect(mockedIssueService.addSegmentIssue).toHaveBeenCalledTimes(1);
+    expect(mockedIssueService.addSegmentIssue).toHaveBeenCalledWith(10, req.body.note, req.body.highlighting, req.body.issue, req.body.level, req.body.type, req.body.highlightStartIndex, req.body.highlightEndIndex);
   });
 });

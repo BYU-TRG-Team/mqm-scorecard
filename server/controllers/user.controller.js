@@ -68,7 +68,7 @@ class UserController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }
@@ -97,7 +97,7 @@ class UserController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       return res.status(500).send({ message: errorMessages.generic });
     }
@@ -113,7 +113,7 @@ class UserController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       return res.status(500).send({ message: errorMessages.generic });
     }
@@ -129,7 +129,7 @@ class UserController {
     } catch (err) {
       this.logger.log({
         level: 'error',
-        mesage: err,
+        message: err,
       });
       res.status(500).send({ message: errorMessages.generic });
     }

@@ -11,7 +11,7 @@ const issueService = require('../../__mocks__/issueService');
 const segmentService = require('../../__mocks__/segmentService');
 const db = require('../../__mocks__/db');
 
-describe('tests getProjectReport method', () => {
+describe('tests getProjectJSONReport method', () => {
   it('should successfully get project not assigned to user', async () => {
     const mockedUserService = userService();
     const mockedRoleService = roleService();
@@ -24,7 +24,35 @@ describe('tests getProjectReport method', () => {
       })),
     });
     const mockedIssueService = issueService({
-      getSegmentErrorsByProjectId: jest.fn(() => ({
+      getProjectIssuesById: jest.fn(() => ({
+        rows: [
+          {
+            issue: 'locale-specific-punctuation',
+            parent: null,
+            name: 'locale-specific punctuation',
+            description: 'The text systematically uses punctuation marks that are not appropriate for the specified locale.',
+            notes: '',
+            examples: 'A text translated from English to Japanese maintains European-style punctuation—such as full-stops (.)—instead of using the appropriate Japanese punctuation, such as the Japanese full stop (。).',
+          },
+          {
+            issue: 'national-language-standard',
+            parent: 'locale-specific-punctuation',
+            name: 'national language standard',
+            description: 'A text violates national language standards.',
+            notes: '',
+            examples: 'A French advertising text uses anglicisms that are forbidden for print texts by the Academie française specifications.',
+          },
+          {
+            issue: 'shortcut-key',
+            parent: null,
+            name: 'shortcut key',
+            description: 'A translated software product uses shortcuts that do not conform to locale expectations or that make no sense for the locale.',
+            notes: 'Very often this error indicates an underlying internationalization root cause.',
+            examples: 'A software product uses CTRL-S to save a file in Hungarian, rather than the appropriate CTRL-M (for mentenni).',
+          },
+        ],
+      })),
+      getSegmentIssuesByProjectId: jest.fn(() => ({
         rows: [
           {
             segment_id: 1,
@@ -90,7 +118,7 @@ describe('tests getProjectReport method', () => {
     const res = response();
     jest.spyOn(res, 'json');
 
-    await projectController.getProjectReport(req, res);
+    await projectController.getProjectJSONReport(req, res);
     expect(res.json).toHaveBeenCalledTimes(1);
     const mockResJsonCall = res.json.mock.calls[0];
     expect(mockResJsonCall[0]).toStrictEqual({
@@ -111,6 +139,32 @@ describe('tests getProjectReport method', () => {
         source: ['Test1'],
         target: ['Test2'],
       },
+      metric: [
+        {
+          issueId: 'locale-specific-punctuation',
+          parent: null,
+          name: 'locale-specific punctuation',
+          description: 'The text systematically uses punctuation marks that are not appropriate for the specified locale.',
+          notes: '',
+          examples: 'A text translated from English to Japanese maintains European-style punctuation—such as full-stops (.)—instead of using the appropriate Japanese punctuation, such as the Japanese full stop (。).',
+        },
+        {
+          issueId: 'national-language-standard',
+          parent: 'locale-specific-punctuation',
+          name: 'national language standard',
+          description: 'A text violates national language standards.',
+          notes: '',
+          examples: 'A French advertising text uses anglicisms that are forbidden for print texts by the Academie française specifications.',
+        },
+        {
+          issueId: 'shortcut-key',
+          parent: null,
+          name: 'shortcut key',
+          description: 'A translated software product uses shortcuts that do not conform to locale expectations or that make no sense for the locale.',
+          notes: 'Very often this error indicates an underlying internationalization root cause.',
+          examples: 'A software product uses CTRL-S to save a file in Hungarian, rather than the appropriate CTRL-M (for mentenni).',
+        },
+      ],
     });
   });
 
@@ -126,7 +180,35 @@ describe('tests getProjectReport method', () => {
       })),
     });
     const mockedIssueService = issueService({
-      getSegmentErrorsByProjectId: jest.fn(() => ({
+      getProjectIssuesById: jest.fn(() => ({
+        rows: [
+          {
+            issue: 'locale-specific-punctuation',
+            parent: null,
+            name: 'locale-specific punctuation',
+            description: 'The text systematically uses punctuation marks that are not appropriate for the specified locale.',
+            notes: '',
+            examples: 'A text translated from English to Japanese maintains European-style punctuation—such as full-stops (.)—instead of using the appropriate Japanese punctuation, such as the Japanese full stop (。).',
+          },
+          {
+            issue: 'national-language-standard',
+            parent: 'locale-specific-punctuation',
+            name: 'national language standard',
+            description: 'A text violates national language standards.',
+            notes: '',
+            examples: 'A French advertising text uses anglicisms that are forbidden for print texts by the Academie française specifications.',
+          },
+          {
+            issue: 'shortcut-key',
+            parent: null,
+            name: 'shortcut key',
+            description: 'A translated software product uses shortcuts that do not conform to locale expectations or that make no sense for the locale.',
+            notes: 'Very often this error indicates an underlying internationalization root cause.',
+            examples: 'A software product uses CTRL-S to save a file in Hungarian, rather than the appropriate CTRL-M (for mentenni).',
+          },
+        ],
+      })),
+      getSegmentIssuesByProjectId: jest.fn(() => ({
         rows: [
           {
             segment_id: 1,
@@ -192,7 +274,7 @@ describe('tests getProjectReport method', () => {
     const res = response();
     jest.spyOn(res, 'json');
 
-    await projectController.getProjectReport(req, res);
+    await projectController.getProjectJSONReport(req, res);
     expect(res.json).toHaveBeenCalledTimes(1);
     const mockResJsonCall = res.json.mock.calls[0];
     expect(mockResJsonCall[0]).toStrictEqual({
@@ -213,6 +295,32 @@ describe('tests getProjectReport method', () => {
         source: ['Test1'],
         target: ['Test2'],
       },
+      metric: [
+        {
+          issueId: 'locale-specific-punctuation',
+          parent: null,
+          name: 'locale-specific punctuation',
+          description: 'The text systematically uses punctuation marks that are not appropriate for the specified locale.',
+          notes: '',
+          examples: 'A text translated from English to Japanese maintains European-style punctuation—such as full-stops (.)—instead of using the appropriate Japanese punctuation, such as the Japanese full stop (。).',
+        },
+        {
+          issueId: 'national-language-standard',
+          parent: 'locale-specific-punctuation',
+          name: 'national language standard',
+          description: 'A text violates national language standards.',
+          notes: '',
+          examples: 'A French advertising text uses anglicisms that are forbidden for print texts by the Academie française specifications.',
+        },
+        {
+          issueId: 'shortcut-key',
+          parent: null,
+          name: 'shortcut key',
+          description: 'A translated software product uses shortcuts that do not conform to locale expectations or that make no sense for the locale.',
+          notes: 'Very often this error indicates an underlying internationalization root cause.',
+          examples: 'A software product uses CTRL-S to save a file in Hungarian, rather than the appropriate CTRL-M (for mentenni).',
+        },
+      ],
     });
   });
 
@@ -228,7 +336,7 @@ describe('tests getProjectReport method', () => {
       })),
     });
     const mockedIssueService = issueService({
-      getSegmentErrorsByProjectId: jest.fn(() => ({
+      getSegmentIssuesByProjectId: jest.fn(() => ({
         rows: [
           {
             segment_id: 1,
@@ -295,7 +403,7 @@ describe('tests getProjectReport method', () => {
     jest.spyOn(res, 'json');
     jest.spyOn(res, 'status');
 
-    await projectController.getProjectReport(req, res);
+    await projectController.getProjectJSONReport(req, res);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(403);
     expect(res.json).toHaveBeenCalledTimes(1);

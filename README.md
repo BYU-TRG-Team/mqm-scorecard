@@ -109,6 +109,145 @@ OQS = (OQF * MSV)
 
 NOTE: The final value of OQS is rounded to two decimals before being returned from the server.
 
+## Project JSON Output 
+
+The JSON output for a project is structured as defined below: 
+
+```
+{
+    projectName: string,
+    key: {
+        [key: string]: string        
+    }, // Map of segment IDs to segment numbers
+    errors: {
+        segment: string,
+        target: string,
+        name: string,
+        severity: string,
+        issueReportId: string,
+        issueId: string,
+        note: string,
+        highlighting: {
+            startIndex: number,
+            endIndex: number
+        }
+    }[],
+    metric: {
+        parent: string | null,
+        name: string,
+        description: string,
+        notes: string,
+        examples: string,
+        issueId: string
+    }[],
+    scores: {
+        compositeScore: string
+    },
+    segments: {
+        source: string[],
+        target: string[],
+    }
+}
+
+```
+
+Example
+
+```
+
+
+{
+  "projectName": "Testing-123",
+  "key": {
+    "57": "1",
+    "58": "2",
+    "59": "3",
+  },
+  "errors": [
+    {
+      "segment": "57",
+      "target": "target",
+      "name": "inconsistent use of terminology",
+      "severity": "minor",
+      "issueReportId": "4",
+      "issueId": "term-inconsistency",
+      "note": "||major; language register; R; 2",
+      "highlighting": {
+        "startIndex": 168,
+        "endIndex": 172
+      }
+    },
+    {
+      "segment": "57",
+      "target": "target",
+      "name": "multiple terms in translation",
+      "severity": "minor",
+      "issueReportId": "5",
+      "issueId": "multiple-translations-of-term",
+      "note": "||in which; function words; G; 1",
+      "highlighting": {
+        "startIndex": 180,
+        "endIndex": 187
+      }
+    },
+    {
+      "segment": "58",
+      "target": "target",
+      "name": "Terminology",
+      "severity": "minor",
+      "issueReportId": "6",
+      "issueId": "terminology",
+      "note": "||somebody had to doubt it; unidiomatic style; U; 2",
+      "highlighting": {
+        "startIndex": 14,
+        "endIndex": 37
+      }
+    },
+  ],
+  "metric": [
+    {
+      "parent": null,
+      "name": "Terminology",
+      "description": "A term (domain-specific word) is translated with a term other than the one expected for the domain or otherwise specified.",
+      "notes": "All errors specifically related to use of domain- or organization-specific terminology are included in this error and its children.\r\n\r\nDo not use this error if a text is simply mistranslated, i.e., if the translation would be a valid translation of the source but simply does not use the particular mandated terminology. For example, if a text translates [river] bank into Spanish as banco (a financial institution) instead of orilla (a river bank), this would be a mistranslation because banco would never be a valid term for the concept of a river bank. However, if a termbase specified that orilla should be used and the translation uses ribera instead, this would be a Terminology error because ribera is a valid term for the concept, but not the specified one.",
+      "examples": "A French text translates English \"email\" as \"e-mail\" but terminology guidelines mandated that \"courriel\" be used.\n\nThe English musicological term dog is translated (literally) into German as Hund instead of as Schnarre, as specified in a terminology database.",
+      "issueId": "terminology"
+    },
+    {
+      "parent": "terminology",
+      "name": "inconsistent use of terminology",
+      "description": "A single concept is expressed with multiple terms.",
+      "notes": "This error is used only to address inconsistent use of terminology in the target text. In cases where terminology is incorrect for the domain or termbase, wrong term or termbase should be used instead. If the inconsistent term use can be traced back to inconsist term use in the source text, the error type stays the same, but this special case should be annotated with an inconsistent source term root cause.",
+      "examples": "A German source text uses one term for a component of a vehicle, but the target text uses “brake release lever”, “brake disengagement lever”, “manual brake release”, and “manual disengagement release” for this term in English.",
+      "issueId": "term-inconsistency"
+    },
+    {
+      "parent": "term-inconsistency",
+      "name": "multiple terms in translation",
+      "description": "A single source term is translated in multiple inconsistent ways.",
+      "notes": "Applies to target text only since it refers to cases where one term has multiple translations. As with term-inconsistency, termbase or one of its children should be used instead if a termbase contains a specified term for a concept and the text does not use that particular term.",
+      "examples": "A German source text uses one term for a component of a vehicle, but the target text uses “brake release lever”, “brake disengagement lever”, “manual brake release”, and “manual disengagement release” for this term in English.",
+      "issueId": "multiple-translations-of-term"
+    },
+  ],
+  "scores": {
+    "compositeScore": "98.48"
+  },
+  "segments": {
+    "source": [
+      "Foi no penúltimo domingo de Janeiro de 1645, quando o conde Peter van Heest conclamou o povo do Recife — a \"grande e florescente\" capital do Brasil holandês — a comparecer a uma grande festa na qual, garantiu, um cavalo iria voar. ",
+      "Houve logo quem duvidasse, é claro. ",
+      "Mas até os mais céticos devem ter hesitado antes de rir na cara do conde. ",
+    ],
+    "target": [
+      " Count Peter van Heest, on the next to the last Sunday of January, 1645, summoned the people of Recife — the \"great and thriving\" capital of Dutch Brazil — to attend a major party in which he guaranteed that a horse was going to fly.",
+      " Immediately, somebody had to doubt it, of course.",
+      " However, even the most skeptical ones must have hesitated before laughing at the count.",
+  }
+}
+
+```
+
 ## License
 
 ```
