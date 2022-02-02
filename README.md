@@ -19,7 +19,7 @@ git clone https://github.com/BYU-TRG-Team/js-qt21-scorecard.git
 
 ```
 
-### 2. Setup environment variables and SendGrid API Support
+### 2. Setup environment variables
 
 The following environment variables need to be set in order to deploy the scorecard application: 
 
@@ -27,13 +27,13 @@ The following environment variables need to be set in order to deploy the scorec
 AUTH_SECRET=<Random Secret for generating JWT tokens>
 DATABASE_URL=<URL for the corresponding PostgreSQL db>
 APP_ENV=production
-EMAIL_PROVIDER<Provider associated with email account>
-EMAIL_ADDRESS=<Address associated with email account>
+EMAIL_PROVIDER=<Provider for email account>
+EMAIL_ADDRESS=<Email address associated with email account>
 EMAIL_PASSWORD=<Password associated with email account>
 
 ```
 
-Nodemailer is used to proxy requests to the associated email account for email verification and password reset emails. If you are using Gmail as the email provider, you will need to configure your account to "Allow less secure apps".
+Nodemailer is used to proxy email verification and password reset emails that are sent to a user. If you are using Gmail as the email provider, you will need to configure your account to "Allow less secure apps". The value of the EMAIL_PROVIDER variable will need to be from the approved list of [Nodemailer supported services](https://nodemailer.com/smtp/well-known).
 
 ### 3. Seed Database
 
