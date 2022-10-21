@@ -44,9 +44,7 @@ email text UNIQUE NOT NULL,
 name text NOT NULL,
 role_id integer NOT NULL,
 reset_password_token text,
-reset_password_token_created_at timestamp WITH TIME ZONE,
-FOREIGN KEY (role_id)
-REFERENCES roles (role_id)
+reset_password_token_created_at timestamp WITH TIME ZONE
 );
 `;
 
@@ -140,13 +138,6 @@ REFERENCES issues (id) ON DELETE CASCADE
 );
 `;
 
-const seedRoles = `
-INSERT INTO roles (role_name) VALUES
-('user'),
-('admin'),
-('superadmin');
-`;
-
 (async function seedDatabase() {
   await db.query(dropTokensTable);
   await db.query(dropUserTable);
@@ -164,7 +155,6 @@ INSERT INTO roles (role_name) VALUES
   await db.query(createSegmentsTable);
   await db.query(createUsersProjects);
   await db.query(createSegmentIssuesTable);
-  await db.query(seedRoles);
   await db.end();
   console.log('Successfully seeded database');
 }());
