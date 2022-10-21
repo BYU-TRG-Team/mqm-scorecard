@@ -1,71 +1,54 @@
-# QT21-Scorecard
+# Scorecard
 
-You can use the live demo: https://mqm-scorecard.herokuapp.com
+An Express.js and React.js translation grading application that follows the [Multidimensional Quality Metrics (MQM)](https://themqm.org) convention.
 
-## Installation Instructions
+## Installation
 
-The installation instructions are targeted to users who know how to install a Node application on a webserver. We assume that you have already installed
+### Server Requirements
 
-* A webserver with Node (v16.x) and PostgreSQL(v9.x)
-* A PostgreSQL server configured with a database
-* Git
+- PostgreSQL 9.x
+- Node.js 16.x
 
-The example command line calls are written for Linux / Mac users. The process can be easily adapted to Windows systems.
+### Third Party Requirements
 
-### 1. Download sourcecode
+- **Hosted email account**. This is the account from which Scorecard will send emails. The `EMAIL_ADDRESS`, `EMAIL_PASSWORD`, `EMAIL_PROVIDER` environment variables exist for this account. The possible providers can be found in the [NodeMailer source code](https://github.com/nodemailer/nodemailer/blob/master/lib/well-known/services.json). Zoho has a pretty generous free tier, so it's been a popular pick for instances of Scorecard. 
 
-```
-git clone https://github.com/BYU-TRG-Team/js-qt21-scorecard.git
+### Environment Variables
 
 ```
-
-### 2. Setup environment variables
-
-The following environment variables need to be set in order to deploy the scorecard application: 
-
-```
-AUTH_SECRET=<Random Secret for generating JWT tokens>
-DATABASE_URL=<URL for the corresponding PostgreSQL db>
-APP_ENV=production
-EMAIL_PROVIDER=<Provider for email account>
-EMAIL_ADDRESS=<Email address associated with email account>
-EMAIL_PASSWORD=<Password associated with email account>
-
+APP_ENV=<development | production>
+DATABASE_URL=<url for the Scorecard database>
+EMAIL_ADDRESS=<address for hosted email account>
+EMAIL_PASSWORD=<password for hosted email account. Remember CSPRNG!>
+EMAIL_PROVIDER=<one of the possible NodeMailer providers>
+AUTH_SECRET=<64-bit CSPRNG secret>
 ```
 
-Nodemailer is used to proxy email verification and password reset emails that are sent to a user. If you are using Gmail as the email provider, you will need to configure your account to "Allow less secure apps". The value of the EMAIL_PROVIDER variable will need to be from the approved list of [Nodemailer supported services](https://nodemailer.com/smtp/well-known).
-
-### 3. Seed Database
-
-Assuming you have all environment variables setup, the following command can be run to create the neccessary schemas for the scorecard app: 
-
-```
-node server/seed.js
-
-```
-NOTE: This script will destory and re-create all tables. 
-
-### 4. Deploy Express/React Application
-
-The QT21 Scorecard exists as an Express and React monorepo. In order to deploy the app, you will need to first install NPM dependencies. This is usually done automatically by hosting providers, but the following command is available to do so manually if need be:
+### Build
 
 ```
 npm ci
-
 ```
 
-Next, a production build of the React portion will need to be created like so: 
 
 ```
 npm run build
-
 ```
 
-From there, the following command will need to be run in order to start the express server:
+### Database Configuration
+
+**This step makes used of NPM packages installed from build.**
+
+**NOTE: This script will destory and re-create all tables.**
+
+```
+node server/seed.js
+```
+
+### Launch 
 
 ```
 npm run start
-
 ```
 
 ## Local Development
@@ -74,11 +57,13 @@ For local development, you will want to set the environment variable *APP_ENV*=*
 
 ```
 npm run dev:server
-npm run dev:react
-
 ```
 
-Seeding a local database should follow the same steps for seeding in production.
+```
+npm run dev:react
+```
+
+The database will still need to be configured as mentioned in the installation section. Please refer to that section for details.
 
 ## MQM Scoring Model
 
@@ -246,23 +231,5 @@ Example
   }
 }
 
-```
-
-## License
-
-```
-Copyright 2015 Deutsches Forschungszentrum für Künstliche Intelligenz
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
 ```
 
