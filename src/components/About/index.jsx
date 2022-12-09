@@ -10,11 +10,11 @@ const About = () => (
     <p>
       For purposes of copyright, DFKI GMbH is the owner of this work. The Scorecard is published under the
       {' '}
-      <a href="https://github.com/multidimensionalquality/qt21-scorecard/blob/master/LICENSE.txt" target="_blank" rel="noreferrer">Apache 2.0 License</a>
+      <a href="https://github.com/BYU-TRG-Team/scorecard/blob/main/LICENSE" target="_blank" rel="noreferrer">Apache 2.0 License</a>
       {' '}
       on
       {' '}
-      <a href="https://github.com/multidimensionalquality/qt21-scorecard/" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://github.com/BYU-TRG-Team/scorecard" target="_blank" rel="noreferrer">GitHub</a>
       .
     </p>
     <h2>Supporters</h2>
@@ -26,7 +26,7 @@ const About = () => (
     <p>
       Bugs and feature requests should be made via the MQM Scorecard project’s
       {' '}
-      <a href="https://github.com/BYU-TRG-Team/js-qt21-scorecard/issues" target="_blank" rel="noreferrer">bug tracker</a>
+      <a href="https://github.com/BYU-TRG-Team/scorecard/issues" target="_blank" rel="noreferrer">bug tracker</a>
       . General inquiries can be sent to
       <a href="mailto:info@tranquality.info">info@tranquality.info</a>
       .

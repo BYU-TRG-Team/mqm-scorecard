@@ -12,12 +12,12 @@
   "proxy": "http://localhost:8081",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AndrewDame/trg-scorecard.git"
+    "url": "git+https://github.com/BYU-TRG-Team/scorecard.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AndrewDame/trg-scorecard/issues"
+    "url": "https://github.com/BYU-TRG-Team/scorecard/issues"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.4.5",
