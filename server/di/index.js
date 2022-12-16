@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const sendGridNodemailerTransport = require('nodemailer-sendgrid-transport')
+const constants = require("../constants")
 const winston = require('winston');
 
 const {
@@ -8,14 +10,29 @@ const smtpConfig = require('../config/smtp.config');
 
 // SMTP Transporter
 
-const transporter = nodemailer.createTransport({
-  service: smtpConfig.provider,
-  secure: true,
-  auth: {
-    user: smtpConfig.email,
-    pass: smtpConfig.password,
-  },
-});
+const transporter = function () {
+  switch (smtpConfig.provider.toLowerCase()) {
+    case constants.EmailProviders.Zoho:
+      return nodemailer.createTransport({
+        service: smtpConfig.provider,
+        secure: true,
+        auth: {
+          user: smtpConfig.email,
+          pass: smtpConfig.password,
+        },
+      });
+
+    case constants.EmailProviders.SendGrid:
+      return nodemailer.createTransport(sendGridNodemailerTransport({
+        auth: {
+          api_key: smtpConfig.apiKey
+        },
+      }))
+
+    default:
+      throw new Error("Email provider unknown")
+  }
+} ()
 
 // Logger
 
