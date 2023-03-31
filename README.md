@@ -22,6 +22,8 @@ Scorecard currently supports integration with **Zoho** and **SendGrid**. For Zoh
 
 ### Environment Variables
 
+The following environment variables will either need to be exported in the shell context or defined in a `.env` file in the repo root. 
+
 ```
 APP_ENV=<development | production>
 DATABASE_URL=<url for the Scorecard database>
@@ -45,12 +47,14 @@ npm run build
 
 ### Database Configuration
 
-**This step makes used of NPM packages installed from build.**
+Ensure that the `DATABASE_URL` environment variable is either exported in the shell context or defined in a `.env` file in the repo root. 
 
-**NOTE: This script will destory and re-create all tables.**
+**WARNING: This command will destroy and then create all tables for Scorecard.**
+
+NOTE: This step makes used of NPM packages installed by running `npm ci`.
 
 ```
-DATABASE_URL=<url for the Scorecard database> node server/seed.js
+npm run db:configure
 ```
 
 ### Launch 
@@ -72,6 +76,36 @@ npm run dev:react
 ```
 
 The database will still need to be configured as mentioned in the installation section. Please refer to that section for details.
+
+
+## Scripts
+
+## Configure database
+
+Destroys and then creates all tables for Scorecard.
+
+Ensure that the `DATABASE_URL` environment variable is either exported in the shell context or defined in a `.env` file in the repo root. 
+
+NOTE: This step makes used of NPM packages installed by running `npm ci`.
+
+```
+npm run db:configure
+```
+
+## Set user role
+
+Sets the role for a given user.
+
+Ensure that the `DATABASE_URL` environment variable is either exported in the shell context or defined in a `.env` file in the repo root. 
+
+NOTE: This step makes used of NPM packages installed by running `npm ci`.*
+
+```
+npm run db:set-user-role <username> <role id>
+
+Valid role id: 1 (user) | 2 (admin) | 3 (superadmin)
+```
+
 
 ## MQM Scoring Model
 

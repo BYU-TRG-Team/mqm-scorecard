@@ -1,33 +1,32 @@
-const db = require('./db');
+require('dotenv').config();
+
+if (process.env.DATABASE_URL === undefined) {
+  throw new Error("DATABASE_URL environment variable is unset")
+}
+
+const db = require('.');
 
 const dropUserTable = `
 DROP TABLE IF EXISTS users CASCADE;
 `;
-
 const dropTokensTable = `
 DROP TABLE IF EXISTS tokens CASCADE;
 `;
-
 const dropIssuesTable = `
 DROP TABLE IF EXISTS issues CASCADE;
 `;
-
 const dropProjectsTable = `
 DROP TABLE IF EXISTS projects CASCADE;
 `;
-
 const dropProjectIssuesTable = `
 DROP TABLE IF EXISTS project_issues CASCADE;
 `;
-
 const dropSegmentsTable = `
 DROP TABLE IF EXISTS segments CASCADE;
 `;
-
 const dropUserProjectsTable = `
 DROP TABLE IF EXISTS user_projects CASCADE;
 `;
-
 const dropSegmentIssuesTable = `
 DROP TABLE IF EXISTS segment_issues CASCADE;
 `;
@@ -45,7 +44,6 @@ reset_password_token text,
 reset_password_token_created_at timestamp WITH TIME ZONE
 );
 `;
-
 const createTokensTable = `
 CREATE TABLE IF NOT EXISTS tokens(
 user_id integer NOT NULL,
@@ -54,7 +52,6 @@ FOREIGN KEY (user_id)
 REFERENCES users (user_id) ON DELETE CASCADE
 );
 `;
-
 const createProjectsTable = `
 CREATE TABLE IF NOT EXISTS projects(
 project_id serial PRIMARY KEY,
@@ -69,7 +66,6 @@ source_word_count integer NOT NULL DEFAULT 0,
 target_word_count integer NOT NULL DEFAULT 0
 );
 `;
-
 const createIssuesTable = `
 CREATE TABLE IF NOT EXISTS issues(
 id text PRIMARY KEY,
@@ -80,7 +76,6 @@ notes text DEFAULT NULL,
 examples text DEFAULT NULL
 );
 `;
-
 const createUsersProjects = `
 CREATE TABLE IF NOT EXISTS user_projects(
 project_id integer NOT NULL,
@@ -92,7 +87,6 @@ REFERENCES projects (project_id) ON DELETE CASCADE,
 UNIQUE (project_id, user_id)
 );
 `;
-
 const createProjectIssuesTable = `
 CREATE TABLE IF NOT EXISTS project_issues(
 id serial PRIMARY KEY,
@@ -105,7 +99,6 @@ FOREIGN KEY (issue)
 REFERENCES issues (id) ON DELETE CASCADE
 );
 `;
-
 const createSegmentsTable = `
 CREATE TABLE IF NOT EXISTS segments(
 id serial PRIMARY KEY,
@@ -117,7 +110,6 @@ REFERENCES projects (project_id) ON DELETE CASCADE,
 UNIQUE(project_id, segment_num)
 );
 `;
-
 const createSegmentIssuesTable = `
 CREATE TABLE IF NOT EXISTS segment_issues(
 id serial PRIMARY KEY,
@@ -154,5 +146,5 @@ REFERENCES issues (id) ON DELETE CASCADE
   await db.query(createUsersProjects);
   await db.query(createSegmentIssuesTable);
   await db.end();
-  console.log('Successfully seeded database');
+  console.log('Successfully configured database');
 }());
