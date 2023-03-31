@@ -7,6 +7,8 @@
     "dev:server": "./node_modules/.bin/eslint server && nodemon server/index.js",
     "dev:react": "./node_modules/.bin/eslint src && PORT=8080 react-scripts start",
     "test": "AUTH_SECRET=test jest",
+    "db:configure": "node server/db/configure.js",
+    "db:set-user-role": "node server/db/set-user-role.js",
     "prepare": "husky install"
   },
   "proxy": "http://localhost:8081",
