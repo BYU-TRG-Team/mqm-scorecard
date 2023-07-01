@@ -1,6 +1,7 @@
 {
   "name": "scorecard",
   "main": "server/index.js",
+  "version": "3.3.2",
   "scripts": {
     "start": "node server/index.js",
     "build": "react-scripts build",

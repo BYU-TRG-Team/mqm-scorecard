@@ -3,7 +3,7 @@ import './Footer.css';
 
 const Footer = () => (
   <div className="footer">
-    Version 3.3.1
+    Version 3.3.2
     <br />
     (c)2015 DFKI GMbH.
     <br />
