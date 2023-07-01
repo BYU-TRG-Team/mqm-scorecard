@@ -5,7 +5,6 @@ const FileParser = require('../../../support/fileparser.support');
 const request = require('../../__mocks__/request');
 const response = require('../../__mocks__/response');
 const userService = require('../../__mocks__/userService');
-const roleService = require('../../__mocks__/roleService');
 const projectService = require('../../__mocks__/projectService');
 const issueService = require('../../__mocks__/issueService');
 const segmentService = require('../../__mocks__/segmentService');
@@ -14,7 +13,6 @@ const db = require('../../__mocks__/db');
 describe('tests deleteUserFromProject method', () => {
   it('should successfully delete project that is not assigned to the user', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [{ project_id: 1 }] })),
     });
@@ -27,7 +25,6 @@ describe('tests deleteUserFromProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -62,7 +59,6 @@ describe('tests deleteUserFromProject method', () => {
 
   it('should successfully delete project that is assigned to the user', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [{ project_id: 1 }] })),
     });
@@ -75,7 +71,6 @@ describe('tests deleteUserFromProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -110,7 +105,6 @@ describe('tests deleteUserFromProject method', () => {
 
   it('should fail to delete project that is not assigned to the user', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [{ project_id: 1 }] })),
     });
@@ -123,7 +117,6 @@ describe('tests deleteUserFromProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,

@@ -7,7 +7,6 @@ const response = require('../../__mocks__/response');
 const userService = require('../../__mocks__/userService');
 const smtpService = require('../../__mocks__/smtpService');
 const tokenService = require('../../__mocks__/tokenService');
-const roleService = require('../../__mocks__/roleService');
 const db = require('../../__mocks__/db');
 
 describe('tests signup method', () => {
@@ -15,7 +14,6 @@ describe('tests signup method', () => {
     const mockedSmtpService = smtpService();
     const mockedUserService = userService();
     const mockedTokenService = tokenService();
-    const mockedRoleService = roleService();
     const tokenHandler = new TokenHandler();
     const pgClient = db();
 
@@ -23,7 +21,6 @@ describe('tests signup method', () => {
       mockedSmtpService,
       mockedUserService,
       mockedTokenService,
-      mockedRoleService,
       tokenHandler,
       pgClient,
     );
@@ -49,7 +46,6 @@ describe('tests signup method', () => {
     const mockedSmtpService = smtpService();
     const mockedUserService = userService({ create: jest.fn(() => ({ rows: [{ user_id: 1 }] })) });
     const mockedTokenService = tokenService();
-    const mockedRoleService = roleService();
     const tokenHandler = new TokenHandler();
     const pgClient = db();
 
@@ -57,7 +53,6 @@ describe('tests signup method', () => {
       mockedSmtpService,
       mockedUserService,
       mockedTokenService,
-      mockedRoleService,
       tokenHandler,
       pgClient,
     );

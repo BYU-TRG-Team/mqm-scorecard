@@ -5,7 +5,6 @@ const FileParser = require('../../../support/fileparser.support');
 const request = require('../../__mocks__/request');
 const response = require('../../__mocks__/response');
 const userService = require('../../__mocks__/userService');
-const roleService = require('../../__mocks__/roleService');
 const projectService = require('../../__mocks__/projectService');
 const issueService = require('../../__mocks__/issueService');
 const segmentService = require('../../__mocks__/segmentService');
@@ -18,7 +17,6 @@ describe('tests updateProject method', () => {
   // Metric file tests
   it('should throw a 400 error for invalid metric file (no issues)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -33,7 +31,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -76,7 +73,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 400 error for invalid metric file (no type)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -91,7 +87,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -134,7 +129,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 400 error for invalid metric file (no display)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -149,7 +143,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -192,7 +185,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 400 error for invalid metric file (too deep)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -207,7 +199,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -250,7 +241,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 400 error for invalid metric file (empty)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -265,7 +255,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -308,7 +297,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 400 error for invalid metric file (empty)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -323,7 +311,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -367,7 +354,6 @@ describe('tests updateProject method', () => {
   // Bitext file tests
   it('should throw a 400 error for invalid bitext file (error on line)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -382,7 +368,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -425,7 +410,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 400 error for invalid bitext file (insufficient columns)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -440,7 +424,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -483,7 +466,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 400 error for invalid bitext file (empty)', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -498,7 +480,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -541,7 +522,6 @@ describe('tests updateProject method', () => {
 
   it('should successfully update project and return a successful response', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const issues = {
       typography: {
         parent: 'fluency',
@@ -702,7 +682,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -748,7 +727,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 400 error for existing segment errors', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -766,7 +744,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -809,7 +786,6 @@ describe('tests updateProject method', () => {
 
   it('should throw a 403 error for user not being assigned to project', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [{ project_id: 2 }] })),
     });
@@ -822,7 +798,6 @@ describe('tests updateProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,

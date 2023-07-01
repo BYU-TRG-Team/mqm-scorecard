@@ -66,10 +66,6 @@ const issueParser = new IssueParser();
 
 // Services
 
-const RoleService = require('../services/role.service');
-
-const roleService = new RoleService(db);
-
 const SmtpService = require('../services/smtp.service');
 
 const smtpService = new SmtpService(transporter);
@@ -98,15 +94,15 @@ const segmentService = new SegmentService(db);
 
 const AuthController = require('../controllers/auth.controller');
 
-const authController = new AuthController(smtpService, userService, tokenService, roleService, tokenHandler, db, logger);
+const authController = new AuthController(smtpService, userService, tokenService, tokenHandler, db, logger);
 
 const UserController = require('../controllers/user.controller');
 
-const userController = new UserController(userService, roleService, tokenHandler, logger);
+const userController = new UserController(userService, tokenHandler, logger);
 
 const ProjectController = require('../controllers/project.controller');
 
-const projectController = new ProjectController(db, userService, roleService, fileParser, projectService, issueService, segmentService, issueParser, logger);
+const projectController = new ProjectController(db, userService, fileParser, projectService, issueService, segmentService, issueParser, logger);
 
 const SegmentController = require('../controllers/segment.controller');
 

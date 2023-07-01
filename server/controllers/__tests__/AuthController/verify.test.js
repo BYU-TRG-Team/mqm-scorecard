@@ -6,21 +6,18 @@ const response = require('../../__mocks__/response');
 const userService = require('../../__mocks__/userService');
 const smtpService = require('../../__mocks__/smtpService');
 const tokenService = require('../../__mocks__/tokenService');
-const roleService = require('../../__mocks__/roleService');
 
 describe('tests verify method', () => {
   it('should redirect to /login for invalid verify token', async () => {
     const mockedSmtpService = smtpService();
     const mockedUserService = userService();
     const mockedTokenService = tokenService({ findTokens: jest.fn(() => ({ rows: [] })) });
-    const mockedRoleService = roleService();
     const tokenHandler = new TokenHandler();
 
     const authController = new AuthController(
       mockedSmtpService,
       mockedUserService,
       mockedTokenService,
-      mockedRoleService,
       tokenHandler,
     );
 
@@ -47,14 +44,12 @@ describe('tests verify method', () => {
     const mockedSmtpService = smtpService();
     const mockedUserService = userService({ findUsers: jest.fn(() => ({ rows: [] })) });
     const mockedTokenService = tokenService({ findTokens: jest.fn(() => ({ rows: [{ user_id: 1 }] })) });
-    const mockedRoleService = roleService();
     const tokenHandler = new TokenHandler();
 
     const authController = new AuthController(
       mockedSmtpService,
       mockedUserService,
       mockedTokenService,
-      mockedRoleService,
       tokenHandler,
     );
 
@@ -90,14 +85,12 @@ describe('tests verify method', () => {
     const mockedSmtpService = smtpService();
     const mockedUserService = userService({ findUsers: jest.fn(() => ({ rows: [{ user_id: 1 }] })) });
     const mockedTokenService = tokenService({ findTokens: jest.fn(() => ({ rows: [{ user_id: 1, token: 'test' }] })) });
-    const mockedRoleService = roleService();
     const tokenHandler = new TokenHandler();
 
     const authController = new AuthController(
       mockedSmtpService,
       mockedUserService,
       mockedTokenService,
-      mockedRoleService,
       tokenHandler,
     );
 

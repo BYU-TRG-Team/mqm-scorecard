@@ -3,11 +3,10 @@ const smtpConfig = require('../config/smtp.config');
 const errorMessages = require('../messages/errors.messages');
 
 class AuthController {
-  constructor(smtpService, userService, tokenService, roleService, tokenHandler, db, logger) {
+  constructor(smtpService, userService, tokenService, tokenHandler, db, logger) {
     this.smtpService = smtpService;
     this.userService = userService;
     this.tokenService = tokenService;
-    this.roleService = roleService;
     this.tokenHandler = tokenHandler;
     this.db = db;
     this.logger = logger;
