@@ -5,7 +5,6 @@ const FileParser = require('../../../support/fileparser.support');
 const request = require('../../__mocks__/request');
 const response = require('../../__mocks__/response');
 const userService = require('../../__mocks__/userService');
-const roleService = require('../../__mocks__/roleService');
 const projectService = require('../../__mocks__/projectService');
 const issueService = require('../../__mocks__/issueService');
 const segmentService = require('../../__mocks__/segmentService');
@@ -14,7 +13,6 @@ const db = require('../../__mocks__/db');
 describe('tests addUserToProject method', () => {
   it('should fail due to invalid body', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService();
     const mockedIssueService = issueService();
     const mockedSegmentService = segmentService();
@@ -25,7 +23,6 @@ describe('tests addUserToProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -61,7 +58,6 @@ describe('tests addUserToProject method', () => {
         rows: [],
       })),
     });
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
     });
@@ -74,7 +70,6 @@ describe('tests addUserToProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -117,7 +112,6 @@ describe('tests addUserToProject method', () => {
         }],
       })),
     });
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
       // eslint-disable-next-line prefer-promise-reject-errors
@@ -134,7 +128,6 @@ describe('tests addUserToProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -185,7 +178,6 @@ describe('tests addUserToProject method', () => {
         }],
       })),
     });
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [] })),
       mapUsertoProject: jest.fn(() => new Promise((resolve) => resolve())),
@@ -199,7 +191,6 @@ describe('tests addUserToProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -239,7 +230,6 @@ describe('tests addUserToProject method', () => {
 
   it('should fail to add user to project that is not assigned to project', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({ rows: [{ project_id: 2 }] })),
     });
@@ -252,7 +242,6 @@ describe('tests addUserToProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -291,7 +280,6 @@ describe('tests addUserToProject method', () => {
         }],
       })),
     });
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({
       getProjectsByUserId: jest.fn(() => ({
         rows: [{
@@ -309,7 +297,6 @@ describe('tests addUserToProject method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,

@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
 const errorMessages = require('../messages/errors.messages');
+const roles = require('../roles');
 
 class UserController {
-  constructor(userService, roleService, tokenHandler, logger) {
+  constructor(userService, tokenHandler, logger) {
     this.userService = userService;
-    this.roleService = roleService;
     this.tokenHandler = tokenHandler;
     this.logger = logger;
   }
@@ -106,10 +106,15 @@ class UserController {
   /*
   * GET /api/users
   */
-  async getUsers(req, res) {
+  async getUsers(_req, res) {
     try {
       const usersQuery = await this.userService.getAllUsers();
-      return res.json({ users: usersQuery.rows });
+      const users = usersQuery.rows.map(user => ({
+        ...user,
+        role_name: roles[user.role_id]
+      }));
+      
+      return res.json({ users })
     } catch (err) {
       this.logger.log({
         level: 'error',

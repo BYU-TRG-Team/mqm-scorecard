@@ -53,7 +53,7 @@ class UserService {
 
   getAllUsers() {
     const query = `
-      SELECT * FROM roles JOIN users ON (roles.role_id = users.role_id) ORDER BY user_id ASC;
+      SELECT * FROM users ORDER BY user_id ASC;
     `;
 
     return this.db.query(query);

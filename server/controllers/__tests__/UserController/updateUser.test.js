@@ -2,7 +2,6 @@
 const isEqual = require('lodash.isequal');
 const cloneDeep = require('lodash.clonedeep');
 const userService = require('../../__mocks__/userService');
-const roleService = require('../../__mocks__/roleService');
 const tokenHandler = require('../../../support/tokenhandler.support');
 const UserController = require('../../user.controller');
 const request = require('../../__mocks__/request');
@@ -23,12 +22,10 @@ expect.extend({
 describe('tests updateUser method', () => {
   it('should update the user profile once with username, email, name, and password', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedLogger = logger();
 
     const userController = new UserController(
       mockedUserService,
-      mockedRoleService,
       tokenHandler,
       mockedLogger,
     );
@@ -64,12 +61,10 @@ describe('tests updateUser method', () => {
 
   it('should update the user profile once with username, email, name, and password, and then a second time with roleId', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedLogger = logger();
 
     const userController = new UserController(
       mockedUserService,
-      mockedRoleService,
       tokenHandler,
       mockedLogger,
     );
@@ -117,11 +112,9 @@ describe('tests updateUser method', () => {
 
   it('should update the user profile once with roleId', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
 
     const userController = new UserController(
       mockedUserService,
-      mockedRoleService,
       tokenHandler,
     );
 

@@ -3,9 +3,8 @@ const parseXML = require('xml2js').parseStringPromise;
 const errorMessages = require('../messages/errors.messages');
 
 class ProjectController {
-  constructor(db, userService, roleService, fileParser, projectService, issueService, segmentService, issueParser, logger) {
+  constructor(db, userService, fileParser, projectService, issueService, segmentService, issueParser, logger) {
     this.userService = userService;
-    this.roleService = roleService;
     this.db = db;
     this.fileParser = fileParser;
     this.projectService = projectService;

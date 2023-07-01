@@ -5,7 +5,6 @@ const FileParser = require('../../../support/fileparser.support');
 const request = require('../../__mocks__/request');
 const response = require('../../__mocks__/response');
 const userService = require('../../__mocks__/userService');
-const roleService = require('../../__mocks__/roleService');
 const projectService = require('../../__mocks__/projectService');
 const issueService = require('../../__mocks__/issueService');
 const segmentService = require('../../__mocks__/segmentService');
@@ -14,7 +13,6 @@ const db = require('../../__mocks__/db');
 describe('tests getProjects method', () => {
   it('should successfully return all projects', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({ getAllProjects: jest.fn(() => ({ rows: [{ test: 'test' }] })) });
     const mockedIssueService = issueService();
     const mockedSegmentService = segmentService();
@@ -25,7 +23,6 @@ describe('tests getProjects method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
@@ -54,7 +51,6 @@ describe('tests getProjects method', () => {
 
   it('should successfully return all projects for a specific user', async () => {
     const mockedUserService = userService();
-    const mockedRoleService = roleService();
     const mockedProjectService = projectService({ getProjectsByUserId: jest.fn(() => ({ rows: [{ test: 'test' }] })) });
     const mockedIssueService = issueService();
     const mockedSegmentService = segmentService();
@@ -65,7 +61,6 @@ describe('tests getProjects method', () => {
     const projectController = new ProjectController(
       pgClient,
       mockedUserService,
-      mockedRoleService,
       fileParser,
       mockedProjectService,
       mockedIssueService,
