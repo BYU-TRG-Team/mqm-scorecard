@@ -241,7 +241,7 @@ const AddIssueModal = (props) => {
         <button type="button" className="add-issue-modal__button" onClick={() => setCurrentPage(0)}>
           Back
         </button>
-        <button type="button" className="add-issue-modal__button add-issue-modal__button--continue" disabled={!note} onClick={createSegmentError}>
+        <button type="button" className="add-issue-modal__button add-issue-modal__button--continue" onClick={createSegmentError}>
           Add New Error
         </button>
       </div>
