@@ -18,7 +18,7 @@ const superadmin = [
   <Link className="link secondary-sidebar__link" to="/superadmin/create-project">Create project</Link>,
   <Link className="link secondary-sidebar__link" to="/view-projects">View projects</Link>,
   <Link className="link secondary-sidebar__link" to="/superadmin/manage-users">Manage users</Link>,
-  <Link className="link secondary-sidebar__link" to="/superadmin/import-typology">Mange Typology</Link>,
+  <Link className="link secondary-sidebar__link" to="/superadmin/import-typology">Manage Typology</Link>,
   <Link className="link secondary-sidebar__link" to="/edit-profile">Edit profile</Link>,
   <Link className="link secondary-sidebar__link" to="/help">Training and Help</Link>,
 ];
