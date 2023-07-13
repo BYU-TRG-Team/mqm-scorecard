@@ -1,9 +1,9 @@
-import React from 'react';
-import './Reports.css';
+import React from "react";
+import "./Reports.css";
 
 const Reports = (props) => {
   const {
-    issues, report, projectId, projectName
+    issues, report, projectId, projectName,
   } = props;
   const parseValue = (val) => (val > 0 ? <span className="reports__error">{ val }</span> : val);
   const total = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -53,7 +53,7 @@ const Reports = (props) => {
         <td className="reports__cell--white reports__cell">
           { parseValue(results[10]) }
         </td>
-      </tr>
+      </tr>,
     );
 
     if (Object.keys(issue.children).length > 0) {

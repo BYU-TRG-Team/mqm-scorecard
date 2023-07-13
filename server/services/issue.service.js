@@ -160,6 +160,34 @@ class IssueService {
     return this.db.query(query, [issueId]);
   }
 
+  getSegmentIssueById(issueId) {
+    const query = `
+      SELECT * FROM segment_issues WHERE id=$1;
+    `;
+
+    return this.db.query(query, [issueId]);
+  }
+
+  updateSegmentIssue(segmentIssue) {
+    const query = `
+      UPDATE segment_issues
+      SET segment_id=$1, issue=$2, level=$3, type=$4, highlighting=$5, note=$6, highlight_start_index=$7, highlight_end_index=$8
+      WHERE id=$9;
+    `;
+
+    return this.db.query(query, [
+      segmentIssue.segment_id,
+      segmentIssue.issue,
+      segmentIssue.level,
+      segmentIssue.type,
+      segmentIssue.highlighting,
+      segmentIssue.note,
+      segmentIssue.highlight_start_index,
+      segmentIssue.highlight_end_index,
+      segmentIssue.id
+    ]);
+  }
+
   getProjectReportById(projectId) {
     const query = `
       SELECT 

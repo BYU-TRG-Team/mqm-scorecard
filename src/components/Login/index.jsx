@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import './Login.css';
+import React, { useState } from "react";
+import "./Login.css";
 import {
   Link,
   useHistory,
-} from 'react-router-dom';
-import API from '../../api';
-import { GlobalContext } from '../../store';
-import { parseToken } from '../../utils';
+} from "react-router-dom";
+import API from "../../api";
+import { GlobalContext } from "../../store";
+import { parseToken } from "../../utils";
 
 const Login = () => {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = React.useContext(GlobalContext);
-  const [error, setError] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [error, setError] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const history = useHistory();
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    return API.post('/api/auth/signin', { username, password, rememberMe })
+    return API.post("/api/auth/signin", { username, password, rememberMe })
       .then((response) => {
         const { token } = response.data;
         dispatch({
-          type: 'update_token',
+          type: "update_token",
           token: parseToken(token),
         });
-        history.push('/');
+        history.push("/");
       })
       .catch((err) => {
         if (err.response && err.response.data) {

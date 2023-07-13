@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 
 export const overview = (
   <div>
     <p>The MQM Scorecard is an easy-to-use system for analyzing translated documents using the Multidimensional Quality Metrics (MQM) framework. Scorecard projects require two files: the text to be assessed and an XML metrics specification file. They may also optionally include an XML projects specifications file.</p>
     <p>
       The Scorecard allows you to go through translated files segment by segment and apply issues to them. Issues are used to mark problems in the text that need to be resolved. (We use the term
-      {' '}
+      {" "}
       <em>issue</em>
-      {' '}
+      {" "}
       instead of
-      {' '}
+      {" "}
       <em>error</em>
-      {' '}
+      {" "}
       since issues may include items that are not errors that need to be changed.)
     </p>
   </div>
@@ -34,24 +34,24 @@ export const creatingProjects = (
     <pre>
       Source    Target    Label
       <br />
-      {'{{'}
+      {"{{"}
       device would like to pair with this phone. To accept, enter the PIN on the device.    dispositivo quiere vincularse con este dispositivo. Para aceptar, escriba el PIN en el
-      {' '}
-      {'{{'}
+      {" "}
+      {"{{"}
       dispositivo
-      {'}}'}
+      {"}}"}
       .   passive-pair-pincode    Remove
-      {' '}
-      {'{{'}
+      {" "}
+      {"{{"}
       name
-      {'}}'}
-      {' '}
+      {"}}"}
+      {" "}
       from system?        ¿Eliminar
-      {' '}
-      {'{{'}
+      {" "}
+      {"{{"}
       John
-      {'}}'}
-      {' '}
+      {"}}"}
+      {" "}
       del sistema?     remove-message
     </pre>
     <p>In this example an internal message label is presented in the third column and is shown to the user. Metadata columns can contain any information you wish to provide to the user.</p>
@@ -59,13 +59,13 @@ export const creatingProjects = (
     <h4>Metrics files</h4>
     <p>
       Metrics files define the issues that you can assign in your project. They should be selected to match your project specifications. (For example, if you are assessing an advertising text, you might add
-      {' '}
+      {" "}
       <em>Style</em>
-      {' '}
+      {" "}
       as an issue, while if you are assessing a service text, you might not.) Guidance on designing metrics is beyond the scope of this help file, but the
-      {' '}
+      {" "}
       <a href="http://tranquality.info" target="_blank" rel="noreferrer">Tranquality</a>
-      {' '}
+      {" "}
       site has guidance on designing metrics.
     </p>
     <p>A sample metrics file is presented below</p>
@@ -92,28 +92,28 @@ export const creatingProjects = (
     <br />
     <p>
       This metric contains nine issue types. They are taken from the
-      {' '}
+      {" "}
       <a href="http://qt21.eu/mqm-definition" target="_blank" rel="noreferrer">MQM definition</a>
       . Using issues from MQM ensures maximal compatibility between metrics and also has the advantage that the MQM Scorecard can provide &quot;hover help&quot; for this issues. If you need issue types not found in MQM, they can be added into the metrics file simply by adding an
-      {' '}
+      {" "}
       <code>&lt;issue&gt;</code>
-      {' '}
+      {" "}
       element into the XML file at the appropriate location. Custom issues will be displayed using the value of the
-      {' '}
+      {" "}
       <code>type</code>
-      {' '}
+      {" "}
       attribute and will not have any hover help information (except for a listing of their parent issues), but can otherwise be used as normal.
     </p>
     <h4>Specifications file</h4>
     <p>
       The use of a specifications file is strongly recommended, but not required. Specifications files are stored in .sts (structured specification set) files. These XML files enumerate the values required by
-      {' '}
+      {" "}
       <a href="http://www.astm.org/Standards/F2575.htm">ASTM F2575:14</a>
-      {' '}
+      {" "}
       (see
-      {' '}
+      {" "}
       <a href="http://www.ttt.org/specs" target="_blank" rel="noreferrer">http://www.ttt.org/specs</a>
-      {' '}
+      {" "}
       for more details). A sample STS file is presented below:
     </p>
     <pre>
@@ -412,9 +412,9 @@ export const scorecardInterface = (
     <h5>Quick filters</h5>
     <p>
       A
-      {' '}
+      {" "}
       <em>quick filter</em>
-      {' '}
+      {" "}
       is performed when you enter text in the Filter pane. Quick filters search only the source and target text:
     </p>
     <div className="accordion__image-container">
@@ -436,9 +436,9 @@ export const severityLevels = (
       <li>
         <strong>minor</strong>
         . Minor issues are those that can be easily corrected by the end user without any loss of meaning, possibly without the user even noticing them. Minor issue
-        {' '}
+        {" "}
         <em>should</em>
-        {' '}
+        {" "}
         be fixed, but if they are not, they would not impact the usability of the translation and would cause no harm to the requester or user. Examples include spelling issues that do not lead to confusion or common grammatical issues. A 1-point penalty is given for each minor issue.
       </li>
       <li>
@@ -448,9 +448,9 @@ export const severityLevels = (
       <li>
         <strong>critical</strong>
         . Critical issues are those that have the potential to cause harm (physical, legal, or economic) to the end user, requester, or provider. Critical issues MUST be fixed and a single critical issue results in automatic rejection of the project even if the overall score would not otherwise lead to rejection. Critical issues must be fixed by a third party because they call into question the competence of the entire translation.
-        {' '}
-        <span style={{ color: 'red' }}>NOTE: For translations provided by competent professional translators, critical issues should occur very infrequently. If there is any question about whether an issue is critical or major, the translation provider should be given the benefit of the doubt and the issue classified as major.</span>
-        {' '}
+        {" "}
+        <span style={{ color: "red" }}>NOTE: For translations provided by competent professional translators, critical issues should occur very infrequently. If there is any question about whether an issue is critical or major, the translation provider should be given the benefit of the doubt and the issue classified as major.</span>
+        {" "}
         A 100-point penalty is given for each critical issue. In the Scorecard assigning a critical issue brings up a dialog box that requires the reviewer to confirm that the issue should be considered critical.
       </li>
     </ul>
@@ -464,31 +464,31 @@ export const reportingScores = (
     <ul>
       <li>
         The
-        {' '}
+        {" "}
         <strong>source score</strong>
-        {' '}
+        {" "}
         provides a score only for those issues that are noted in the source. Users will frequently discover problems in the source and mark them, particularly if they result in problems in the target. This score can be useful when the requester provides feedback to the client because it allows the requester to document problems with the source that impact the target.
       </li>
       <li>
         The
-        {' '}
+        {" "}
         <strong>target score</strong>
-        {' '}
+        {" "}
         provides a score only for those issues that are noted in the target. It provides a view of the extent to which the translation meets specifications according to the current metric without consideration of source problems. This score corresponds to the scores commonly used by language service providers in internal assessments.
       </li>
       <li>
         The
-        {' '}
+        {" "}
         <strong>composite score</strong>
-        {' '}
+        {" "}
         is a score that counts target penalties against the translation, but adds source penalties to the score. It is useful in cases where the translator has had to deal with significant source problems and you want a &quot;fair&quot; score that reflects this difficulty. In some cases a translation might fail to meet expectations in the target score, but the composite score would provide a more fair assessment of the translation.
       </li>
     </ul>
     <p>
       If you need more detail on the issues found, the
-      {' '}
+      {" "}
       <strong>Reports</strong>
-      {' '}
+      {" "}
       tab provides an overview report of the types of issues found in both source and target and their severity. It does not provide a score because the scores are always available at the top of the editor, but is useful for cases where you want to understand what kinds of problems occurred in a translation.
     </p>
   </div>

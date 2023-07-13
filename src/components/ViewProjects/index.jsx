@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import './ViewProjects.css';
-import { useHistory } from 'react-router-dom';
-import API from '../../api';
-import { GlobalContext } from '../../store';
-import ConfirmationModal from '../ConfirmationModal';
+import React, { useState, useEffect } from "react";
+import "./ViewProjects.css";
+import { useHistory } from "react-router-dom";
+import API from "../../api";
+import { GlobalContext } from "../../store";
+import ConfirmationModal from "../ConfirmationModal";
 
 const ViewProjects = () => {
   const [state] = React.useContext(GlobalContext);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [projects, setProjects] = useState([]);
   const history = useHistory();
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [confirmCallback, setConfirmCallback] = useState(() => {});
   const [rejectCallback, setRejectCallback] = useState(() => {});
-  const [confirmationModalMessage, setConfirmationModalMessage] = useState('');
+  const [confirmationModalMessage, setConfirmationModalMessage] = useState("");
 
   const invokeConfirmationModal = (newConfirmCallback, newRejectCallback, message) => {
     const newConfirmCallbackWrapper = async () => {
@@ -33,7 +33,7 @@ const ViewProjects = () => {
   };
 
   const getProjects = () => {
-    API.get(`/api/projects`)
+    API.get("/api/projects")
       .then((response) => {
         setProjects(response.data.projects);
       })
@@ -65,7 +65,7 @@ const ViewProjects = () => {
   };
 
   const buttons = (project) => (
-    state.token.role === 'user'
+    state.token.role === "user"
       ? (
         <button type="button" className="view-projects__button" onClick={() => history.push(`/editor/${project.project_id}`)}>
           Open
@@ -88,7 +88,7 @@ const ViewProjects = () => {
   useEffect(getProjects, []);
 
   const mappedProjects = projects.map((project) => {
-    const status = project.finished ? 'finished' : `not finished - current segment: ${project.last_segment}`;
+    const status = project.finished ? "finished" : `not finished - current segment: ${project.last_segment}`;
     const { name } = project;
     // eslint-disable-next-line camelcase
     const projectId = project.project_id;
@@ -106,10 +106,10 @@ const ViewProjects = () => {
 
   return (
     <div>
-      <ConfirmationModal confirmCallback={confirmCallback} rejectCallback={rejectCallback} message={confirmationModalMessage} className={`${showConfirmationModal ? '' : 'confirmation-modal--hide'}`} />
+      <ConfirmationModal confirmCallback={confirmCallback} rejectCallback={rejectCallback} message={confirmationModalMessage} className={`${showConfirmationModal ? "" : "confirmation-modal--hide"}`} />
       <h2 className="view-projects__heading">View projects</h2>
       {
-        state.token.role !== 'user'
+        state.token.role !== "user"
         && (
         <a className="view-projects__download-button" role="button" href="/api/issues" download="typology">
           Export Typology (XML)

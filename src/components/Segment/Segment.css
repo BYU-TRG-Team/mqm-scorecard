@@ -9,7 +9,7 @@
   cursor: pointer;
 }
 
-.scorecard__segment-table__issue--neutral:focus, .scorecard__segment-table__issue--minor:focus, .scorecard__segment-table__issue--major:focus, .scorecard__segment-table__issue--critical:focus {
+.scorecard__segment-table__issue--selected {
   opacity: 0.5;
 }
 
@@ -28,7 +28,7 @@
   background-color: white;
 }
 
-.scorecard__segment-table__close-button{
+.scorecard__segment-table__close-button {
   top: -3px;
   color: red;
   font-size: 10px;

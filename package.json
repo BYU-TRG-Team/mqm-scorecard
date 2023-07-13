@@ -10,7 +10,9 @@
     "test": "AUTH_SECRET=test jest",
     "db:configure": "node server/db/configure.js",
     "db:set-user-role": "node server/db/set-user-role.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "eslint src --ext .jsx --ext .js",
+    "lint:fix": "eslint src --fix --ext .jsx --ext .js"
   },
   "proxy": "http://localhost:8081",
   "repository": {
@@ -23,6 +25,10 @@
     "url": "https://github.com/BYU-TRG-Team/scorecard/issues"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.0",
+    "@mui/material": "^5.14.0",
     "@sendgrid/mail": "^7.4.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -35,6 +41,7 @@
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
+    "eslint": "^8.44.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "jsonwebtoken": "^8.5.1",
@@ -49,7 +56,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "react-tooltip": "^4.2.21",
     "sequelize": "^6.6.4",
     "texthighlighter": "^1.2.4",
@@ -72,13 +79,7 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^7.31.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "husky": "^7.0.2",
     "jest": "^26.6.0"
   },

@@ -1,5 +1,5 @@
-import React from 'react';
-import { reducer, initialState } from './reducer';
+import React from "react";
+import { reducer, initialState } from "./reducer";
 
 export const GlobalContext = React.createContext({
   state: initialState,

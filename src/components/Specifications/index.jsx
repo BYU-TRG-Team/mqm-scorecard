@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Accordion from '../Accordion';
+import React, { useState, useEffect } from "react";
+import Accordion from "../Accordion";
 
 const Specifications = (props) => {
   const { specifications } = props;

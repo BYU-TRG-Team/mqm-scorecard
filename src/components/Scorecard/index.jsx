@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import './Scorecard.css';
-import Tooltip from '../Tooltip';
-import AddIssueModal from '../AddIssueModal';
-import AdvancedSettingsModal from '../AdvancedSettingsModal';
-import Segment from '../Segment';
+import React, { useState, useEffect } from "react";
+import "./Scorecard.css";
+import AddIssueModal from "../AddIssueModal";
+import AdvancedSettingsModal from "../AdvancedSettingsModal";
+import Segment from "../Segment";
+import { ButtonGroup, IconButton, Box, Tooltip, TextField } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIssueDialog from "../EditIssueDialog";
+import ClearIcon from "@mui/icons-material/Clear";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const Scorecard = (props) => {
   const {
@@ -16,18 +23,19 @@ const Scorecard = (props) => {
     issues,
     setHighlightInstance,
     highlightInstance,
-    createSegmentError
+    createSegmentError,
+    updateSegmentError
   } = props;
 
-  const [segmentNavigationValue, setSegmentNavigationValue] = useState('');
+  const [segmentNavigationValue, setSegmentNavigationValue] = useState("");
   const [lastSegment, setLastSegment] = useState(1);
   const [showAddIssueModal, setShowAddIssueModal] = useState(false);
   const [showAdvancedSettingsModal, setShowAdvancedSettingsModal] = useState(false);
-  const [targetType, setTargetType] = useState('');
-  const [focusedIssue, setFocusedIssue] = useState('');
-  const [focusedIssueNote, setFocusedIssueNote] = useState('');
-  const [filterText, setFilterText] = useState('');
+  const [targetType, setTargetType] = useState("");
+  const [focusedIssue, setFocusedIssue] = useState(null);
+  const [filterText, setFilterText] = useState("");
   const [filteredIssues, setFilteredIssues] = useState([]);
+  const [showEditIssueDialog, setShowEditIssueDialog] = useState(false);
 
   const filteredSegments = segments
     .filter((segment) => {
@@ -74,7 +82,7 @@ const Scorecard = (props) => {
     }
 
     updateSegmentNumber(
-      filteredSegments[currentSegmentIndex + amount].segment_num
+      filteredSegments[currentSegmentIndex + amount].segment_num,
     );
   };
 
@@ -106,7 +114,7 @@ const Scorecard = (props) => {
 
   const mappedSegments = filteredSegments.map((segment) => {
     const isSelected = segment.segment_num == lastSegment;
-    const metadataColumns = Object.keys(segment.segment_data).filter((type) => type !== 'Source' && type !== 'Target');
+    const metadataColumns = Object.keys(segment.segment_data).filter((type) => type !== "Source" && type !== "Target");
     return (
       <Segment
         segment={segment}
@@ -114,13 +122,12 @@ const Scorecard = (props) => {
         metadataColumns={metadataColumns}
         updateSegmentNumber={updateSegmentNumber}
         highlightEnabled={highlightEnabled}
-        deleteSegmentError={deleteSegmentError}
         setShowAddIssueModal={setShowAddIssueModal}
         setTargetType={setTargetType}
         setHighlightInstance={setHighlightInstance}
         setFocusedIssue={setFocusedIssue}
         focusedIssue={focusedIssue}
-        setFocusedIssueNote={setFocusedIssueNote}
+        updateSegmentError={updateSegmentError}
       />
     );
   });
@@ -130,53 +137,122 @@ const Scorecard = (props) => {
       <tbody>
         <tr className="scorecard__nav-table__row--button">
           <td className="scorecard__nav-table__cell">
-            <button
-              type="button"
-              className="scorecard__nav-table__button scorecard__nav-table__button--up"
-              style={{ backgroundImage: `url("${process.env.PUBLIC_URL}/images/arrow_up--zero-state.png")` }}
-              onMouseOver={(e) => { e.target.style.background = `url("${process.env.PUBLIC_URL}/images/arrow_up--hover.png")`; }}
-              onMouseOut={(e) => { e.target.style.background = `url("${process.env.PUBLIC_URL}/images/arrow_up--zero-state.png")`; }}
-              onClick={() => incrementSegmentNumber(-1)}
-            />
+          <IconButton
+            size="small"
+            onMouseDown={() => incrementSegmentNumber(-1)}
+          >
+            <KeyboardArrowUpIcon />
+          </IconButton>
           </td>
         </tr>
         <tr className="scorecard__nav-table__row--highlight">
           <td className="scorecard__nav-table__cell scorecard__nav-table__cell--highlight">
-            <button
-              type="button"
-              className="scorecard__nav-table__button"
-              style={{ backgroundImage: `url("${process.env.PUBLIC_URL}/images/${highlightEnabled ? 'highlight_on' : 'highlight_off'}.png")` }}
-              onMouseDown={() => { setHighlightEnabled(!highlightEnabled); }}
-              data-tip
-              data-for="highlightButton"
-            />
-            <Tooltip id="highlightButton">
-              Enable/disable text highlighting
+            <Tooltip
+              placement="top"
+              title="Enable/disable text highlighting"
+            >
+              <IconButton
+                size="small"
+                onMouseDown={() => setHighlightEnabled(!highlightEnabled)}
+                disabled={focusedIssue !== null}
+                color={highlightEnabled ? "warning" : "default"}
+              >
+                <BorderColorIcon />
+              </IconButton>
             </Tooltip>
           </td>
         </tr>
         <tr className="scorecard__nav-table__row--button">
           <td className="scorecard__nav-table__cell">
-            <button
-              type="button"
-              className="scorecard__nav-table__button scorecard__nav-table__button--down"
-              style={{ backgroundImage: `url("${process.env.PUBLIC_URL}/images/arrow_down--zero-state.png")` }}
-              onMouseOver={(e) => { e.target.style.background = `url("${process.env.PUBLIC_URL}/images/arrow_down--hover.png")`; }}
-              onMouseOut={(e) => { e.target.style.background = `url("${process.env.PUBLIC_URL}/images/arrow_down--zero-state.png")`; }}
-              onClick={() => incrementSegmentNumber(1)}
-            />
+            <IconButton
+              size="small"
+              onMouseDown={() => incrementSegmentNumber(1)}
+            >
+              <KeyboardArrowDownIcon />
+            </IconButton>
           </td>
         </tr>
       </tbody>
     </table>
   );
 
-  const notesTable = (
+  const issueTable = (
     <table className="scorecard__notes-table">
       <tbody>
         <tr className="scorecard__notes-table__row">
           <td className="scorecard__notes-table__cell">
-            <textarea className="scorecard__notes-table__textarea" value={focusedIssueNote} disabled={true} />
+            <Box sx={{ 
+              ...(focusedIssue === null && { visibility: "hidden" }),
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              width: 200,
+              height: 220
+            }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end"
+                }}>
+                <ButtonGroup 
+                  size="small" 
+                  aria-label="Buttons for issue interactions"
+                >
+                  <Tooltip 
+                    placement="bottom" 
+                    title="Unselect issue"
+                  >
+                    <IconButton
+                      aria-label="Unselect issue"
+                      size="small"
+                      onClick={() => setFocusedIssue(null)}
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip 
+                    placement="bottom" 
+                    title="Edit issue"
+                  >
+                    <IconButton
+                      aria-label="Edit issue"
+                      size="small"
+                      onClick={() => setShowEditIssueDialog(true)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip
+                    placement="bottom" 
+                    title="Delete issue"
+                  >
+                    <IconButton
+                      aria-label="Delete issue"
+                      size="small"
+                      onClick={async () => {
+                        if (focusedIssue !== null) {
+                          await deleteSegmentError(focusedIssue.id);
+                          setFocusedIssue(null);
+                        }
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </ButtonGroup>
+              </Box>
+              <TextField
+                label="Note"
+                variant="outlined"
+                value={focusedIssue?.note || " "}
+                multiline
+                InputProps={{
+                  readOnly: true,
+                }}
+                maxRows={6}
+                minRows={6}
+              />
+            </Box>
           </td>
         </tr>
         <tr className="scorecard__notes-table__row">
@@ -198,7 +274,7 @@ const Scorecard = (props) => {
       <div className="scorecard__filter-table__heading">
         Filter
       </div>
-      <div style={{ width: '240px', padding: '5px' }}>
+      <div style={{ width: "240px", padding: "5px" }}>
         <input type="text" className="scorecard__filter-table__input" value={filterText} onChange={(e) => setFilterText(e.target.value)} />
         <br />
         <button type="button" className="scorecard__filter-table__advanced-button" onClick={() => setShowAdvancedSettingsModal(true)}>
@@ -215,58 +291,94 @@ const Scorecard = (props) => {
   }, [project]);
 
   useEffect(() => {
-    if (focusedIssue) {
+    if (focusedIssue !== null) {
+      let updatedFocusedIssue = false;
+
+      for (const segment of filteredSegments) {
+        for (const issue of [
+          ...segment.sourceErrors, 
+          ...segment.targetErrors
+        ]) {
+          if (issue.id === focusedIssue.id) {
+            setFocusedIssue(issue);
+            updatedFocusedIssue = true;
+          }
+        }
+
+        if (updatedFocusedIssue) break;
+      }
+    }
+  }, [segments])
+
+  useEffect(() => {
+    if (focusedIssue !== null) {
       setHighlightEnabled(false);
     }
   }, [focusedIssue]);
+
+  useEffect(() => {
+    setFocusedIssue(null)
+  }, [filterText, filteredIssues]);
 
   return (
     <div className="scorecard">
       { showAddIssueModal && <AddIssueModal issues={issues} setShowAddIssueModal={setShowAddIssueModal} handleCreateSegmentError={handleCreateSegmentError} highlightInstance={highlightInstance} /> }
       { showAdvancedSettingsModal && <AdvancedSettingsModal issues={issues} setShowAdvancedSettingsModal={setShowAdvancedSettingsModal} filteredIssues={filteredIssues} setFilteredIssues={setFilteredIssues} /> }
+      {
+        showEditIssueDialog &&
+        <EditIssueDialog 
+          issues={issues}
+          issue={focusedIssue} 
+          onClose={() => setShowEditIssueDialog(false)} 
+          onUpdate={async (data) => {
+            await updateSegmentError(focusedIssue.id, data);
+            setShowEditIssueDialog(false) 
+          }}
+        />
+      }
       <table className="scorecard__table">
         <thead>
           <tr>
-            <th className="scorecard__table__cell-header" width="24" style={{ padding: '0px' }} />
+            <th className="scorecard__table__cell-header" width="24" style={{ padding: "0px" }} />
             <th className="scorecard__table__cell-header" width="36" />
             <th className="scorecard__table__cell-header" width="400">
               Source:
-              {' '}
+              {" "}
               { lastSegment }
-              {' '}
+              {" "}
               of 16
             </th>
             <th className="scorecard__table__cell-header" width="400">
               Target:
-              {' '}
+              {" "}
               { lastSegment }
-              {' '}
+              {" "}
               of 16
             </th>
-            <th className="scorecard__table__cell-header" width="24" style={{ padding: '0px' }} />
-            <th className="scorecard__table__cell-header" width="200">Notes</th>
+            <th className="scorecard__table__cell-header" width="24" style={{ padding: "0px" }} />
+            <th className="scorecard__table__cell-header" width="200">Issue</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className="scorecard__table__cell" rowSpan="2" style={{ padding: '0px' }}>
+            <td className="scorecard__table__cell" rowSpan="2" style={{ padding: "0px" }}>
               <NavTable />
             </td>
-            <td colSpan="3" className="scorecard__table__cell" style={{ padding: '0' }}>
+            <td colSpan="3" className="scorecard__table__cell" style={{ padding: "0" }}>
               <table className="scorecard__segment-table">
                 <tbody>
                   <tr>
-                    <td colSpan="3" className="scorecard__segment-table__cell scorecard__segment-table__cell--beginning" style={{ backgroundColor: '#cccccc' }}>Beginning of file</td>
+                    <td colSpan="3" className="scorecard__segment-table__cell scorecard__segment-table__cell--beginning" style={{ backgroundColor: "#cccccc" }}>Beginning of file</td>
                   </tr>
                   { mappedSegments }
                 </tbody>
               </table>
             </td>
-            <td rowSpan="2" style={{ padding: '0px' }} className="scorecard__table__cell">
+            <td rowSpan="2" style={{ padding: "0px" }} className="scorecard__table__cell">
               <NavTable />
             </td>
-            <td rowSpan="2" style={{ padding: '0px' }} className="scorecard__table__cell">
-              { notesTable }
+            <td rowSpan="2" style={{ padding: "0px" }} className="scorecard__table__cell">
+              { issueTable }
             </td>
           </tr>
         </tbody>

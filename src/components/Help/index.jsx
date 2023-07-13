@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import Accordion from '../Accordion';
+import React, { useState, useEffect } from "react";
+import Accordion from "../Accordion";
 import {
   overview, creatingProjects, scorecardInterface, severityLevels, reportingScores,
-} from './content';
+} from "./content";
 
 const Help = () => {
   const initialStatuses = {
@@ -30,7 +30,7 @@ const Help = () => {
   }, []);
 
   return (
-    <div style={{ marginTop: '10px' }}>
+    <div style={{ marginTop: "10px" }}>
       <Accordion header="Overview" content={overview} isOpen={accordionStatuses.overview} onClick={() => handleClick({ overview: true })} />
       <Accordion header="Creating projects" content={creatingProjects} isOpen={accordionStatuses.creatingProjects} onClick={() => handleClick({ creatingProjects: true })} />
       <Accordion header="Using the Scorecard Interface" content={scorecardInterface} isOpen={accordionStatuses.scorecardInterface} onClick={() => handleClick({ scorecardInterface: true })} />

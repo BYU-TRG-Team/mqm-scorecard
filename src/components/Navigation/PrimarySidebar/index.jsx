@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from 'react';
-import './PrimarySidebar.css';
-import { Link, useHistory } from 'react-router-dom';
+import React from "react";
+import "./PrimarySidebar.css";
+import { Link, useHistory } from "react-router-dom";
 
-import { GlobalContext } from '../../../store';
-import API from '../../../api';
+import { GlobalContext } from "../../../store";
+import API from "../../../api";
 
 const PrimarySidebar = () => {
   const [state, dispatch] = React.useContext(GlobalContext);
@@ -14,12 +14,12 @@ const PrimarySidebar = () => {
 
   const logout = (e) => {
     e.preventDefault();
-    API.get('/api/auth/logout').then(() => {
+    API.get("/api/auth/logout").then(() => {
       dispatch({
-        type: 'update_token',
-        token: '',
+        type: "update_token",
+        token: "",
       });
-      history.push('/');
+      history.push("/");
     });
   };
 

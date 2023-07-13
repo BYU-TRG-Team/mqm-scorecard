@@ -1,6 +1,6 @@
-import React from 'react';
-import Triangle from '../svgs/triangle';
-import './Accordion.css';
+import React from "react";
+import Triangle from "../svgs/triangle";
+import "./Accordion.css";
 
 const Accordion = (props) => {
   const {
@@ -8,15 +8,15 @@ const Accordion = (props) => {
   } = props;
   return (
     <div>
-      <div className={`accordion ${isOpen && 'accordion--open'}`} onClick={onClick}>
-        <Triangle className={`accordion__triangle ${isOpen && 'accordion__triange--rotated'}`} />
+      <div className={`accordion ${isOpen && "accordion--open"}`} onClick={onClick}>
+        <Triangle className={`accordion__triangle ${isOpen && "accordion__triange--rotated"}`} />
         <span className="accordion__header">{ header }</span>
       </div>
       {
         isOpen
         && (
         <div className="accordion__content">
-          { content || '' }
+          { content || "" }
         </div>
         )
       }

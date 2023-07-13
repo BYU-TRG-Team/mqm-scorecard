@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import './EditProfile.css';
-import { useHistory } from 'react-router-dom';
-import API from '../../api';
-import { GlobalContext } from '../../store';
-import { parseToken } from '../../utils';
+import React, { useEffect, useState } from "react";
+import "./EditProfile.css";
+import { useHistory } from "react-router-dom";
+import API from "../../api";
+import { GlobalContext } from "../../store";
+import { parseToken } from "../../utils";
 
 const EditProfile = () => {
   const [state, dispatch] = React.useContext(GlobalContext);
-  const [error, setError] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [duplicatePassword, setDuplicatePassword] = useState('');
+  const [error, setError] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [duplicatePassword, setDuplicatePassword] = useState("");
   const history = useHistory();
 
   const onSubmit = (e) => {
@@ -28,7 +28,7 @@ const EditProfile = () => {
       if (password === duplicatePassword) {
         usePassword = true;
       } else {
-        setError('Passwords must match');
+        setError("Passwords must match");
         return;
       }
     }
@@ -40,13 +40,13 @@ const EditProfile = () => {
     API.patch(`/api/user/${state.token.id}`, body)
       .then((response) => {
         const { newToken } = response.data;
-        setError('');
+        setError("");
 
         dispatch({
-          type: 'update_token',
+          type: "update_token",
           token: parseToken(newToken),
         });
-        history.push('/edit-profile/success');
+        history.push("/edit-profile/success");
       })
       .catch((err) => {
         if (err.response && err.response.data) {

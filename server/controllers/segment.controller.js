@@ -62,7 +62,7 @@ class SegmentController {
       const segment = segmentResponse.rows[0];
 
       if (segment === undefined) {
-        res.status(400).send({ message: 'No project found' });
+        res.status(400).send({ message: 'No segment found' });
         return;
       }
 
@@ -70,6 +70,51 @@ class SegmentController {
         await this.issueService.deleteSegmentIssueById(req.params.issueId);
         res.status(204).send();
         return;
+      }
+
+      res.status(403).json({ message: errorMessages.accessForbidden });
+    } catch (err) {
+      this.logger.log({
+        level: 'error',
+        message: err,
+      });
+      res.status(500).send({ message: errorMessages.generic });
+    }
+  }
+
+  /*
+  * PATCH /api/segment/error/:issueId
+  * @note
+  * @issue
+  * @level
+  */
+  async patchSegmentIssue(req, res) {
+    try {
+      const {
+        note, issue, level
+      } = req.body;
+
+      const segmentResponse = await this.segmentService.getSegmentByIssueId(req.params.issueId);
+      const segment = segmentResponse.rows[0];
+
+      if (segment === undefined) {
+        return res.status(400).send({ message: 'No segment found' });
+      }
+
+      if (await this.isUserAssignedToProject(req, segment.project_id)) {
+        const segmentIssueResponse =  await this.issueService.getSegmentIssueById(req.params.issueId);
+        const segmentIssue = segmentIssueResponse.rows[0];
+
+        const updatedSegmentIssue = {
+          ...segmentIssue,
+          ...(note !== undefined && { note }),
+          ...(issue !== undefined && { issue }),
+          ...(level !== undefined && { level })
+        };
+
+        await this.issueService.updateSegmentIssue(updatedSegmentIssue);
+
+        return res.status(204).send();
       }
 
       res.status(403).json({ message: errorMessages.accessForbidden });

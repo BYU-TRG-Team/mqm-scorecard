@@ -1,5 +1,5 @@
-import React from 'react';
-import './ConfirmationModal.css';
+import React from "react";
+import "./ConfirmationModal.css";
 
 const ConfirmationModal = (props) => {
   const {
@@ -14,10 +14,10 @@ const ConfirmationModal = (props) => {
         </p>
         <div className="confirmation-modal__buttons">
           <button type="button" onClick={rejectCallback}>
-            { rejectText || 'No' }
+            { rejectText || "No" }
           </button>
           <button type="button" onClick={confirmCallback}>
-            { confirmText || 'Yes' }
+            { confirmText || "Yes" }
           </button>
         </div>
       </div>

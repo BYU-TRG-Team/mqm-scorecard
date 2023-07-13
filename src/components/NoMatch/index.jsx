@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const NoMatch = () => (
-  <div style={{ padding: '20px 0' }}>
+  <div style={{ padding: "20px 0" }}>
     404 Error - Page Not Found
   </div>
 );
