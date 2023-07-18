@@ -154,7 +154,6 @@ const Scorecard = (props) => {
               <IconButton
                 size="small"
                 onMouseDown={() => setHighlightEnabled(!highlightEnabled)}
-                disabled={focusedIssue !== null}
                 color={highlightEnabled ? "warning" : "default"}
               >
                 <BorderColorIcon />
@@ -315,6 +314,12 @@ const Scorecard = (props) => {
       setHighlightEnabled(false);
     }
   }, [focusedIssue]);
+
+  useEffect(() => {
+    if (highlightEnabled) {
+      setFocusedIssue(null);
+    }
+  }, [highlightEnabled])
 
   useEffect(() => {
     setFocusedIssue(null)
