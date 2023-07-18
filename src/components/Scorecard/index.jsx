@@ -347,18 +347,10 @@ const Scorecard = (props) => {
             <th className="scorecard__table__cell-header" width="24" style={{ padding: "0px" }} />
             <th className="scorecard__table__cell-header" width="36" />
             <th className="scorecard__table__cell-header" width="400">
-              Source:
-              {" "}
-              { lastSegment }
-              {" "}
-              of 16
+              { `Source: ${lastSegment} of ${segments.length}` }
             </th>
             <th className="scorecard__table__cell-header" width="400">
-              Target:
-              {" "}
-              { lastSegment }
-              {" "}
-              of 16
+            { `Target: ${lastSegment} of ${segments.length}` }
             </th>
             <th className="scorecard__table__cell-header" width="24" style={{ padding: "0px" }} />
             <th className="scorecard__table__cell-header" width="200">Issue</th>
