@@ -95,7 +95,7 @@ const AddIssueModal = (props) => {
           className="add-issue-modal__copyable-text"
           onMouseEnter={() => setShowIssueCopyIcon(true)}
           onMouseLeave={() => setShowIssueCopyIcon(false)}
-          onMouseDown={() => copyToClipboard(selectedIssue.name)}
+          onMouseDown={() => copyToClipboard(selectedIssue)}
           data-tip
           data-for="issueText"
           data-event="click"
@@ -104,7 +104,7 @@ const AddIssueModal = (props) => {
           Selected Issue:
           {" "}
           <b>
-            { selectedIssue.name }
+            { selectedIssue }
           </b>
           {
             showIssueCopyIcon
