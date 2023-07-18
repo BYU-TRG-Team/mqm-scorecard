@@ -1,5 +1,5 @@
-import React from 'react';
-import links from '../../links';
+import React from "react";
+import links from "../../links";
 
 const User = () => (
   <div>

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import API from '../../api';
-import './EditProject.css';
-import ConfirmationModal from '../ConfirmationModal';
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
+import API from "../../api";
+import "./EditProject.css";
+import ConfirmationModal from "../ConfirmationModal";
 
 const EditProject = () => {
   const { id } = useParams();
@@ -10,38 +10,38 @@ const EditProject = () => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [confirmCallback, setConfirmCallback] = useState(() => {});
   const [rejectCallback, setRejectCallback] = useState(() => {});
-  const [confirmationModalMessage, setConfirmationModalMessage] = useState('');
+  const [confirmationModalMessage, setConfirmationModalMessage] = useState("");
   const [hasSegmentErrors, setHasSegmentErrors] = useState(false);
 
-  const [successMessage, setSuccessMessage] = useState('');
-  const [error, setError] = useState('');
-  const [userError, setUserError] = useState('');
-  const [name, setName] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState("");
+  const [userError, setUserError] = useState("");
+  const [name, setName] = useState("");
   const [projectUsers, setProjectUsers] = useState([]);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
 
   const [bitextFile, setBitextFile] = useState(null);
-  const [currentBitextFile, setCurrentBitextFile] = useState('');
+  const [currentBitextFile, setCurrentBitextFile] = useState("");
   const bitextFileRef = useRef(null);
 
   const [metricFile, setMetricFile] = useState(null);
-  const [currentMetricFile, setCurrentMetricFile] = useState('');
+  const [currentMetricFile, setCurrentMetricFile] = useState("");
   const metricFileRef = useRef(null);
 
   const [specificationsFile, setSpecificationsFile] = useState(null);
   const specificationsFileRef = useRef(null);
-  const [currentSpecificationsFile, setCurrentSpecificationsFile] = useState('');
+  const [currentSpecificationsFile, setCurrentSpecificationsFile] = useState("");
 
   const resetProjectForm = () => {
     setBitextFile(null);
     setMetricFile(null);
     setSpecificationsFile(null);
-    setError('');
-    setUsername('');
+    setError("");
+    setUsername("");
 
-    bitextFileRef.current.value = '';
-    metricFileRef.current.value = '';
-    specificationsFileRef.current.value = '';
+    bitextFileRef.current.value = "";
+    metricFileRef.current.value = "";
+    specificationsFileRef.current.value = "";
   };
 
   const invokeConfirmationModal = (newConfirmCallback, newRejectCallback, message) => {
@@ -64,7 +64,7 @@ const EditProject = () => {
   const flashSuccessMessage = (message) => {
     setSuccessMessage(message);
     setTimeout(() => {
-      setSuccessMessage('');
+      setSuccessMessage("");
     }, 5500);
   };
 
@@ -102,7 +102,7 @@ const EditProject = () => {
     const confirmCallback = () => API.delete(`/api/project/${id}/user/${user.user_id}`)
       .then(() => {
         getProjectInfo();
-        setUserError('');
+        setUserError("");
       })
       .catch((err) => {
         if (err.response && err.response.data) {
@@ -119,14 +119,14 @@ const EditProject = () => {
 
   const addNewUser = () => {
     if (username.length === 0) {
-      setUserError('Username is blank');
+      setUserError("Username is blank");
       return;
     }
 
     API.post(`/api/project/${id}/user`, { username })
       .then(() => {
         getProjectInfo();
-        setUserError('');
+        setUserError("");
       })
       .catch((err) => {
         if (err.response && err.response.data) {
@@ -139,15 +139,15 @@ const EditProject = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    if (bitextFile) formData.append('bitextFile', bitextFile);
-    if (metricFile) formData.append('metricFile', metricFile);
-    if (specificationsFile) formData.append('specificationsFile', specificationsFile);
-    if (name) formData.append('name', name);
+    if (bitextFile) formData.append("bitextFile", bitextFile);
+    if (metricFile) formData.append("metricFile", metricFile);
+    if (specificationsFile) formData.append("specificationsFile", specificationsFile);
+    if (name) formData.append("name", name);
 
     API.put(`/api/project/${id}`, formData)
       .then(async (response) => {
         await getProjectInfo();
-        const message = response.data && response.data.message ? response.data.message : 'Project updated successfully';
+        const message = response.data && response.data.message ? response.data.message : "Project updated successfully";
         flashSuccessMessage(message);
         resetProjectForm();
       })
@@ -162,7 +162,7 @@ const EditProject = () => {
     <ul style={{ padding: 0 }}>
       {
             projectUsers.map((user) => (
-              <li style={{ padding: 0, listStyle: 'none' }}>
+              <li style={{ padding: 0, listStyle: "none" }}>
                 {user.username}
                 &nbsp;
                 <button type="button" onClick={() => deleteUserFromProject(user)} className="edit-project__delete-button">
@@ -178,23 +178,23 @@ const EditProject = () => {
 
   return (
     <div>
-      <ConfirmationModal confirmCallback={confirmCallback} rejectCallback={rejectCallback} message={confirmationModalMessage} className={`${showConfirmationModal ? '' : 'confirmation-modal--hide'}`} />
+      <ConfirmationModal confirmCallback={confirmCallback} rejectCallback={rejectCallback} message={confirmationModalMessage} className={`${showConfirmationModal ? "" : "confirmation-modal--hide"}`} />
       <h2 className="edit-project__heading">Edit Project</h2>
       { successMessage && <span className="edit-project__success">{ successMessage }</span> }
       { error && <span className="edit-project__error">{ error }</span> }
-      { hasSegmentErrors ? <div className="edit-project__warning">NOTE: Issues have been assigned to segments in this project. Changing the bi-text or metric files is not possible until all reported issues are removed.</div> : ''}
+      { hasSegmentErrors ? <div className="edit-project__warning">NOTE: Issues have been assigned to segments in this project. Changing the bi-text or metric files is not possible until all reported issues are removed.</div> : ""}
       <div className="edit-project__table-container">
         <form onSubmit={handleSubmit}>
           <table className="edit-project__table">
             <tbody>
               <tr className="edit-project__row">
-                <td className="edit-project__table-cell" style={{ width: '200px' }}>Project name</td>
+                <td className="edit-project__table-cell" style={{ width: "200px" }}>Project name</td>
                 <td className="edit-project__table-cell">
                   <input type="text" value={name} onChange={(e) => { setName(e.target.value); }} />
                 </td>
               </tr>
               <tr className="edit-project__row">
-                <td className="edit-project__table-cell" style={{ width: '200px' }}>
+                <td className="edit-project__table-cell" style={{ width: "200px" }}>
                   Update Bi-text file (tab-delimited, UTF-8)
                   <br />
                   <br />
@@ -205,7 +205,7 @@ const EditProject = () => {
                 </td>
               </tr>
               <tr className="edit-project__row">
-                <td className="edit-project__table-cell" style={{ width: '200px' }}>
+                <td className="edit-project__table-cell" style={{ width: "200px" }}>
                   Update Specifications file
                   <br />
                   <br />
@@ -216,7 +216,7 @@ const EditProject = () => {
                 </td>
               </tr>
               <tr className="edit-project__row">
-                <td className="edit-project__table-cell" style={{ width: '200px' }}>
+                <td className="edit-project__table-cell" style={{ width: "200px" }}>
                   Update Metric file
                   <br />
                   <br />
@@ -236,7 +236,7 @@ const EditProject = () => {
         <table className="edit-project__table edit-project__table--second">
           <tbody>
             <tr className="edit-project__row">
-              <td className="edit-project__table-cell" style={{ width: '200px' }}>
+              <td className="edit-project__table-cell" style={{ width: "200px" }}>
                 Users
               </td>
               <td className="edit-project__table-cell">
@@ -244,7 +244,7 @@ const EditProject = () => {
               </td>
             </tr>
             <tr className="edit-project__row">
-              <td className="edit-project__table-cell" style={{ width: '200px' }}>
+              <td className="edit-project__table-cell" style={{ width: "200px" }}>
                 Add user (username)
               </td>
               <td className="edit-project__table-cell">
@@ -254,7 +254,7 @@ const EditProject = () => {
             </tr>
           </tbody>
         </table>
-        { userError && <span className="edit-project__error" style={{ marginTop: '10px' }}>{ userError }</span> }
+        { userError && <span className="edit-project__error" style={{ marginTop: "10px" }}>{ userError }</span> }
       </div>
     </div>
   );

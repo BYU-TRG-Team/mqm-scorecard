@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import './Register.css';
-import { useHistory } from 'react-router-dom';
-import API from '../../api';
+import React, { useState } from "react";
+import "./Register.css";
+import { useHistory } from "react-router-dom";
+import API from "../../api";
 
 const Register = () => {
-  const [error, setError] = useState('');
-  const [password, setPassword] = useState('');
-  const [duplicatePassword, setDuplicatePassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const [duplicatePassword, setDuplicatePassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const history = useHistory();
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     if (password !== duplicatePassword) {
-      setError('Passwords must match');
+      setError("Passwords must match");
       return;
     }
 
-    API.post('/api/auth/signup', {
+    API.post("/api/auth/signup", {
       email, password, name, username,
     })
       .then(() => {
-        history.push('/email-verification');
+        history.push("/email-verification");
       })
       .catch((err) => {
         if (err.response && err.response.data) {

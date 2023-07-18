@@ -1,22 +1,22 @@
-import React, { useState, useRef } from 'react';
-import './ImportTypology.css';
-import API from '../../api';
+import React, { useState, useRef } from "react";
+import "./ImportTypology.css";
+import API from "../../api";
 
 const ImportTypology = () => {
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [typologyFile, setTypologyFile] = useState('');
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [typologyFile, setTypologyFile] = useState("");
   const typologyFileRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('typologyFile', typologyFile);
+    formData.append("typologyFile", typologyFile);
 
-    return API.post('/api/issues', formData)
+    return API.post("/api/issues", formData)
       .then((response) => {
-        setError('');
+        setError("");
         setSuccessMessage(response.data.message);
       })
       .catch((err) => {
@@ -36,7 +36,7 @@ const ImportTypology = () => {
           <table className="import-typology__table">
             <tbody>
               <tr className="import-typology__row">
-                <td className="import-typology__table-cell" style={{ width: '200px' }}>Typology File</td>
+                <td className="import-typology__table-cell" style={{ width: "200px" }}>Typology File</td>
                 <td className="import-typology__table-cell">
                   <input type="file" required ref={typologyFileRef} onChange={(e) => { setTypologyFile(e.target.files[0]); }} />
                 </td>

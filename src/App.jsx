@@ -1,49 +1,49 @@
 /* eslint-disable jsx-a11y/aria-role */
-import React from 'react';
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from 'react-router-dom';
+} from "react-router-dom";
 
 // Styles
-import './App.css';
+import "./App.css";
 
 // Components
-import Login from './components/Login';
-import NoMatch from './components/NoMatch';
-import PrimarySidebar from './components/Navigation/PrimarySidebar';
-import SecondarySidebar from './components/Navigation/SecondarySidebar';
-import Footer from './components/Footer';
-import Register from './components/Register';
-import Message from './components/Message';
-import Recover from './components/Recover';
-import SuperAdmin from './components/SuperAdmin';
-import User from './components/User';
-import Admin from './components/Admin';
-import Help from './components/Help';
-import EditProfile from './components/EditProfile';
-import ManageUsers from './components/ManageUsers';
-import CreateProject from './components/CreateProject';
-import ViewProjects from './components/ViewProjects';
-import EditProject from './components/EditProject';
-import About from './components/About';
-import Editor from './components/Editor';
-import ImportTypology from './components/ImportTypology';
+import Login from "./components/Login";
+import NoMatch from "./components/NoMatch";
+import PrimarySidebar from "./components/Navigation/PrimarySidebar";
+import SecondarySidebar from "./components/Navigation/SecondarySidebar";
+import Footer from "./components/Footer";
+import Register from "./components/Register";
+import Message from "./components/Message";
+import Recover from "./components/Recover";
+import SuperAdmin from "./components/SuperAdmin";
+import User from "./components/User";
+import Admin from "./components/Admin";
+import Help from "./components/Help";
+import EditProfile from "./components/EditProfile";
+import ManageUsers from "./components/ManageUsers";
+import CreateProject from "./components/CreateProject";
+import ViewProjects from "./components/ViewProjects";
+import EditProject from "./components/EditProject";
+import About from "./components/About";
+import Editor from "./components/Editor";
+import ImportTypology from "./components/ImportTypology";
 
 // State
-import { GlobalContext } from './store';
+import { GlobalContext } from "./store";
 
 const App = () => {
   const [state] = React.useContext(GlobalContext);
-  const unverifiedRedirect = <Redirect to={{ pathname: '/email-verification' }} />;
-  const nonAuthenticatedRedirect = <Redirect to={{ pathname: '/login' }} />;
+  const unverifiedRedirect = <Redirect to={{ pathname: "/email-verification" }} />;
+  const nonAuthenticatedRedirect = <Redirect to={{ pathname: "/login" }} />;
 
   const dashboardRoutes = {
-    user: '/user/dashboard',
-    admin: '/admin/dashboard',
-    superadmin: '/superadmin/dashboard',
+    user: "/user/dashboard",
+    admin: "/admin/dashboard",
+    superadmin: "/superadmin/dashboard",
   };
 
   const PrivateRoute = React.memo(({ children, role, ...rest }) => {
@@ -108,7 +108,7 @@ const App = () => {
     <PrivateRoute exact path="/superadmin/manage-users" role="superadmin" component={ManageUsers} />,
     <PrivateRoute exact path="/superadmin/create-project" role="superadmin" component={CreateProject} />,
     <PrivateRoute exact path="/superadmin/edit-project/:id" role="superadmin" component={EditProject} />,
-    <PrivateRoute exact path="/superadmin/import-typology" role="superadmin" component={ImportTypology} />
+    <PrivateRoute exact path="/superadmin/import-typology" role="superadmin" component={ImportTypology} />,
   ];
 
   return (

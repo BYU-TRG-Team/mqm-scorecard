@@ -14,4 +14,11 @@ module.exports = (app, di) => {
     authJwt.checkVerification,
     di.SegmentController.deleteSegmentIssue.bind(di.SegmentController),
   );
+
+  app.patch(
+    '/api/segment/error/:issueId',
+    authJwt.verifyToken,
+    authJwt.checkVerification,
+    di.SegmentController.patchSegmentIssue.bind(di.SegmentController),
+  );
 };

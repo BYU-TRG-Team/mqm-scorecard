@@ -1,9 +1,9 @@
-import React from 'react';
-import ReactTooltip from 'react-tooltip';
+import React from "react";
+import ReactTooltip from "react-tooltip";
 
 const Tooltip = (props) => {
   const {
-    children, id, delay
+    children, id, delay,
   } = props;
 
   return (
@@ -13,7 +13,7 @@ const Tooltip = (props) => {
       delayShow={delay || 400}
       overridePosition={(
         position,
-        currentEvent, currentTarget, node
+        currentEvent, currentTarget, node,
       ) => {
         const d = document.documentElement;
         let { left, top } = position;

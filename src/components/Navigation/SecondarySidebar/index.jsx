@@ -1,7 +1,7 @@
-import React from 'react';
-import { GlobalContext } from '../../../store';
-import links from '../../../links';
-import './SecondarySidebar.css';
+import React from "react";
+import { GlobalContext } from "../../../store";
+import links from "../../../links";
+import "./SecondarySidebar.css";
 
 const SecondarySidebar = () => {
   const [state] = React.useContext(GlobalContext);

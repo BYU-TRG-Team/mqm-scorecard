@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Message = (props) => {
   const { isEmailVerification, isRecoverPassword, isSuccessfulEditProfile } = props;
@@ -6,7 +6,7 @@ const Message = (props) => {
     <div>
       { isEmailVerification
                 && (
-                <div style={{ padding: '20px 0' }}>
+                <div style={{ padding: "20px 0" }}>
                   <b>Please verify your email</b>
                   <br />
                   <br />
@@ -15,13 +15,13 @@ const Message = (props) => {
                 )}
       { isRecoverPassword
                 && (
-                <div style={{ padding: '20px 0' }}>
+                <div style={{ padding: "20px 0" }}>
                   If an email matches an account, a recovery email will be sent to that email with instructions to recover your password.
                 </div>
                 )}
       { isSuccessfulEditProfile
                 && (
-                <div style={{ padding: '20px 0' }}>
+                <div style={{ padding: "20px 0" }}>
                   Successfully updated user profile.
                 </div>
                 )}

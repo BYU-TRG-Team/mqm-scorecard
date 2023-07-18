@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import './ManageUsers.css';
-import API from '../../api';
-import ConfirmationModal from '../ConfirmationModal';
+import React, { useEffect, useState } from "react";
+import "./ManageUsers.css";
+import API from "../../api";
+import ConfirmationModal from "../ConfirmationModal";
 
 const ManageUsers = () => {
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [users, setUsers] = useState([]);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [confirmCallback, setConfirmCallback] = useState(() => {});
   const [rejectCallback, setRejectCallback] = useState(() => {});
-  const [confirmationModalMessage, setConfirmationModalMessage] = useState('');
+  const [confirmationModalMessage, setConfirmationModalMessage] = useState("");
 
   const flashSuccessMessage = (message) => {
     setSuccessMessage(message);
     setTimeout(() => {
-      setSuccessMessage('');
+      setSuccessMessage("");
     }, 5500);
   };
 
@@ -37,8 +37,8 @@ const ManageUsers = () => {
   };
 
   const updateUsers = () => {
-    setError('');
-    return API.get('/api/users')
+    setError("");
+    return API.get("/api/users")
       .then((response) => {
         setUsers(response.data.users);
       })
@@ -125,7 +125,7 @@ const ManageUsers = () => {
 
   return (
     <div className="manage-users">
-      <ConfirmationModal confirmCallback={confirmCallback} rejectCallback={rejectCallback} message={confirmationModalMessage} className={`${showConfirmationModal ? '' : 'confirmation-modal--hide'}`} />
+      <ConfirmationModal confirmCallback={confirmCallback} rejectCallback={rejectCallback} message={confirmationModalMessage} className={`${showConfirmationModal ? "" : "confirmation-modal--hide"}`} />
       <h2 className="manage-users__heading">Manage Users</h2>
       { successMessage && <span className="manage-users__success">{ successMessage }</span> }
       { error && <span className="manage-users__error">{ error }</span> }

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import './Recover.css';
-import { useHistory, useParams } from 'react-router-dom';
-import API from '../../api';
-import { GlobalContext } from '../../store';
-import { parseToken } from '../../utils';
+import React, { useState } from "react";
+import "./Recover.css";
+import { useHistory, useParams } from "react-router-dom";
+import API from "../../api";
+import { GlobalContext } from "../../store";
+import { parseToken } from "../../utils";
 
 const Recover = () => {
   const { recoveryToken } = useParams();
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = React.useContext(GlobalContext);
-  const [error, setError] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [duplicatePassword, setDuplicatePassword] = useState('');
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [duplicatePassword, setDuplicatePassword] = useState("");
   const history = useHistory();
 
   const onSubmit = (e) => {
@@ -20,7 +20,7 @@ const Recover = () => {
 
     if (recoveryToken) {
       if (password !== duplicatePassword) {
-        setError('Passwords must match');
+        setError("Passwords must match");
         return;
       }
 
@@ -28,10 +28,10 @@ const Recover = () => {
         .then((response) => {
           const { token } = response.data;
           dispatch({
-            type: 'update_token',
+            type: "update_token",
             token: parseToken(token),
           });
-          history.push('/');
+          history.push("/");
         })
         .catch((err) => {
           if (err.response && err.response.data) {
@@ -42,9 +42,9 @@ const Recover = () => {
       return;
     }
 
-    API.post('/api/auth/recovery', { email })
+    API.post("/api/auth/recovery", { email })
       .then(() => {
-        history.push('/recover/sent');
+        history.push("/recover/sent");
       })
       .catch((err) => {
         if (err.response && err.response.data) {

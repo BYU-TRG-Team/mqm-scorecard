@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
-import API from '../../api';
-import './CreateProject.css';
+import React, { useState, useRef } from "react";
+import API from "../../api";
+import "./CreateProject.css";
 
 const CreateProject = () => {
-  const [name, setName] = useState('');
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [bitextFile, setBitextFile] = useState(null);
   const bitextFileRef = useRef(null);
@@ -20,18 +20,18 @@ const CreateProject = () => {
     setBitextFile(null);
     setMetricFile(null);
     setSpecificationsFile(null);
-    setName('');
-    setError('');
+    setName("");
+    setError("");
 
-    bitextFileRef.current.value = '';
-    metricFileRef.current.value = '';
-    specificationsFileRef.current.value = '';
+    bitextFileRef.current.value = "";
+    metricFileRef.current.value = "";
+    specificationsFileRef.current.value = "";
   };
 
   const flashSuccessMessage = (message) => {
     setSuccessMessage(message);
     setTimeout(() => {
-      setSuccessMessage('');
+      setSuccessMessage("");
     }, 5500);
   };
 
@@ -39,14 +39,14 @@ const CreateProject = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('bitextFile', bitextFile);
-    formData.append('metricFile', metricFile);
-    formData.append('specificationsFile', specificationsFile);
-    formData.append('name', name);
+    formData.append("bitextFile", bitextFile);
+    formData.append("metricFile", metricFile);
+    formData.append("specificationsFile", specificationsFile);
+    formData.append("name", name);
 
-    await API.post('/api/project', formData)
+    await API.post("/api/project", formData)
       .then((response) => {
-        const message = response.data.message ? response.data.message : 'Project created successfully';
+        const message = response.data.message ? response.data.message : "Project created successfully";
         flashSuccessMessage(message);
         resetForm();
       })
@@ -67,25 +67,25 @@ const CreateProject = () => {
           <table className="create-project__table">
             <tbody>
               <tr className="create-project__row">
-                <td className="create-project__table-cell" style={{ width: '200px' }}>Project name</td>
+                <td className="create-project__table-cell" style={{ width: "200px" }}>Project name</td>
                 <td className="create-project__table-cell">
                   <input type="text" required value={name} onChange={(e) => { setName(e.target.value); }} />
                 </td>
               </tr>
               <tr className="create-project__row">
-                <td className="create-project__table-cell" style={{ width: '200px' }}>Bi-text file (tab-delimited, UTF-8</td>
+                <td className="create-project__table-cell" style={{ width: "200px" }}>Bi-text file (tab-delimited, UTF-8</td>
                 <td className="create-project__table-cell">
                   <input type="file" required ref={bitextFileRef} onChange={(e) => { setBitextFile(e.target.files[0]); }} />
                 </td>
               </tr>
               <tr className="create-project__row">
-                <td className="create-project__table-cell" style={{ width: '200px' }}>Specifications file (optional)</td>
+                <td className="create-project__table-cell" style={{ width: "200px" }}>Specifications file (optional)</td>
                 <td className="create-project__table-cell">
                   <input type="file" ref={specificationsFileRef} onChange={(e) => { setSpecificationsFile(e.target.files[0]); }} />
                 </td>
               </tr>
               <tr className="create-project__row">
-                <td className="create-project__table-cell" style={{ width: '200px' }}>Metric file</td>
+                <td className="create-project__table-cell" style={{ width: "200px" }}>Metric file</td>
                 <td className="create-project__table-cell">
                   <input type="file" required ref={metricFileRef} onChange={(e) => { setMetricFile(e.target.files[0]); }} />
                 </td>

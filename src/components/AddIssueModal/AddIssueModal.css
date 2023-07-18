@@ -41,6 +41,7 @@
 
 .add-issue-modal__content {
   padding-bottom: 30px;
+  width: 100%;
 }
 
 .add-issue-modal__buttons{
@@ -48,8 +49,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: flex-end;
   width: 100%;
 }
 
@@ -111,31 +112,6 @@
   min-height: 100px;
   margin-bottom: 40px;
   resize: none;
-}
-
-.add-issue-modal__expandable-section {
-  text-decoration: underline;
-  color: blue;
-  cursor: pointer;
-}
-
-.add-issue-modal__expandable-section:hover {
-  opacity: .6;
-}
-
-.add-issue-modal__tooltip {
-  padding: 20px;
-}
-
-.add-issue-modal__tooltip-heading, .add-issue-modal__tooltip-subheader {
-  font-size: 24px;
-  font-weight: 700;
-  width: 50%;
-  text-align: left;
-}
-
-.add-issue-modal__tooltip-subheader {
-  font-size: 18px;
 }
 
 .add-issue-modal__critical-note {

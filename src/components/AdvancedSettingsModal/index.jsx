@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './AdvancedSettingsModal.css';
+import React, { useState } from "react";
+import "./AdvancedSettingsModal.css";
 
 const AdvancedSettingsModal = (props) => {
   const {
@@ -7,7 +7,7 @@ const AdvancedSettingsModal = (props) => {
     issues,
     setShowAdvancedSettingsModal,
     filteredIssues,
-    setFilteredIssues
+    setFilteredIssues,
   } = props;
 
   const [expandableSectionConfig, setExpandableSectionConfig] = useState({});
@@ -46,7 +46,7 @@ const AdvancedSettingsModal = (props) => {
         <input type="checkbox" onChange={handleCheckbox} id={issue.issue} checked={filteredIssues.includes(issue.issue)} />
         <span
           onClick={() => updateExpandableSection(issue.issue)}
-          className={hasChildren && 'advanced-settings-modal__expandable-section'}
+          className={hasChildren && "advanced-settings-modal__expandable-section"}
         >
           { issue.name }
         </span>
@@ -73,7 +73,7 @@ const AdvancedSettingsModal = (props) => {
     parentIssues.forEach((issue) => {
       const parentIssue = issues[issue];
       mappedIssues.push(
-        <Issue issue={parentIssue} level={0} />
+        <Issue issue={parentIssue} level={0} />,
       );
     });
 
@@ -81,7 +81,7 @@ const AdvancedSettingsModal = (props) => {
   };
 
   return (
-    <div className={`advanced-settings-modal ${className || ''}`}>
+    <div className={`advanced-settings-modal ${className || ""}`}>
       <div className="advanced-settings-modal__content-wrapper">
         <div className="advanced-settings-modal__close-icon-container">
           <span className="advanced-settings-modal__close-icon" onClick={closeModal}>
