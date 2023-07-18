@@ -19,7 +19,9 @@ const IssueTypeDropdown = (props) => {
         <MenuItem
           value={issue.issue}
           key={issue.issue}
-          sx={{ paddingLeft: level + 2 }}
+          sx={{ 
+            paddingLeft: 2 + (level * 4)
+          }}
         >
           { issue.name }
           <Tooltip
@@ -59,7 +61,7 @@ const IssueTypeDropdown = (props) => {
               }
             >
               <IconButton size="small" label="Info">
-                <InfoIcon />
+                <InfoIcon fontSize="inherit" />
               </IconButton>
             </Tooltip>
         </MenuItem>
