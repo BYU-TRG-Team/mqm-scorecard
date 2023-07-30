@@ -107,34 +107,12 @@ Valid role id: 1 (user) | 2 (admin) | 3 (superadmin)
 ```
 
 
-## MQM Scoring Model
+## Severity Weights
 
-The following formula is used within the express server to compute the OQS: 
-
-_APT: absolute penality total_<br/>
-_ONPT: overall normed penalty score_<br/>
-_OQF: overall quality fraction_<br/>
-_MSV: maximum score value, which is set to 100_<br/>
-_OQS: overall quality score_<br/>
-_sourceWordCount: total count of words in the source, where the text is parsed into words by using a **single whitespace as a delimiter**_<br/>
-_targetWordCount: total count of words in the target, where the text is parsed into words by using a **single whitespace as a delimiter**_<br/>
-
-**Severity Weights** 
 - Netural: 0
 - Minor: 1
 - Major: 5
 - Critical: 25
-
-```
-MSV = 100
-APT = Total severity weights of all errors (both target and source)
-ONPT = (APT * sourceWordCount) / targetWordCount
-OQF = 1 - (ONPT / sourceWordCount)
-OQS = (OQF * MSV)
-
-```
-
-NOTE: The final value of OQS is rounded to two decimals before being returned from the server.
 
 ## Project JSON Output 
 
@@ -167,22 +145,17 @@ The JSON output for a project is structured as defined below:
         examples: string,
         issueId: string
     }[],
-    scores: {
-        compositeScore: string
-    },
+    apt: number, // Absolute Penalty Total
     segments: {
         source: string[],
         target: string[],
     }
 }
-
 ```
 
-Example
+### Example
 
 ```
-
-
 {
   "projectName": "Testing-123",
   "key": {
@@ -257,9 +230,7 @@ Example
       "issueId": "multiple-translations-of-term"
     },
   ],
-  "scores": {
-    "compositeScore": "98.48"
-  },
+  "apt": 3,
   "segments": {
     "source": [
       "Foi no penúltimo domingo de Janeiro de 1645, quando o conde Peter van Heest conclamou o povo do Recife — a \"grande e florescente\" capital do Brasil holandês — a comparecer a uma grande festa na qual, garantiu, um cavalo iria voar. ",
@@ -270,8 +241,8 @@ Example
       " Count Peter van Heest, on the next to the last Sunday of January, 1645, summoned the people of Recife — the \"great and thriving\" capital of Dutch Brazil — to attend a major party in which he guaranteed that a horse was going to fly.",
       " Immediately, somebody had to doubt it, of course.",
       " However, even the most skeptical ones must have hesitated before laughing at the count.",
+    ],
   }
 }
-
 ```
 

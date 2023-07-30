@@ -7,6 +7,7 @@ import Help from "../Help";
 import Specifications from "../Specifications";
 import Scorecard from "../Scorecard";
 import Reports from "../Reports";
+import { Button, ButtonGroup, Typography } from "@mui/material";
 
 const Editor = () => {
   const { projectId } = useParams();
@@ -14,8 +15,8 @@ const Editor = () => {
   // State
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [score, setScore] = useState(0);
-  const [showScore, setShowScore] = useState(false);
+  const [apt, setApt] = useState(0);
+  const [showApt, setShowApt] = useState(false);
   const [project, setProject] = useState({});
   const [segments, setSegments] = useState([]);
   const [report, setReport] = useState({});
@@ -27,13 +28,13 @@ const Editor = () => {
   const getProject = () => API.get(`/api/project/${projectId}`)
     .then((response) => {
       const {
-        project, segments, issues, report, score,
+        project, segments, issues, report, apt,
       } = response.data;
       setProject(project);
       setSegments(segments);
       setIssues(issues);
       setReport(report);
-      setScore(score);
+      setApt(apt);
       setError("");
     })
     .catch((err) => {
@@ -108,34 +109,33 @@ const Editor = () => {
     <div className="editor">
       <div className="editor__header">
         <h1 className="editor__heading">
-          Editor:
-          {" "}
-          { project.name }
+          { `Editor: ${project.name}`}
         </h1>
         { successMessage && <span className="editor__success">{ successMessage }</span> }
         { error && <span className="editor__error">{ error }</span> }
-        <div className="editor__buttons">
-          { showScore && (
-          <span className="editor__score">
-            Overall Quality Score:
-            {" "}
-            <b>
-              {
-                score
-              }
-            </b>
-            ,  Note: OQS is not a percentage
-          </span>
-          )}
-          <button className="editor__button" type="button" onClick={() => setShowScore(!showScore)}>
-            {showScore ? "Hide" : "View"}
-            {" "}
-            Scores
-          </button>
-          <button className="editor__button" type="button" onClick={() => updateProject({ finished: !project.finished })}>
-            Mark project as
-            { project.finished ? " not finished" : " finished" }
-          </button>
+        <div>
+          {
+            showApt &&
+            <Typography variant="body1" component="span" sx={{ marginRight: 2 }}>
+              {`Absolute Penalty Total (APT): ${apt}`}
+            </Typography>
+          }
+          <ButtonGroup>
+            <Button 
+              onClick={() => setShowApt(!showApt)}
+              color="primary"
+              variant="outlined"
+            >
+              {`${showApt ? "Hide APT" : "View Scores"}`}
+            </Button>
+            <Button 
+              onClick={() => updateProject({ finished: !project.finished })}
+              color="primary"
+              variant="contained"
+            >
+              {`Mark project as ${project.finished ? "not finished" : "finished"}`}
+            </Button>
+          </ButtonGroup>
         </div>
       </div>
       <div className="editor__container">

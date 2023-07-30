@@ -27,34 +27,64 @@ const IssueTypeDropdown = (props) => {
           <Tooltip
               title={
                 <Box>
-                  <Typography variant="h6">
+                  <Typography 
+                    variant="h6" 
+                    component="h6"
+                  >
                     MQM ID
                   </Typography>
-                  <Typography variant="body">
+                  <Typography 
+                    variant="body2"
+                    component="p"
+                  >
                     { issue.issue }
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography
+                    variant="h6" 
+                    component="h6"
+                  >
                     Description
                   </Typography>
-                  <Typography variant="body">
+                  <Typography
+                    variant="body2"
+                    component="p"
+                  >
                     { issue.description }
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography
+                    variant="h6" 
+                    component="h6"
+                  >
                     Parent
                   </Typography>
-                  <Typography variant="body">
+                  <Typography
+                    variant="body2"
+                    component="p"
+                  >
                     { issue.parent ? `${issue.name} is a type of ${issue.parent}.` : `${issue.name} is a top-level MQM category.` }
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography
+                    variant="h6" 
+                    component="h6"
+                  >
                     Examples
                   </Typography>
-                  <Typography variant="body">
+                  <Typography
+                    variant="body2"
+                    component="p"
+                  >
                     { issue.examples }
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography
+                    variant="h6" 
+                    component="h6"
+                  >
                     Notes
                   </Typography>
-                  <Typography variant="body">
+                  <Typography
+                    variant="body2"
+                    component="p"
+                  >
                     { issue.notes }
                   </Typography>
                 </Box>
