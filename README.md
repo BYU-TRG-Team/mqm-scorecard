@@ -1,4 +1,4 @@
-# Scorecard
+# MQM Scorecard
 
 An Express.js and React.js translation grading application that follows the [Multidimensional Quality Metrics (MQM)](https://themqm.org) convention.
 
@@ -11,14 +11,14 @@ An Express.js and React.js translation grading application that follows the [Mul
 
 ### Setup NPM and a PostgreSQL instance
 
-- NPM (Node Package Manager) will be needed for the installation of Scorecard. Please reference the [NPM documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) for setup.
-- A PostgreSQL instance will be needed for the Scorecard application. A database will also need to be created in the PostgreSQL instance. Please reference the [PostgreSQL downloads](https://www.postgresql.org/download/) for installers for various platforms.
+- NPM (Node Package Manager) will be needed for installation. Please reference the [NPM documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) for setup.
+- A PostgreSQL instance will be needed. Please reference the [PostgreSQL downloads](https://www.postgresql.org/download/) for installers for various platforms.
 
 ### Third Party Requirements
 
-**Scorecard requires a third party email provider to send emails**. The `EMAIL_ADDRESS`, `EMAIL_PASSWORD`, `EMAIL_PROVIDER`, and `EMAIL_PROVIDER_API_KEY` environment variables exist for integration with a provider. 
+**MQM Scorecard requires a third party email provider to send emails**. The `EMAIL_ADDRESS`, `EMAIL_PASSWORD`, `EMAIL_PROVIDER`, and `EMAIL_PROVIDER_API_KEY` environment variables exist for integration with a provider. 
 
-Scorecard currently supports integration with **Zoho** and **SendGrid**. For Zoho, `EMAIL_ADDRESS`, `EMAIL_PASSWORD`, and `EMAIL_PROVIDER` will need to be configured. For SendGrid, `EMAIL_ADDRESS`,`EMAIL_PROVIDER`, and `EMAIL_PROVIDER_API_KEY` will need to be configured.
+MQM Scorecard currently supports integration with **Zoho** and **SendGrid**. For Zoho, `EMAIL_ADDRESS`, `EMAIL_PASSWORD`, and `EMAIL_PROVIDER` will need to be configured. For SendGrid, `EMAIL_ADDRESS`,`EMAIL_PROVIDER`, and `EMAIL_PROVIDER_API_KEY` will need to be configured.
 
 ### Environment Variables
 
@@ -26,7 +26,7 @@ The following environment variables will either need to be exported in the shell
 
 ```
 APP_ENV=<development | production>
-DATABASE_URL=<url for the Scorecard database>
+DATABASE_URL=<url for the database>
 EMAIL_ADDRESS=<address from which emails will be sent>
 EMAIL_PROVIDER=<Zoho | SendGrid>
 EMAIL_PASSWORD=<password for hosted email account (used for Zoho only)>
@@ -49,7 +49,7 @@ npm run build
 
 Ensure that the `DATABASE_URL` environment variable is either exported in the shell context or defined in a `.env` file in the repo root. 
 
-**WARNING: This command will destroy and then create all tables for Scorecard.**
+**WARNING: This command will destroy and then create all tables.**
 
 NOTE: This step makes used of NPM packages installed by running `npm ci`.
 
@@ -82,7 +82,7 @@ The database will still need to be configured as mentioned in the installation s
 
 ## Configure database
 
-Destroys and then creates all tables for Scorecard.
+Destroys and then creates all tables.
 
 Ensure that the `DATABASE_URL` environment variable is either exported in the shell context or defined in a `.env` file in the repo root. 
 
