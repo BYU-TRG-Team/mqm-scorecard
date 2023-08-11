@@ -115,7 +115,7 @@ class ProjectController {
           users: projectUserResponse.rows,
           segments: projectSegmentsResponse.rows,
           issues: this.issueParser.parseIssues(issueResponse.rows),
-          score: await this.generateProjectScore(req.params.projectId),
+          apt: await this.calculateApt(req.params.projectId),
         });
         return;
       }
@@ -160,7 +160,7 @@ class ProjectController {
         const projectResponse = await this.projectService.getProjectById(req.params.projectId);
         const projectSegmentsResponse = await this.segmentService.getSegmentsByProjectId(req.params.projectId);
         const projectSegmentIssuesResponse = await this.issueService.getSegmentIssuesByProjectId(req.params.projectId);
-        const compositeScore = await this.generateProjectScore(req.params.projectId);
+        const apt = await this.calculateApt(req.params.projectId);
         const { name } = projectResponse.rows[0];
         const key = {};
 
@@ -187,9 +187,7 @@ class ProjectController {
             }
           )),
           metric,
-          scores: {
-            compositeScore,
-          },
+          apt,
           segments: {
             source: projectSegmentsResponse.rows.map((seg) => seg.segment_data.Source),
             target: projectSegmentsResponse.rows.map((seg) => seg.segment_data.Target),
@@ -579,53 +577,25 @@ class ProjectController {
     return report;
   }
 
-  async generateProjectScore(projectId) {
-    /*
-    * Definitions
-    * APT: absolute penality total
-    * ONPT: overall normed penalty score
-    * OQF: overall quality fraction
-    * MSV: maximum score value
-    * OQS: overall quality score
-    */
-
-    let sourceWordCount = 0;
-    let targetWordCount = 0;
-    let APT = 0;
-    const MSV = 100;
-    const SEVERITY_WEIGHTS = {
+  async calculateApt(projectId) {
+    let apt = 0;
+    const reportResponse = await this.issueService.getProjectReportById(projectId);
+    const severityWeights = {
       neutral: 0,
       minor: 1,
       major: 5,
       critical: 25,
     };
 
-    const reportResponse = await this.issueService.getProjectReportById(projectId);
-    const projectResponse = await this.projectService.getProjectById(projectId);
-
-    if (projectResponse.rows.length > 0) {
-      /*
-      * Word count is parsed during the creation of a project.
-      * For both source and target, the count is retrieved by taking the text for each line, splitting the text into words by using a single whitespace character as a delimitter, and then adding the total numbers of words to the total count
-      * See the parseBiColumnBitext method in the FileParser support class for more details
-      */
-      sourceWordCount = projectResponse.rows[0].source_word_count;
-      targetWordCount = projectResponse.rows[0].target_word_count;
-    }
-
     reportResponse.rows.forEach((issue) => {
       issue.level.forEach((level) => {
         if (level !== null) {
-          APT += SEVERITY_WEIGHTS[level];
+          apt += severityWeights[level];
         }
       });
     });
 
-    const ONPT = (APT * sourceWordCount) / targetWordCount;
-    const OQF = 1 - (ONPT / sourceWordCount);
-    const OQS = (OQF * MSV).toFixed(2);
-
-    return OQS;
+    return apt;
   }
 }
 

@@ -81,7 +81,7 @@ describe('tests getProject method', () => {
     const mockJsonCall = res.json.mock.calls[0];
     expect(mockJsonCall[0]).toStrictEqual({
       project: { project_id: 1, source_word_count: 200, target_word_count: 300 },
-      score: '82.67',
+      apt: 52,
       report: {
         custom: [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 2],
         fluency: [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 2],
@@ -271,7 +271,7 @@ describe('tests getProject method', () => {
     const mockJsonCall = res.json.mock.calls[0];
     expect(mockJsonCall[0]).toStrictEqual({
       project: { project_id: 1, source_word_count: 200, target_word_count: 300 },
-      score: '82.67',
+      apt: 52,
       report: {
         custom: [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 2],
         fluency: [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 2],

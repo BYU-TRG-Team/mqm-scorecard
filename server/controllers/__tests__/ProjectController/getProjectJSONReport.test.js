@@ -131,7 +131,7 @@ describe('tests getProjectJSONReport method', () => {
         note: 'test',
         highlighting: { startIndex: 0, endIndex: 10 },
       }],
-      scores: { compositeScore: '91.33' },
+      apt: 26,
       segments: {
         source: ['Test1'],
         target: ['Test2'],
@@ -285,7 +285,7 @@ describe('tests getProjectJSONReport method', () => {
         note: 'test',
         highlighting: { startIndex: 0, endIndex: 10 },
       }],
-      scores: { compositeScore: '91.33' },
+      apt: 26,
       segments: {
         source: ['Test1'],
         target: ['Test2'],

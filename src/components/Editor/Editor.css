@@ -70,10 +70,6 @@
   margin-right: 5px;
 }
 
-.editor__button {
-  margin-left: 5px;
-}
-
 .editor__success{
   color: #1b663e;
   display: inline-block;
@@ -84,10 +80,6 @@
 .editor__error {
   color: red;
   display: inline-block;
-}
-
-.editor__score {
-  font-size: 15px;
 }
 
 @-webkit-keyframes flash {
