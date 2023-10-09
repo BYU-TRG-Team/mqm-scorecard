@@ -47,7 +47,7 @@ npm run build
 
 ### Database Configuration
 
-Ensure that the `DATABASE_URL` environment variable is either exported in the shell context or defined in a `.env` file in the repo root. 
+Ensure that environment variables are either exported in the shell context or defined in a `.env` file in the repo root. 
 
 **WARNING: This command will destroy and then create all tables.**
 
