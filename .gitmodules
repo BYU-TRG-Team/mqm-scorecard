@@ -1,0 +1,4 @@
+[submodule "api"]
+	path = api
+	url = https://github.com/BYU-TRG-Team/mqm-scorecard-api
+	branch = v0.1.0

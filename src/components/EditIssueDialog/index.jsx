@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, MenuItem, TextField, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
 import { useState } from "react";
 import IssueTypeDropdown from "../IssueTypeDropdown";
 import issueSeverities from "../../issue-severities";
