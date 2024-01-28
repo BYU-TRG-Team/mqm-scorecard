@@ -7,7 +7,7 @@
     "build": "react-scripts build && npm --prefix api run build && tsc",
     "test": "jest",
     "prepare": "husky install",
-    "preinstall": "git submodule update --remote --init && npm --prefix api ci",
+    "preinstall": "npm --prefix api ci",
     "lint": "eslint src --ext .jsx --ext .js",
     "lint:fix": "eslint src --fix --ext .jsx --ext .js"
   },
