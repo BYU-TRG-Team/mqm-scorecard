@@ -15,7 +15,7 @@ An application for language translation evaluation using [MQM (Multidimensional 
 
 ### Third-party Requirements
 
-**MQM Scorecard requires a third party email provider**. MQM Scorecard currently supports integration with either **Zoho Mail** and **SendGrid**. 
+**MQM Scorecard requires a third party email provider**. MQM Scorecard currently supports integration with either **Zoho Mail** or **SendGrid**. 
 
 #### Zoho Mail setup
 
