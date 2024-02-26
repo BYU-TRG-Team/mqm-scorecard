@@ -23,7 +23,7 @@ Refer to [environment variables in the README](https://github.com/BYU-TRG-Team/m
 ## Deploy application to Heroku
 
 1. [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
-2. Clone the Scorecard repository and check out the latest release:
+2. Clone the Scorecard repository and checkout the latest release:
 
 ```
 git clone https://github.com/BYU-TRG-Team/mqm-scorecard.git
