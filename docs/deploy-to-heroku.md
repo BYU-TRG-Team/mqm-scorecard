@@ -38,7 +38,7 @@ git checkout tags/"${LATEST_TAG}" -b "${LATEST_TAG}"
 npm ci
 DATABASE_URL=<url for the database> \
 APP_ENV=production \ 
-npm --prefix api run db:configure
+npm --prefix api run migrate up
 ```
 
 4. [Create a Git remote for Heroku](https://devcenter.heroku.com/articles/git#create-a-heroku-remote).
