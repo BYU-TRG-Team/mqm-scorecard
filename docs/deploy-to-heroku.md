@@ -37,7 +37,8 @@ git checkout tags/"${LATEST_TAG}" -b "${LATEST_TAG}"
 ```
 npm ci
 DATABASE_URL=<url for the database> \
-APP_ENV=production \ 
+APP_ENV=production \
+PGSSLMODE=no-verify \
 npm --prefix api run migrate up
 ```
 
