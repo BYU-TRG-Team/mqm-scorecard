@@ -11,7 +11,7 @@ const EditProject = () => {
   const [confirmCallback, setConfirmCallback] = useState(() => {});
   const [rejectCallback, setRejectCallback] = useState(() => {});
   const [confirmationModalMessage, setConfirmationModalMessage] = useState("");
-  const [hasSegmentErrors, setHasSegmentErrors] = useState(false);
+  const [hasErrors, setHasErrors] = useState(false);
 
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
@@ -71,7 +71,7 @@ const EditProject = () => {
   const getProjectInfo = () => API.get(`/api/project/${id}`)
     .then((response) => {
       const { project, users, segments } = response.data;
-      const hasSegmentErrors = segments.filter((seg) => seg.sourceErrors.length > 0 || seg.targetErrors.length > 0).length > 0;
+      const hasErrors = segments.filter((seg) => seg.sourceErrors.length > 0 || seg.targetErrors.length > 0).length > 0;
 
       if (project.name) {
         setName(project.name);
@@ -89,7 +89,7 @@ const EditProject = () => {
         setCurrentSpecificationsFile(project.specifications_file);
       }
 
-      setHasSegmentErrors(hasSegmentErrors);
+      setHasErrors(hasErrors);
       setProjectUsers(users);
     })
     .catch((err) => {
@@ -182,7 +182,7 @@ const EditProject = () => {
       <h2 className="edit-project__heading">Edit Project</h2>
       { successMessage && <span className="edit-project__success">{ successMessage }</span> }
       { error && <span className="edit-project__error">{ error }</span> }
-      { hasSegmentErrors ? <div className="edit-project__warning">NOTE: Issues have been assigned to segments in this project. Changing the bi-text or metric files is not possible until all reported issues are removed.</div> : ""}
+      { hasErrors ? <div className="edit-project__warning">NOTE: Errors have been assigned to segments in this project. Changing the bi-text or metric files is not possible until all errors are removed.</div> : ""}
       <div className="edit-project__table-container">
         <form onSubmit={handleSubmit}>
           <table className="edit-project__table">
@@ -201,7 +201,7 @@ const EditProject = () => {
                   {`Current file name: ${currentBitextFile}`}
                 </td>
                 <td className="edit-project__table-cell">
-                  <input type="file" ref={bitextFileRef} onChange={(e) => { setBitextFile(e.target.files[0]); }} disabled={hasSegmentErrors} />
+                  <input type="file" ref={bitextFileRef} onChange={(e) => { setBitextFile(e.target.files[0]); }} disabled={hasErrors} />
                 </td>
               </tr>
               <tr className="edit-project__row">
@@ -223,7 +223,7 @@ const EditProject = () => {
                   {`Current file name: ${currentMetricFile}`}
                 </td>
                 <td className="edit-project__table-cell">
-                  <input type="file" ref={metricFileRef} onChange={(e) => { setMetricFile(e.target.files[0]); }} disabled={hasSegmentErrors} />
+                  <input type="file" ref={metricFileRef} onChange={(e) => { setMetricFile(e.target.files[0]); }} disabled={hasErrors} />
                 </td>
               </tr>
               <tr className="edit-project__row">
