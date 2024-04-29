@@ -61,30 +61,6 @@ npm ci
 npm run build
 ```
 
-### Database Configuration
-
-NOTE: Environment variables will need to be exported to the shell context. If environment variables are in a .env file, you will need to export the variables to the shell context using these instructions:
-
-```
-set -a
-source .env
-set +a
-```
-
-NOTE: This step makes used of NPM packages installed by running `npm ci`.
-
-**WARNING: This command will destroy and then create all tables.**
-
-```
-npm --prefix api run db:configure
-```
-
-### Launch 
-
-```
-npm run start
-```
-
 ### Configure the database
 
 Database configuration is versioned using a library called [node-pg-migrate](https://www.npmjs.com/package/node-pg-migrate), a Node.js database migration management tool built exclusively for PostgreSQL. Migrations are located in the `/db_migrations` folder. For a fresh install, all migrations will need to run. 
@@ -104,6 +80,11 @@ set +a
 npm --prefix api run migrate up
 ```
 
+### Launch 
+
+```
+npm run start
+```
 
 ## Scripts
 
