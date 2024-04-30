@@ -10,10 +10,10 @@ const Segment = (props) => {
     updateSegmentNumber,
     highlightEnabled,
     setTargetType,
-    setShowAddIssueModal,
+    setShowAddErrorModal,
     setHighlightInstance,
-    setFocusedIssue,
-    focusedIssue,
+    setFocusedError,
+    focusedError,
   } = props;
 
   const [sourceHighlightInstance, setSourceHighlightInstance] = useState(null);
@@ -33,7 +33,7 @@ const Segment = (props) => {
           onAfterHighlight() {
             setTargetType("source");
             setHighlightInstance(highlightInstance);
-            setShowAddIssueModal(true);
+            setShowAddErrorModal(true);
           },
         });
 
@@ -58,7 +58,7 @@ const Segment = (props) => {
           onAfterHighlight() {
             setTargetType("target");
             setHighlightInstance(highlightInstance);
-            setShowAddIssueModal(true);
+            setShowAddErrorModal(true);
           },
         });
 
@@ -67,22 +67,22 @@ const Segment = (props) => {
   }, []);
 
   useEffect(() => {
-    const focusedSourceIssue = segment.sourceErrors.filter((error) => error.id === focusedIssue?.id)[0];
-    const focusedTargetIssue = segment.targetErrors.filter((error) => error.id === focusedIssue?.id)[0];
+    const focusedSourceError = segment.sourceErrors.filter((error) => error.id === focusedError?.id)[0];
+    const focusedTargetError = segment.targetErrors.filter((error) => error.id === focusedError?.id)[0];
 
     if (sourceHighlightInstance && targetHighlightInstance) {
       sourceHighlightInstance.removeHighlights();
       targetHighlightInstance.removeHighlights();
     }
 
-    if (focusedSourceIssue && sourceHighlightInstance) {
-      sourceHighlightInstance.deserializeHighlights(focusedSourceIssue.highlighting);
+    if (focusedSourceError && sourceHighlightInstance) {
+      sourceHighlightInstance.deserializeHighlights(focusedSourceError.highlighting);
     }
 
-    if (focusedTargetIssue && targetHighlightInstance) {
-      targetHighlightInstance.deserializeHighlights(focusedTargetIssue.highlighting);
+    if (focusedTargetError && targetHighlightInstance) {
+      targetHighlightInstance.deserializeHighlights(focusedTargetError.highlighting);
     }
-  }, [focusedIssue]);
+  }, [focusedError]);
 
   return (
     <>
@@ -116,41 +116,41 @@ const Segment = (props) => {
           }
         </td>
       </tr>
-      <tr segment-id="100" className={`scorecard__segment-table__row--issues ${isSelected ? "scorecard__segment-table__row--selected-bottom" : ""}`} style={{ backgroundColor: "#cccccc" }} onDoubleClick={() => updateSegmentNumber(segment.segment_num)}>
-        <td className="scorecard__segment-table__cell scorecard__segment-table__cell--issue">
+      <tr segment-id="100" className={`scorecard__segment-table__row--errors ${isSelected ? "scorecard__segment-table__row--selected-bottom" : ""}`} style={{ backgroundColor: "#cccccc" }} onDoubleClick={() => updateSegmentNumber(segment.segment_num)}>
+        <td className="scorecard__segment-table__cell scorecard__segment-table__cell--error">
           {
             segment.sourceErrors.length === 0
               ? <span>&nbsp;</span>
-              : segment.sourceErrors.map((err) => (
+              : segment.sourceErrors.map((error) => (
                 <button
                   type="button"
-                  className={`scorecard__segment-table__issue--${err.level}`}
+                  className={`scorecard__segment-table__error--${error.level}`}
                   onClick={(e) => { 
                     e.target.focus(); 
-                    setFocusedIssue(err); 
+                    setFocusedError(error); 
                   }}
                 >
-                  { err.issue }
+                  { error.issue }
                 </button>
               ))
           }
         </td>
-        <td className="scorecard__segment-table__cell scorecard__segment-table__cell--issue">
+        <td className="scorecard__segment-table__cell scorecard__segment-table__cell--error">
           {
             segment.targetErrors.length === 0
               ? <span>&nbsp;</span>
-              : segment.targetErrors.map((err) => (
+              : segment.targetErrors.map((error) => (
                 <button
                   type="button"
                   className={
-                    `scorecard__segment-table__issue--${err.level} ${focusedIssue?.id === err.id && "scorecard__segment-table__issue--selected"}`
+                    `scorecard__segment-table__error--${error.level} ${focusedError?.id === error.id && "scorecard__segment-table__error--selected"}`
                   }
                   onClick={(e) => { 
                     e.target.focus(); 
-                    setFocusedIssue(err); 
+                    setFocusedError(error); 
                   }}
                 >
-                  { err.issue_name }
+                  { error.issue_name }
                 </button>
               ))
           }

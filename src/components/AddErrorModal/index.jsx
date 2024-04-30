@@ -1,19 +1,19 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { useState } from "react";
-import "./AddIssueModal.css";
+import "./AddErrorModal.css";
 import Tooltip from "../Tooltip";
 import CopyPaste from "../Icons/CopyPaste";
 import { copyToClipboard } from "../../utils";
-import IssueSeverityDropdown from "../IssueSeverityDropdown";
-import issueSeverities from "../../issue-severities";
-import IssueTypeDropdown from "../IssueTypeDropdown";
+import ErrorSeverityDropdown from "../ErrorSeverityDropdown";
+import errorSeverities from "../../error-severities";
+import IssueDropdown from "../IssueDropdown";
 
 const AddIssueModal = (props) => {
   const {
     className,
     issues,
-    setShowAddIssueModal,
-    handleCreateSegmentError,
+    setShowAddErrorModal,
+    handleCreateError,
     highlightInstance,
   } = props;
 
@@ -27,12 +27,12 @@ const AddIssueModal = (props) => {
 
   const closeModal = () => {
     highlightInstance.removeHighlights();
-    setShowAddIssueModal(false);
+    setShowAddErrorModal(false);
   };
 
-  const createSegmentError = () => {
+  const createError = () => {
     const highlighting = highlightInstance.serializeHighlights();
-    handleCreateSegmentError({
+    handleCreateError({
       highlighting,
       note,
       issue: selectedIssue,
@@ -48,34 +48,34 @@ const AddIssueModal = (props) => {
       {
         selectedSeverity === "critical"
         && (
-        <span className="add-issue-modal__critical-note">
+        <span className="add-error-modal__critical-note">
           Note: Adding a critical issue will cause this project to fail this quality check
         </span>
         )
       }
-      <p className="add-issue-modal__heading">
+      <p className="add-error-modal__heading">
         <b>
           Add New Error
         </b>
       </p>
-      <div className="add-issue-modal__content">
-        <IssueTypeDropdown 
+      <div className="add-error-modal__content">
+        <IssueDropdown 
           issues={issues}
           value={selectedIssue}
           onChange={(event) => setSelectedIssue(event.target.value)}
         />
-        <IssueSeverityDropdown 
-          severities={issueSeverities}
+        <ErrorSeverityDropdown 
+          severities={errorSeverities}
           value={selectedSeverity}
           onChange={(event) => setSelectedSeverity(event.target.value)}
         />
       </div>
-      <div className="add-issue-modal__buttons">
+      <div className="add-error-modal__buttons">
         <div>
-          <button type="button" className="add-issue-modal__button add-issue-modal__button--cancel" onClick={closeModal}>
+          <button type="button" className="add-error-modal__button add-error-modal__button--cancel" onClick={closeModal}>
             Cancel
           </button>
-          <button type="button" className="add-issue-modal__button add-issue-modal__button--continue" onClick={() => setCurrentPage(1)} disabled={!selectedIssue || !selectedSeverity}>
+          <button type="button" className="add-error-modal__button add-error-modal__button--continue" onClick={() => setCurrentPage(1)} disabled={!selectedIssue || !selectedSeverity}>
             Continue
           </button>
         </div>
@@ -85,14 +85,14 @@ const AddIssueModal = (props) => {
 
   const pageTwo = (
     <>
-      <p className="add-issue-modal__heading">
+      <p className="add-error-modal__heading">
         <b>
           Add Notes
         </b>
       </p>
-      <div className="add-issue-modal__copyable-text-wrapper">
+      <div className="add-error-modal__copyable-text-wrapper">
         <p
-          className="add-issue-modal__copyable-text"
+          className="add-error-modal__copyable-text"
           onMouseEnter={() => setShowIssueCopyIcon(true)}
           onMouseLeave={() => setShowIssueCopyIcon(false)}
           onMouseDown={() => copyToClipboard(selectedIssue)}
@@ -108,14 +108,14 @@ const AddIssueModal = (props) => {
           </b>
           {
             showIssueCopyIcon
-            && <CopyPaste className="add-issue-modal__copy-paste-icon" />
+            && <CopyPaste className="add-error-modal__copy-paste-icon" />
           }
         </p>
         <Tooltip id="issueText" delay={0}>
           Copied!
         </Tooltip>
         <p
-          className="add-issue-modal__copyable-text"
+          className="add-error-modal__copyable-text"
           onMouseEnter={() => setShowHighlightCopyIcon(true)}
           onMouseLeave={() => setShowHighlightCopyIcon(false)}
           onMouseDown={() => copyToClipboard(serializedHighlight[1])}
@@ -131,7 +131,7 @@ const AddIssueModal = (props) => {
           </b>
           {
             showHighlightCopyIcon
-            && <CopyPaste className="add-issue-modal__copy-paste-icon" />
+            && <CopyPaste className="add-error-modal__copy-paste-icon" />
           }
           <Tooltip id="highlightText" delay={0}>
             Copied!
@@ -139,12 +139,12 @@ const AddIssueModal = (props) => {
 
         </p>
       </div>
-      <textarea value={note} onChange={(e) => setNote(e.target.value)} className="add-issue-modal__note" />
-      <div className="add-issue-modal__buttons add-issue-modal__buttons--second-page">
-        <button type="button" className="add-issue-modal__button" onClick={() => setCurrentPage(0)}>
+      <textarea value={note} onChange={(e) => setNote(e.target.value)} className="add-error-modal__note" />
+      <div className="add-error-modal__buttons add-error-modal__buttons--second-page">
+        <button type="button" className="add-error-modal__button" onClick={() => setCurrentPage(0)}>
           Back
         </button>
-        <button type="button" className="add-issue-modal__button add-issue-modal__button--continue" onClick={createSegmentError}>
+        <button type="button" className="add-error-modal__button add-error-modal__button--continue" onClick={createError}>
           Add New Error
         </button>
       </div>
@@ -152,10 +152,10 @@ const AddIssueModal = (props) => {
   );
 
   return (
-    <div className={`add-issue-modal ${className || ""}`}>
-      <div className="add-issue-modal__content-wrapper">
-        <div className="add-issue-modal__close-icon-container">
-          <span className="add-issue-modal__close-icon" onClick={closeModal}>
+    <div className={`add-error-modal ${className || ""}`}>
+      <div className="add-error-modal__content-wrapper">
+        <div className="add-error-modal__close-icon-container">
+          <span className="add-error-modal__close-icon" onClick={closeModal}>
             &#10006;
           </span>
         </div>

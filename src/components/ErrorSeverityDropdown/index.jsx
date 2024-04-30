@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, MenuItem } from "@mui/material";
 
-const IssueSeverityDropdown = (props) => {
+const ErrorSeverityDropdown = (props) => {
   const { 
     severities,
     onChange,
@@ -28,4 +28,4 @@ const IssueSeverityDropdown = (props) => {
   )
 };
 
-export default IssueSeverityDropdown;
+export default ErrorSeverityDropdown;

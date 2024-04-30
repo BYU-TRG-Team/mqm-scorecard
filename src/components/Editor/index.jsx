@@ -51,7 +51,7 @@ const Editor = () => {
       }
     });
 
-  const deleteSegmentError = (segmentErrorId) => API.delete(`/api/segment/error/${segmentErrorId}`)
+  const deleteError = (errorId) => API.delete(`/api/segment/error/${errorId}`)
     .then(getProject)
     .catch((err) => {
       if (err.response && err.response.data) {
@@ -59,7 +59,7 @@ const Editor = () => {
       }
     });
 
-  const updateSegmentError = (segmentErrorId, data) => API.patch(`/api/segment/error/${segmentErrorId}`, data)
+  const updateError = (errorId, data) => API.patch(`/api/segment/error/${errorId}`, data)
     .then(getProject)
     .catch((err) => {
       if (err.response && err.response.data) {
@@ -67,7 +67,7 @@ const Editor = () => {
       }
     });
 
-  const createSegmentError = (segmentId, data) => API.post(`/api/segment/${segmentId}/error/`, data)
+  const createError = (segmentId, data) => API.post(`/api/segment/${segmentId}/error`, data)
     .then(getProject)
     .catch((err) => {
       if (err.response && err.response.data) {
@@ -93,9 +93,9 @@ const Editor = () => {
       issues={issues}
       setHighlightInstance={setHighlightInstance}
       highlightInstance={highlightInstance}
-      createSegmentError={createSegmentError}
-      deleteSegmentError={deleteSegmentError}
-      updateSegmentError={updateSegmentError}
+      createError={createError}
+      deleteError={deleteError}
+      updateError={updateError}
     />,
     <Specifications specifications={project.specifications} />,
     <Reports issues={issues} report={report} projectId={projectId} projectName={project.name} />,

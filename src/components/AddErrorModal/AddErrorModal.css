@@ -1,4 +1,4 @@
-.add-issue-modal {
+.add-error-modal {
   height: 100%;
   width: 100%;
   background: rgb(0, 0, 0, 0.6);
@@ -18,7 +18,7 @@
   font-size: 18px;
 }
 
-.add-issue-modal__content-wrapper {
+.add-error-modal__content-wrapper {
   border: 1px solid rgba(0,0,0,.2);
   background: white;
   border-radius: 4px;
@@ -39,12 +39,12 @@
   width: 500px;
 }
 
-.add-issue-modal__content {
+.add-error-modal__content {
   padding-bottom: 30px;
   width: 100%;
 }
 
-.add-issue-modal__buttons{
+.add-error-modal__buttons{
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -54,13 +54,13 @@
   width: 100%;
 }
 
-.add-issue-modal__button {
+.add-error-modal__button {
   cursor: pointer;
   margin-left: 5px;
   font-size: 16px;
 }
 
-.add-issue-modal__button--cancel {
+.add-error-modal__button--cancel {
   background: #dc3545;
   border-color: #dc3545;
   color: white;
@@ -69,7 +69,7 @@
   border-radius: 5px;
 }
 
-.add-issue-modal__button--continue {
+.add-error-modal__button--continue {
   background: #28a745;
   border-color: #28a745;
   color: white;
@@ -78,16 +78,16 @@
   border-radius: 5px;
 }
 
-.add-issue-modal__button--continue:disabled {
+.add-error-modal__button--continue:disabled {
   opacity: 0.6;
 }
 
-.add-issue-modal__heading {
+.add-error-modal__heading {
   font-size: 20px;
   margin-bottom: 20px;
 }
 
-.add-issue-modal__close-icon-container {
+.add-error-modal__close-icon-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -97,30 +97,30 @@
   width: 100%;
 }
 
-.add-issue-modal__close-icon {
+.add-error-modal__close-icon {
   cursor: pointer;
 }
 
-.add-issue-modal__buttons--second-page {
+.add-error-modal__buttons--second-page {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
 
-.add-issue-modal__note {
+.add-error-modal__note {
   width: 100%;
   min-height: 100px;
   margin-bottom: 40px;
   resize: none;
 }
 
-.add-issue-modal__critical-note {
+.add-error-modal__critical-note {
   color: red;
   padding: 5px;
   font-size: 14px;
 }
 
-.add-issue-modal__copyable-text {
+.add-error-modal__copyable-text {
   text-align: left;
   padding: 5px;
   margin: 0;
@@ -128,11 +128,11 @@
   display: inline-block;
 }
 
-.add-issue-modal__copy-paste-icon {
+.add-error-modal__copy-paste-icon {
   margin-left: 5px;
 }
 
-.add-issue-modal__copyable-text-wrapper {
+.add-error-modal__copyable-text-wrapper {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;

@@ -6,12 +6,12 @@ const Reports = (props) => {
     issues, report, projectId, projectName,
   } = props;
   const parseValue = (val) => (val > 0 ? <span className="reports__error">{ val }</span> : val);
+  const emptyRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const total = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
   const constructRows = (issue) => {
     const rows = [];
-    const results = [...report[issue.issue]];
-    const subTotal = [...report[issue.issue]];
+    const results = report[issue.issue] ? [...report[issue.issue]] : [...emptyRow];
+    const subTotal = report[issue.issue] ? [...report[issue.issue]] : [...emptyRow];
 
     rows.push(
       <tr>

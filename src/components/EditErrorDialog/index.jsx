@@ -1,20 +1,20 @@
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
 import { useState } from "react";
-import IssueTypeDropdown from "../IssueTypeDropdown";
-import issueSeverities from "../../issue-severities";
-import IssueSeverityDropdown from "../IssueSeverityDropdown";
+import IssueDropdown from "../IssueDropdown";
+import errorSeverities from "../../error-severities";
+import ErrorSeverityDropdown from "../ErrorSeverityDropdown";
 
-const EditIssueDialog = (props) => {
+const EditErrorDialog = (props) => {
   const {
     onClose,
     onUpdate,
-    issue,
+    error,
     issues
   } = props;
 
-  const [note, setNote] = useState(issue.note)
-  const [severity, setSeverity] = useState(issue.level)
-  const [type, setType] = useState(issue.issue)
+  const [note, setNote] = useState(error.note)
+  const [severity, setSeverity] = useState(error.level)
+  const [issue, setIssue] = useState(error.issue)
 
   return (
     <Dialog open={true} onClose={onClose}>
@@ -31,15 +31,15 @@ const EditIssueDialog = (props) => {
           value={note}
           onChange={(event) => setNote(event.target.value)}
         />
-        <IssueSeverityDropdown 
-          severities={issueSeverities}
+        <ErrorSeverityDropdown
+          severities={errorSeverities}
           value={severity}
           onChange={(event) => setSeverity(event.target.value)}
         />
-        <IssueTypeDropdown 
+        <IssueDropdown 
           issues={issues} 
-          value={type}
-          onChange={(event) => setType(event.target.value)}
+          value={issue}
+          onChange={(event) => setIssue(event.target.value)}
         />
       </DialogContent>
       <DialogActions>
@@ -47,7 +47,7 @@ const EditIssueDialog = (props) => {
         <Button onClick={() => onUpdate({ 
           note, 
           level: severity, 
-          issue: type 
+          issue,
         })}>
           Update
         </Button>
@@ -56,4 +56,4 @@ const EditIssueDialog = (props) => {
   );
 };
 
-export default EditIssueDialog;
+export default EditErrorDialog;

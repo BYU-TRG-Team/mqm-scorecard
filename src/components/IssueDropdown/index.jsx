@@ -2,7 +2,7 @@ import React from "react";
 import { TextField, MenuItem, Tooltip, Typography, Box, IconButton } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
-const IssueTypeDropdown = (props) => {
+const IssueDropdown = (props) => {
   const {
     issues,
     onChange,
@@ -121,4 +121,4 @@ const IssueTypeDropdown = (props) => {
   );
 } 
 
-export default IssueTypeDropdown;
+export default IssueDropdown;

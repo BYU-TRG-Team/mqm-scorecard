@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Scorecard.css";
-import AddIssueModal from "../AddIssueModal";
+import AddErrorModal from "../AddErrorModal";
 import AdvancedSettingsModal from "../AdvancedSettingsModal";
 import Segment from "../Segment";
 import { ButtonGroup, IconButton, Box, Tooltip, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIssueDialog from "../EditIssueDialog";
+import EditErrorDialog from "../EditErrorDialog";
 import ClearIcon from "@mui/icons-material/Clear";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -19,23 +19,23 @@ const Scorecard = (props) => {
     updateProject,
     highlightEnabled,
     setHighlightEnabled,
-    deleteSegmentError,
+    deleteError,
     issues,
     setHighlightInstance,
     highlightInstance,
-    createSegmentError,
-    updateSegmentError
+    createError,
+    updateError
   } = props;
 
   const [segmentNavigationValue, setSegmentNavigationValue] = useState("");
   const [lastSegment, setLastSegment] = useState(1);
-  const [showAddIssueModal, setShowAddIssueModal] = useState(false);
+  const [showAddErrorModal, setShowAddErrorModal] = useState(false);
   const [showAdvancedSettingsModal, setShowAdvancedSettingsModal] = useState(false);
   const [targetType, setTargetType] = useState("");
-  const [focusedIssue, setFocusedIssue] = useState(null);
+  const [focusedError, setFocusedError] = useState(null);
   const [filterText, setFilterText] = useState("");
   const [filteredIssues, setFilteredIssues] = useState([]);
-  const [showEditIssueDialog, setShowEditIssueDialog] = useState(false);
+  const [showEditErrorDialog, setShowEditErrorDialog] = useState(false);
 
   const filteredSegments = segments
     .filter((segment) => {
@@ -104,9 +104,9 @@ const Scorecard = (props) => {
     }
   };
 
-  const handleCreateSegmentError = (data) => {
+  const handleCreateError = (data) => {
     const currentSegmentId = segments.filter((seg) => seg.segment_num == lastSegment)[0].id;
-    createSegmentError(currentSegmentId, {
+    createError(currentSegmentId, {
       ...data,
       type: targetType,
     });
@@ -122,12 +122,12 @@ const Scorecard = (props) => {
         metadataColumns={metadataColumns}
         updateSegmentNumber={updateSegmentNumber}
         highlightEnabled={highlightEnabled}
-        setShowAddIssueModal={setShowAddIssueModal}
+        setShowAddErrorModal={setShowAddErrorModal}
         setTargetType={setTargetType}
         setHighlightInstance={setHighlightInstance}
-        setFocusedIssue={setFocusedIssue}
-        focusedIssue={focusedIssue}
-        updateSegmentError={updateSegmentError}
+        setFocusedError={setFocusedError}
+        focusedError={focusedError}
+        updateError={updateError}
       />
     );
   });
@@ -175,13 +175,13 @@ const Scorecard = (props) => {
     </table>
   );
 
-  const issueTable = (
+  const errorTable = (
     <table className="scorecard__notes-table">
       <tbody>
         <tr className="scorecard__notes-table__row">
           <td className="scorecard__notes-table__cell">
             <Box sx={{ 
-              ...(focusedIssue === null && { visibility: "hidden" }),
+              ...(focusedError === null && { visibility: "hidden" }),
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-start",
@@ -195,43 +195,43 @@ const Scorecard = (props) => {
                 }}>
                 <ButtonGroup 
                   size="small" 
-                  aria-label="Buttons for issue interactions"
+                  aria-label="Buttons for error interaction"
                 >
                   <Tooltip 
                     placement="bottom" 
-                    title="Unselect issue"
+                    title="Unselect error"
                   >
                     <IconButton
-                      aria-label="Unselect issue"
+                      aria-label="Unselect error"
                       size="small"
-                      onClick={() => setFocusedIssue(null)}
+                      onClick={() => setFocusedError(null)}
                     >
                       <ClearIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip 
                     placement="bottom" 
-                    title="Edit issue"
+                    title="Edit error"
                   >
                     <IconButton
-                      aria-label="Edit issue"
+                      aria-label="Edit error"
                       size="small"
-                      onClick={() => setShowEditIssueDialog(true)}
+                      onClick={() => setShowEditErrorDialog(true)}
                     >
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip
                     placement="bottom" 
-                    title="Delete issue"
+                    title="Delete error"
                   >
                     <IconButton
-                      aria-label="Delete issue"
+                      aria-label="Delete error"
                       size="small"
                       onClick={async () => {
-                        if (focusedIssue !== null) {
-                          await deleteSegmentError(focusedIssue.id);
-                          setFocusedIssue(null);
+                        if (focusedError !== null) {
+                          await deleteError(focusedError.id);
+                          setFocusedError(null);
                         }
                       }}
                     >
@@ -243,7 +243,7 @@ const Scorecard = (props) => {
               <TextField
                 label="Note"
                 variant="outlined"
-                value={focusedIssue?.note || " "}
+                value={focusedError?.note || " "}
                 multiline
                 InputProps={{
                   readOnly: true,
@@ -290,54 +290,54 @@ const Scorecard = (props) => {
   }, [project]);
 
   useEffect(() => {
-    if (focusedIssue !== null) {
-      let updatedFocusedIssue = false;
+    if (focusedError !== null) {
+      let updatedFocusedError = false;
 
       for (const segment of filteredSegments) {
-        for (const issue of [
+        for (const error of [
           ...segment.sourceErrors, 
           ...segment.targetErrors
         ]) {
-          if (issue.id === focusedIssue.id) {
-            setFocusedIssue(issue);
-            updatedFocusedIssue = true;
+          if (error.id === focusedError.id) {
+            setFocusedError(error);
+            updatedFocusedError = true;
           }
         }
 
-        if (updatedFocusedIssue) break;
+        if (updatedFocusedError) break;
       }
     }
   }, [segments])
 
   useEffect(() => {
-    if (focusedIssue !== null) {
+    if (focusedError !== null) {
       setHighlightEnabled(false);
     }
-  }, [focusedIssue]);
+  }, [focusedError]);
 
   useEffect(() => {
     if (highlightEnabled) {
-      setFocusedIssue(null);
+      setFocusedError(null);
     }
   }, [highlightEnabled])
 
   useEffect(() => {
-    setFocusedIssue(null)
+    setFocusedError(null)
   }, [filterText, filteredIssues]);
 
   return (
     <div className="scorecard">
-      { showAddIssueModal && <AddIssueModal issues={issues} setShowAddIssueModal={setShowAddIssueModal} handleCreateSegmentError={handleCreateSegmentError} highlightInstance={highlightInstance} /> }
+      { showAddErrorModal && <AddErrorModal issues={issues} setShowAddErrorModal={setShowAddErrorModal} handleCreateError={handleCreateError} highlightInstance={highlightInstance} /> }
       { showAdvancedSettingsModal && <AdvancedSettingsModal issues={issues} setShowAdvancedSettingsModal={setShowAdvancedSettingsModal} filteredIssues={filteredIssues} setFilteredIssues={setFilteredIssues} /> }
       {
-        showEditIssueDialog &&
-        <EditIssueDialog 
+        showEditErrorDialog &&
+        <EditErrorDialog 
           issues={issues}
-          issue={focusedIssue} 
-          onClose={() => setShowEditIssueDialog(false)} 
+          error={focusedError} 
+          onClose={() => setShowEditErrorDialog(false)} 
           onUpdate={async (data) => {
-            await updateSegmentError(focusedIssue.id, data);
-            setShowEditIssueDialog(false) 
+            await updateError(focusedError.id, data);
+            setShowEditErrorDialog(false) 
           }}
         />
       }
@@ -353,7 +353,7 @@ const Scorecard = (props) => {
             { `Target: ${lastSegment} of ${segments.length}` }
             </th>
             <th className="scorecard__table__cell-header" width="24" style={{ padding: "0px" }} />
-            <th className="scorecard__table__cell-header" width="200">Issue</th>
+            <th className="scorecard__table__cell-header" width="200">Error</th>
           </tr>
         </thead>
         <tbody>
@@ -375,7 +375,7 @@ const Scorecard = (props) => {
               <NavTable />
             </td>
             <td rowSpan="2" style={{ padding: "0px" }} className="scorecard__table__cell">
-              { issueTable }
+              { errorTable }
             </td>
           </tr>
         </tbody>
