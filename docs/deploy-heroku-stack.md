@@ -1,4 +1,4 @@
-# Deploy to Heroku
+# Deploy Heroku stack
 
 ## Heroku setup 
 
@@ -11,19 +11,18 @@
     - The minimum plan needed for a small number of users and projects is **Basic**.
     - Refer to [this guide](https://devcenter.heroku.com/articles/heroku-postgres-plans) to learn more about Heroku Postgres plans.
 
-
 ## Create an account with a supported email provider
 
-Refer to [third-party requirements in the README](https://github.com/BYU-TRG-Team/mqm-scorecard?tab=readme-ov-file#third-party-requirements). 
+Refer to [third-party requirements in the README](../README.md#third-party-requirements). 
 
 ## Set environment variables
 
-Refer to [environment variables in the README](https://github.com/BYU-TRG-Team/mqm-scorecard?tab=readme-ov-file#setup-environment-variables). Environment variables can either be set [using the CLI or the Heroku Dashboard](https://devcenter.heroku.com/articles/config-vars).
+Refer to [environment variables in the README](../README.md#setup-environment-variables). Environment variables can either be set [using the CLI or the Heroku Dashboard](https://devcenter.heroku.com/articles/config-vars).
 
 ## Deploy application to Heroku
 
 1. [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
-2. Clone the Scorecard repository and checkout the latest release:
+2. Clone the repository and checkout the latest release:
 
 ```
 git clone https://github.com/BYU-TRG-Team/mqm-scorecard.git
@@ -51,14 +50,13 @@ Your application should now be available at the following url:
 https://<app-name>.herokuapp.com
 ```
 
-
 ## Configure initial user
 
-1. Create an account on Scorecard
-2. Give **superadmin** privileges to the account:
+1. Create a new user on Scorecard
+2. Give **superadmin** privileges to the user:
 
 ```
 DATABASE_URL=<url for the database> \ 
 APP_ENV=production \
-npm --prefix api run db:set-user-role <username of the account> 3
+npm --prefix api run db:set-user-role <username> 3
 ```
