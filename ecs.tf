@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "mqm_scorecard_task" {
   container_definitions = jsonencode([
     {
       name  = "mqm-scorecard-container"
-      image = "your-docker-image-url:latest"
+      image = "${aws_ecr_repository.mqm_scorecard_api.repository_url}:latest"
       portMappings = [
         {
           containerPort = 8081
