@@ -1,7 +1,7 @@
 {
   "name": "scorecard",
   "main": "dist/server/index.js",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "scripts": {
     "start": "node dist/server/index.js",
     "build": "react-scripts build && npm --prefix api run build && tsc",
