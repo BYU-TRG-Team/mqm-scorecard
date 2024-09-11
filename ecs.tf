@@ -37,6 +37,10 @@ resource "aws_ecs_task_definition" "mqm_scorecard_task" {
         {
           name  = "DB_USER"
           value = aws_db_instance.default.username
+        },
+        {
+          name  = "DB_PASSWORD"
+          value = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string).password
         }
       ]
       logConfiguration = {
@@ -75,10 +79,7 @@ resource "aws_ecs_service" "mqm_scorecard_service" {
   }
 }
 
-output "ecs_cluster_name" {
-  value = aws_ecs_cluster.mqm_scorecard_cluster.name
-}
-
+# AppAutoScaling Target
 resource "aws_appautoscaling_target" "ecs_service" {
   max_capacity       = 1
   min_capacity       = 1
@@ -87,6 +88,7 @@ resource "aws_appautoscaling_target" "ecs_service" {
   service_namespace  = "ecs"
 }
 
+# AppAutoScaling Policy - Scale Up
 resource "aws_appautoscaling_policy" "scale_up" {
   name               = "scale-up"
   resource_id        = aws_appautoscaling_target.ecs_service.resource_id
@@ -106,6 +108,7 @@ resource "aws_appautoscaling_policy" "scale_up" {
   }
 }
 
+# AppAutoScaling Policy - Scale Down
 resource "aws_appautoscaling_policy" "scale_down" {
   name               = "scale-down"
   resource_id        = aws_appautoscaling_target.ecs_service.resource_id
@@ -125,51 +128,6 @@ resource "aws_appautoscaling_policy" "scale_down" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "ecs_log_group" {
-  name              = "/ecs/mqm-scorecard"
-  retention_in_days = 7
-}
-
-# Load Balancer
-resource "aws_lb" "app_lb" {
-  name               = "mqm-scorecard-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
-
-  tags = {
-    Name = "mqm-scorecard-alb"
-  }
-}
-
-resource "aws_lb_target_group" "app_tg" {
-  name     = "mqm-scorecard-tg"
-  port     = 8081
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
-
-  health_check {
-    path                = "/"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    matcher             = "200-299"
-  }
-
-  tags = {
-    Name = "mqm-scorecard-tg"
-  }
-}
-
-resource "aws_lb_listener" "app_listener" {
-  load_balancer_arn = aws_lb.app_lb.arn
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app_tg.arn
-  }
+output "ecs_cluster_name" {
+  value = aws_ecs_cluster.mqm_scorecard_cluster.name
 }

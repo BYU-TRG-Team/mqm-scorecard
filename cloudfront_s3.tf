@@ -13,8 +13,8 @@ resource "aws_s3_bucket_website_configuration" "website_config" {
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = aws_lb.app_lb.dns_name
-    origin_id   = "ALB-${aws_lb.app_lb.id}"
+    domain_name = aws_s3_bucket.website_bucket.bucket_regional_domain_name
+    origin_id   = "S3-${aws_s3_bucket.website_bucket.id}"
   }
 
   enabled             = true
@@ -24,7 +24,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "ALB-${aws_lb.app_lb.id}"
+    target_origin_id = "S3-${aws_s3_bucket.website_bucket.id}"
 
     forwarded_values {
       query_string = false
