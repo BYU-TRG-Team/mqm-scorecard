@@ -6,9 +6,9 @@ resource "aws_db_instance" "default" {
   allocated_storage      = 20
   storage_type           = "gp2"
   identifier             = "mqm-scorecard-db"
-  db_name                = "mqm_scorecard"
-  username               = "admin"
-  password               = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string).password
+  db_name                = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string).database
+  username               = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string).username
+  password               = jsondecode(data.aws_secretsmanager_secret_version.secret_string).password
   parameter_group_name   = "default.postgres15"
   skip_final_snapshot    = false
   publicly_accessible    = false

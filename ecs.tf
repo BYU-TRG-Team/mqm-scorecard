@@ -32,11 +32,11 @@ resource "aws_ecs_task_definition" "mqm_scorecard_task" {
         },
         {
           name  = "DB_NAME"
-          value = aws_db_instance.default.db_name
+          value = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string).database
         },
         {
           name  = "DB_USER"
-          value = aws_db_instance.default.username
+          value = jsondecode(data.aws_secretsmanager_secret_version.db_password_version.secret_string).username
         },
         {
           name  = "DB_PASSWORD"

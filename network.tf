@@ -35,10 +35,10 @@ resource "aws_security_group" "ecs_tasks" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    protocol    = "tcp"
-    from_port   = 8081
-    to_port     = 8081
-    cidr_blocks = ["10.0.0.0/16"]
+    protocol        = "tcp"
+    from_port       = 8081
+    to_port         = 8081
+    security_groups = [aws_security_group.alb_sg.id]
   }
 
   egress {
@@ -62,15 +62,18 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    protocol    = "tcp"
+    from_port   = 443
+    to_port     = 443
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "mqm-scorecard-alb-sg"
   }
 }
 
