@@ -3,13 +3,13 @@
   "main": "dist/server/index.js",
   "version": "4.2.1",
   "scripts": {
-    "start": "node dist/server/index.js",
-    "build": "webpack --config webpack.config.js",
-    "test": "jest",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "prepare": "husky install ||:",
     "lint": "eslint src --ext .jsx --ext .js",
-    "lint:fix": "eslint src --fix --ext .jsx --ext .js",
-    "nuke": "rm -rf dist && rm -rf node_modules"
+    "lint:fix": "eslint src --fix --ext .jsx --ext .js"
   },
   "proxy": "http://localhost:8081",
   "repository": {
