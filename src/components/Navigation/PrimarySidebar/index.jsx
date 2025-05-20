@@ -30,7 +30,7 @@ const PrimarySidebar = () => {
           <img height="40" width="98" alt="[MQM logo]" src={`${process.env.PUBLIC_URL}/images/mqmscorecard.png`} />
         </Link>
         <h1 className="primary-sidebar__heading">
-          MQM Evaluation Scorecard
+          MQM Annotator
         </h1>
       </div>
       <div className="primary-sidebar__links">

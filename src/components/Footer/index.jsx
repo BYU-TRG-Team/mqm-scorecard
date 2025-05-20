@@ -13,7 +13,7 @@ const Footer = () => (
     {" "}
     <a href="mailto:info@qt21.eu">info@qt21.eu</a>
     .
-    Scorecard is published under
+    Annotator is published under
     {" "}
     <a href="https://github.com/BYU-TRG-Team/scorecard/blob/main/LICENSE" target="_blank" rel="noreferrer">Apache 2.0 License</a>
     {" "}
