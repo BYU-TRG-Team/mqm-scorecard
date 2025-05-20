@@ -408,7 +408,7 @@ export const scorecardInterface = (
       <img className="accordion__image5" src={`${process.env.PUBLIC_URL}/images/tutorial/img5.png`} />
     </div>
     <h4>Filtering</h4>
-    <p>The Scorecard allows you to search for text or issues using the Filter feature. When a filter is active the number of segments shown will be displayed above the editor. To clear the current filter, click on &quot;Clear filter&quot;.</p>
+    <p>The Annotator allows you to search for text or issues using the Filter feature. When a filter is active the number of segments shown will be displayed above the editor. To clear the current filter, click on &quot;Clear filter&quot;.</p>
     <h5>Quick filters</h5>
     <p>
       A
@@ -431,7 +431,7 @@ export const scorecardInterface = (
 
 export const severityLevels = (
   <div>
-    <p>The MQM Scorecard supports three issue severity levels. Choosing the proper severity is important. The three levels are are follows:</p>
+    <p>The MQM Annotator supports three issue severity levels. Choosing the proper severity is important. The three levels are are follows:</p>
     <ul>
       <li>
         <strong>minor</strong>
