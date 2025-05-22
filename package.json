@@ -34,9 +34,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.1",
     "react-tooltip": "^4.2.21",
-    "texthighlighter": "^1.2.4",
-    "webpack": "^5.88.0",
-    "webpack-cli": "^5.1.4"
+    "texthighlighter": "^1.2.4"
   },
   "browserslist": {
     "production": [
@@ -60,7 +58,6 @@
     "css-loader": "^6.7.1",
     "husky": "^7.0.2",
     "style-loader": "^3.3.1",
-    "terser-webpack-plugin": "^5.3.9",
     "typescript": "^4.9.5"
   },
   "engines": {
