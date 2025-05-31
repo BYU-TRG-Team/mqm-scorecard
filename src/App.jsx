@@ -37,7 +37,7 @@ import { GlobalContext } from "./store";
 
 const App = () => {
   const [state] = React.useContext(GlobalContext);
-  const unverifiedRedirect = <Redirect to={{ pathname: "/email-verification" }} />;
+  const unverifiedRedirect = <Redirect to={{ pathname: "/awaiting-verification" }} />;
   const nonAuthenticatedRedirect = <Redirect to={{ pathname: "/login" }} />;
 
   const dashboardRoutes = {
@@ -76,7 +76,7 @@ const App = () => {
   const authRoutes = [
     <Route exact path="/login" component={Login} />,
     <Route exact path="/register" component={Register} />,
-    <Route exact path="/email-verification" render={() => <Message isEmailVerification />} />,
+    <Route exact path="/awaiting-verification" render={() => <Message isUnverified />} />,
     <Route exact path="/recover" component={Recover} />,
     <Route exact path="/recover/sent" render={() => <Message isRecoverPassword />} />,
     <Route exact path="/recover/:recoveryToken" component={Recover} />,

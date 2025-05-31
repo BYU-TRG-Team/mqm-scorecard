@@ -1,5 +1,5 @@
 {
-  "name": "scorecard",
+  "name": "annotator",
   "main": "dist/server/index.js",
   "version": "4.2.3",
   "scripts": {

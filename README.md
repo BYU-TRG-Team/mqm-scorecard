@@ -1,4 +1,4 @@
-# MQM Scorecard
+# MQM Scorecard | Annotator
 An application for language translation evaluation using [MQM (Multidimensional Quality Metrics)](https://themqm.org/).
 
 ## Key Features

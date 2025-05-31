@@ -24,7 +24,7 @@ const Register = () => {
       email, password, name, username,
     })
       .then(() => {
-        history.push("/email-verification");
+        history.push("/awaiting-verification");
       })
       .catch((err) => {
         if (err.response && err.response.data) {
