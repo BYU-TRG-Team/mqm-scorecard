@@ -10,6 +10,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    if: github.event.repository.fork == false
     env:
       CI: false
     steps:
@@ -23,9 +24,11 @@ jobs:
       run: npm ci
     - name: Run build
       run: npm run build
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    if: github.event.repository.fork == false
     steps:
     - uses: actions/checkout@v3  
       with:
