@@ -3,7 +3,7 @@ import "./Footer.css";
 
 const Footer = () => (
   <div className="footer">
-    Version 4.1.1
+    Version 4.2.3
     <br />
     (c)2015 DFKI GMbH.
     <br />
@@ -13,7 +13,7 @@ const Footer = () => (
     {" "}
     <a href="mailto:info@qt21.eu">info@qt21.eu</a>
     .
-    Scorecard is published under
+    Annotator is published under
     {" "}
     <a href="https://github.com/BYU-TRG-Team/scorecard/blob/main/LICENSE" target="_blank" rel="noreferrer">Apache 2.0 License</a>
     {" "}

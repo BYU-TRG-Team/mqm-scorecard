@@ -1,7 +1,7 @@
 {
-  "name": "scorecard",
+  "name": "annotator",
   "main": "dist/server/index.js",
-  "version": "4.2.1",
+  "version": "4.2.3",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

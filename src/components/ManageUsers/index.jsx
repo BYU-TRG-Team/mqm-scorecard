@@ -94,6 +94,16 @@ const ManageUsers = () => {
       });
   };
 
+  const verifyUser = (userId) => {
+    API.post("/api/auth/verify", { userId })
+      .then(updateUsers)
+      .catch((err) => {
+        if (err.response && err.response?.data) {
+          setError(error.response.data.message);
+        }
+      });
+  }
+
   useEffect(updateUsers, []);
 
   const mappedUsers = users.map((user) => (
@@ -119,6 +129,11 @@ const ManageUsers = () => {
         <button type="button" onClick={() => updateRole(user.user_id, 3)} className="manage-user__button">
           Set Superadmin
         </button>
+        {!user.verified && (
+          <button type="button" onClick={() => verifyUser(user.user_id)} className="manage-user__button">
+            Verify User
+          </button>
+        )}
       </td>
     </tr>
   ));
